@@ -63,12 +63,13 @@
   "preferences": {
     "aiColor": "#EC4899",
     "notificationEnabled": true,
-    "reminderTime": "17:00"
+    "reminderTime": "17:00",
+    "hasCompletedOnboarding": false
   },
   "friendConnections": [],
   "messagesSentToday": 0,
   "questionsAsked": 7,
   "totalConversations": 4,
   "createdAt": "2025-10-31T00:00:00Z",
-  "lastLoginAt": "2025-11-02T15:45:00Z"
+  "lastLoginAt": "2025-11-07T22:12:44.464Z"
 }

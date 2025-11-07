@@ -27,6 +27,7 @@ export interface Student {
     aiColor: string;
     notificationEnabled: boolean;
     reminderTime?: string;
+    hasCompletedOnboarding?: boolean;
   };
 
   // Social

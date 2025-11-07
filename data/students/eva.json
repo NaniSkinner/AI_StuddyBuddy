@@ -88,17 +88,25 @@
     "longest": 6,
     "lastActiveDate": "2025-11-07T00:00:00Z"
   },
-  "achievements": ["first_steps", "three_day_streak", "curious_mind"],
+  "achievements": [
+    "first_steps",
+    "three_day_streak",
+    "curious_mind"
+  ],
   "churnRisk": false,
   "preferences": {
-    "aiColor": "#A855F7",
+    "aiColor": "#FFAAC9",
     "notificationEnabled": true,
-    "reminderTime": "15:30"
+    "reminderTime": "15:30",
+    "hasCompletedOnboarding": true
   },
-  "friendConnections": ["student-lucas", "student-pat"],
+  "friendConnections": [
+    "student-lucas",
+    "student-pat"
+  ],
   "messagesSentToday": 2,
   "questionsAsked": 18,
   "totalConversations": 15,
   "createdAt": "2025-10-20T00:00:00Z",
-  "lastLoginAt": "2025-11-07T10:30:00Z"
+  "lastLoginAt": "2025-11-07T22:23:04.788Z"
 }

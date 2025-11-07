@@ -1,8 +1,17 @@
 // Export all services for easy importing
 export * from "./studentService";
+export * from "./authService";
+export * from "./onboardingService";
 export * from "./streakService";
 export * from "./sessionService";
 export * from "./tutorService";
 export * from "./taskService";
 export * from "./achievementService";
 export * from "./bookingService";
+export * from "./aiService";
+export * from "./churnDetectionService";
+export * from "./nudgeService";
+export * from "./recommendationService";
+export * from "./struggleDetectionService";
+export * from "./gamificationService";
+export * from "./safetyService";

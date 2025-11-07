@@ -98,12 +98,13 @@
   "preferences": {
     "aiColor": "#10B981",
     "notificationEnabled": true,
-    "reminderTime": "18:00"
+    "reminderTime": "18:00",
+    "hasCompletedOnboarding": false
   },
   "friendConnections": ["student-eva"],
   "messagesSentToday": 0,
   "questionsAsked": 31,
   "totalConversations": 24,
   "createdAt": "2025-10-15T00:00:00Z",
-  "lastLoginAt": "2025-11-07T08:00:00Z"
+  "lastLoginAt": "2025-11-07T22:08:50.896Z"
 }
