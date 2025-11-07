@@ -1,0 +1,388 @@
+[
+  {
+    "id": "session-eva-1",
+    "studentId": "student-eva",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-10-25T15:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hello Eva! I'm excited to work with you on reading and writing. What are you currently reading?",
+        "timestamp": "2025-10-25T15:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I'm reading 'The Giver' for school.",
+        "timestamp": "2025-10-25T15:00:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Excellent choice! That's a powerful book. What themes have you noticed so far?",
+        "timestamp": "2025-10-25T15:00:40Z"
+      },
+      {
+        "speaker": "student",
+        "message": "It's about control and freedom, I think. The community controls everything.",
+        "timestamp": "2025-10-25T15:01:10Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "That's a really insightful observation! You've identified one of the main themes. Can you think of specific examples from the book that show this control?",
+        "timestamp": "2025-10-25T15:01:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "They can't choose their own jobs, and they have rules for everything.",
+        "timestamp": "2025-10-25T15:02:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect! You're analyzing the text well. Now, let's talk about how authors use literary devices to convey these themes...",
+        "timestamp": "2025-10-25T15:02:25Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Theme Analysis",
+        "subConcepts": [
+          "Identifying themes",
+          "Supporting with textual evidence"
+        ],
+        "strugglingPoints": [],
+        "masteryLevel": 80
+      }
+    ],
+    "tutorNotes": "Eva is thoughtful and insightful. She naturally identifies themes and can support her ideas with evidence. Strong reader with good comprehension skills.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-eva-2",
+    "studentId": "student-eva",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-10-28T15:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Eva! Today we're going to focus on literary devices, specifically metaphors and similes. Do you know the difference?",
+        "timestamp": "2025-10-28T15:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "A simile uses 'like' or 'as' to compare things, but I'm not sure about metaphors.",
+        "timestamp": "2025-10-28T15:00:25Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Great start! A metaphor is similar, but it directly says one thing IS another thing, without using 'like' or 'as'. For example, 'Time is money.'",
+        "timestamp": "2025-10-28T15:00:50Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Oh, so it's saying time equals money, but it's not literally true?",
+        "timestamp": "2025-10-28T15:01:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! It's a comparison to show that time is valuable. Can you create a metaphor?",
+        "timestamp": "2025-10-28T15:01:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Um... the classroom is a zoo?",
+        "timestamp": "2025-10-28T15:02:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect! You're saying the classroom is wild and chaotic like a zoo. That's a great metaphor. Now let's find metaphors in 'The Giver'...",
+        "timestamp": "2025-10-28T15:02:20Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Literary Devices",
+        "subConcepts": ["Metaphors", "Similes", "Comparison techniques"],
+        "strugglingPoints": [],
+        "masteryLevel": 75
+      }
+    ],
+    "tutorNotes": "Eva grasped metaphors quickly. She's ready for more complex literary analysis. Good creative thinking.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-eva-3",
+    "studentId": "student-eva",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-10-31T15:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Welcome back, Eva! Let's work on essay structure today. Have you written a five-paragraph essay before?",
+        "timestamp": "2025-10-31T15:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Yes, but I'm not always sure what to put in each paragraph.",
+        "timestamp": "2025-10-31T15:00:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Let's break it down. The first paragraph is your introduction - it has your thesis statement. The middle three paragraphs are your body paragraphs, each with a main point. And the last paragraph is your conclusion. Make sense?",
+        "timestamp": "2025-10-31T15:00:50Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Yes! So each body paragraph focuses on one idea?",
+        "timestamp": "2025-10-31T15:01:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! And each body paragraph should have a topic sentence, evidence, and explanation. Let's practice writing a paragraph about 'The Giver'...",
+        "timestamp": "2025-10-31T15:01:45Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Essay Structure",
+        "subConcepts": [
+          "Five-paragraph essay",
+          "Topic sentences",
+          "Body paragraphs"
+        ],
+        "strugglingPoints": [],
+        "masteryLevel": 75
+      }
+    ],
+    "tutorNotes": "Eva understands essay structure well. She writes clearly and logically. Ready to work on more sophisticated writing techniques.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-eva-4",
+    "studentId": "student-eva",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-11-02T15:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Eva! Let's dive deeper into metaphors today. Can you identify the metaphor in this sentence: 'Her words were daggers to his heart'?",
+        "timestamp": "2025-11-02T15:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "The words are being compared to daggers?",
+        "timestamp": "2025-11-02T15:00:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Yes! What does that metaphor tell you about how her words affected him?",
+        "timestamp": "2025-11-02T15:00:40Z"
+      },
+      {
+        "speaker": "student",
+        "message": "That they hurt him... emotionally?",
+        "timestamp": "2025-11-02T15:01:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! The metaphor shows emotional pain by comparing it to physical pain. Now, what's the metaphor here: 'The world is a stage'?",
+        "timestamp": "2025-11-02T15:01:25Z"
+      },
+      {
+        "speaker": "student",
+        "message": "The world is... a stage? But I don't get what that means.",
+        "timestamp": "2025-11-02T15:01:50Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Think about what happens on a stage. Actors perform, play roles...",
+        "timestamp": "2025-11-02T15:02:10Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Oh! So people are like actors playing roles in life?",
+        "timestamp": "2025-11-02T15:02:40Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! Shakespeare used this metaphor. Now try this one: 'Laughter is the best medicine.' What's being compared?",
+        "timestamp": "2025-11-02T15:03:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Laughter and medicine... but that doesn't make sense. Medicine cures sickness, laughter doesn't.",
+        "timestamp": "2025-11-02T15:03:30Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Think about how medicine makes you feel better. What else can make you feel better?",
+        "timestamp": "2025-11-02T15:03:50Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I guess laughter makes you feel better emotionally?",
+        "timestamp": "2025-11-02T15:04:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Right! But I can see you're finding some of these tricky. Let's look at more examples...",
+        "timestamp": "2025-11-02T15:04:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "They're confusing because they're not literal.",
+        "timestamp": "2025-11-02T15:05:00Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Metaphors & Similes",
+        "subConcepts": [
+          "Complex metaphors",
+          "Interpreting figurative language"
+        ],
+        "strugglingPoints": [
+          "Understanding abstract metaphors",
+          "Moving beyond literal interpretation"
+        ],
+        "masteryLevel": 55
+      }
+    ],
+    "tutorNotes": "Eva is struggling with more abstract metaphors. She understands the basic concept but has difficulty interpreting what the comparison means, especially with non-obvious metaphors. Recommend more practice with guided analysis.",
+    "studentEngagement": "medium",
+    "strugglingConcepts": [
+      "Abstract metaphors",
+      "Figurative language interpretation"
+    ]
+  },
+  {
+    "id": "session-eva-5",
+    "studentId": "student-eva",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-11-05T15:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Eva! I know metaphors were challenging last time. Let's practice more today.",
+        "timestamp": "2025-11-05T15:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Okay... I've been trying to understand them better.",
+        "timestamp": "2025-11-05T15:00:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Great effort! Let's start with this: 'He has a heart of stone.' What does that mean?",
+        "timestamp": "2025-11-05T15:00:40Z"
+      },
+      {
+        "speaker": "student",
+        "message": "His heart is like a stone? But hearts aren't made of stone...",
+        "timestamp": "2025-11-05T15:01:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Right, it's not literal. Think about what stone is like. Hard, cold, unchanging...",
+        "timestamp": "2025-11-05T15:01:20Z"
+      },
+      {
+        "speaker": "student",
+        "message": "So he's cold and hard? Like, he doesn't have feelings?",
+        "timestamp": "2025-11-05T15:01:45Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! You got it. Now try this: 'The exam was a piece of cake.'",
+        "timestamp": "2025-11-05T15:02:05Z"
+      },
+      {
+        "speaker": "student",
+        "message": "The exam was easy? Because cake is... nice and easy to eat?",
+        "timestamp": "2025-11-05T15:02:30Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect! You're getting the hang of it. Let's try a few more...",
+        "timestamp": "2025-11-05T15:02:50Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I still find them confusing sometimes.",
+        "timestamp": "2025-11-05T15:10:00Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Metaphors & Similes",
+        "subConcepts": ["Common metaphors", "Interpretation strategies"],
+        "strugglingPoints": ["Still needs guidance with non-obvious metaphors"],
+        "masteryLevel": 60
+      }
+    ],
+    "tutorNotes": "Eva showed improvement but still struggles with metaphors. She needs the meaning explained step-by-step. This is becoming a repeated struggle point - may benefit from scheduling a focused review session.",
+    "studentEngagement": "medium",
+    "strugglingConcepts": ["Metaphor interpretation"]
+  },
+  {
+    "id": "session-eva-6",
+    "studentId": "student-eva",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-11-06T15:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Eva! I'd like to work on persuasive writing today. Have you written persuasive essays before?",
+        "timestamp": "2025-11-06T15:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "A little bit. It's when you try to convince someone of something, right?",
+        "timestamp": "2025-11-06T15:00:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! You state your opinion and then give reasons and evidence to support it. Let's brainstorm a topic. What's something you feel strongly about?",
+        "timestamp": "2025-11-06T15:00:45Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I think we should have longer lunch periods at school.",
+        "timestamp": "2025-11-06T15:01:10Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Great topic! Now, why should lunch periods be longer? Give me three reasons.",
+        "timestamp": "2025-11-06T15:01:30Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Um... students don't have enough time to eat, we feel rushed, and we don't get a real break.",
+        "timestamp": "2025-11-06T15:02:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Excellent reasons! Each one of those could be a body paragraph. Now let's work on making your arguments even stronger...",
+        "timestamp": "2025-11-06T15:02:25Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Persuasive Writing",
+        "subConcepts": ["Argument structure", "Supporting reasons", "Evidence"],
+        "strugglingPoints": [],
+        "masteryLevel": 70
+      }
+    ],
+    "tutorNotes": "Eva did well with persuasive writing. She generates good ideas and reasons. Still recommend additional practice with metaphors through the AI tutor - it remains her weakest area.",
+    "studentEngagement": "high",
+    "strugglingConcepts": ["Metaphors (ongoing from previous sessions)"]
+  }
+]

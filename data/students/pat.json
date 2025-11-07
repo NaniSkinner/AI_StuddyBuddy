@@ -1,0 +1,109 @@
+{
+  "id": "student-pat",
+  "name": "Pat",
+  "age": 16,
+  "grade": 11,
+  "goals": [
+    {
+      "id": "goal-pat-sat",
+      "subject": "SAT Prep",
+      "targetCompletion": "2025-12-01T00:00:00Z",
+      "progress": 88,
+      "topics": [
+        {
+          "name": "SAT Math",
+          "progress": 95,
+          "lastPracticed": "2025-11-06T17:00:00Z"
+        },
+        {
+          "name": "SAT Reading",
+          "progress": 85,
+          "lastPracticed": "2025-11-05T16:30:00Z"
+        },
+        {
+          "name": "SAT Writing",
+          "progress": 82,
+          "lastPracticed": "2025-11-04T15:45:00Z"
+        }
+      ]
+    },
+    {
+      "id": "goal-pat-essays",
+      "subject": "College Essays",
+      "targetCompletion": "2025-11-30T00:00:00Z",
+      "progress": 45,
+      "topics": [
+        {
+          "name": "Personal Statement",
+          "progress": 55,
+          "lastPracticed": "2025-11-06T14:00:00Z"
+        },
+        {
+          "name": "Supplemental Essays",
+          "progress": 30,
+          "lastPracticed": "2025-11-03T16:00:00Z"
+        },
+        {
+          "name": "Activity Descriptions",
+          "progress": 50,
+          "lastPracticed": "2025-11-02T13:30:00Z"
+        }
+      ]
+    },
+    {
+      "id": "goal-pat-calc",
+      "subject": "AP Calculus",
+      "targetCompletion": "2026-05-01T00:00:00Z",
+      "progress": 62,
+      "topics": [
+        {
+          "name": "Limits",
+          "progress": 75,
+          "lastPracticed": "2025-11-05T10:00:00Z"
+        },
+        {
+          "name": "Derivatives",
+          "progress": 68,
+          "lastPracticed": "2025-11-06T11:30:00Z"
+        },
+        {
+          "name": "Integrals",
+          "progress": 45,
+          "lastPracticed": "2025-11-04T14:15:00Z"
+        }
+      ]
+    }
+  ],
+  "sessions": [
+    "session-pat-1",
+    "session-pat-2",
+    "session-pat-3",
+    "session-pat-4",
+    "session-pat-5",
+    "session-pat-6"
+  ],
+  "taskHistory": [],
+  "streaks": {
+    "current": 12,
+    "longest": 14,
+    "lastActiveDate": "2025-11-07T00:00:00Z"
+  },
+  "achievements": [
+    "first_steps",
+    "three_day_streak",
+    "topic_master",
+    "streak_breaker"
+  ],
+  "churnRisk": false,
+  "preferences": {
+    "aiColor": "#10B981",
+    "notificationEnabled": true,
+    "reminderTime": "18:00"
+  },
+  "friendConnections": ["student-eva"],
+  "messagesSentToday": 0,
+  "questionsAsked": 31,
+  "totalConversations": 24,
+  "createdAt": "2025-10-15T00:00:00Z",
+  "lastLoginAt": "2025-11-07T08:00:00Z"
+}

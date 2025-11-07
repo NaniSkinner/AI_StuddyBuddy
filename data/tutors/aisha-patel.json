@@ -1,0 +1,35 @@
+{
+  "id": "tutor-aisha-patel",
+  "name": "Ms. Aisha Patel",
+  "specialties": ["Algebra", "Algebra II", "Biology", "Chemistry", "STEM"],
+  "bio": "MS in Biochemistry and certified STEM educator. Focuses on building strong foundational understanding and connecting scientific concepts to everyday life. 8 years tutoring experience.",
+  "photoUrl": "/tutors/aisha-patel.jpg",
+  "students": ["student-mia", "student-eva"],
+  "availableSlots": [
+    {
+      "datetime": "2025-11-10T13:00:00Z",
+      "duration": 60,
+      "available": true
+    },
+    {
+      "datetime": "2025-11-10T15:00:00Z",
+      "duration": 60,
+      "available": true
+    },
+    {
+      "datetime": "2025-11-11T09:00:00Z",
+      "duration": 60,
+      "available": true
+    },
+    {
+      "datetime": "2025-11-11T16:00:00Z",
+      "duration": 60,
+      "available": true
+    },
+    {
+      "datetime": "2025-11-12T14:00:00Z",
+      "duration": 60,
+      "available": true
+    }
+  ]
+}

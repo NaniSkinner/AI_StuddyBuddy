@@ -1,0 +1,158 @@
+{
+  "id": "student-lucas",
+  "name": "Lucas",
+  "age": 9,
+  "grade": 4,
+  "goals": [
+    {
+      "id": "goal-lucas-math",
+      "subject": "Elementary Math",
+      "targetCompletion": "2025-12-15T00:00:00Z",
+      "progress": 65,
+      "topics": [
+        {
+          "name": "Fractions",
+          "progress": 70,
+          "subConcepts": [
+            {
+              "name": "Halves",
+              "mastered": true,
+              "attemptsCorrect": 8,
+              "attemptsTotal": 10
+            },
+            {
+              "name": "Thirds",
+              "mastered": false,
+              "attemptsCorrect": 3,
+              "attemptsTotal": 8
+            },
+            {
+              "name": "Quarters",
+              "mastered": true,
+              "attemptsCorrect": 7,
+              "attemptsTotal": 9
+            }
+          ],
+          "lastPracticed": "2025-11-06T14:30:00Z"
+        },
+        {
+          "name": "Multiplication",
+          "progress": 55,
+          "subConcepts": [
+            {
+              "name": "Times Tables 1-5",
+              "mastered": true,
+              "attemptsCorrect": 15,
+              "attemptsTotal": 18
+            },
+            {
+              "name": "Times Tables 6-10",
+              "mastered": false,
+              "attemptsCorrect": 8,
+              "attemptsTotal": 15
+            }
+          ],
+          "lastPracticed": "2025-11-05T10:15:00Z"
+        },
+        {
+          "name": "Addition & Subtraction",
+          "progress": 85,
+          "subConcepts": [
+            {
+              "name": "Two-digit numbers",
+              "mastered": true,
+              "attemptsCorrect": 12,
+              "attemptsTotal": 13
+            },
+            {
+              "name": "Three-digit numbers",
+              "mastered": true,
+              "attemptsCorrect": 9,
+              "attemptsTotal": 11
+            }
+          ],
+          "lastPracticed": "2025-11-03T13:20:00Z"
+        }
+      ]
+    },
+    {
+      "id": "goal-lucas-science",
+      "subject": "Science",
+      "targetCompletion": "2025-12-20T00:00:00Z",
+      "progress": 40,
+      "topics": [
+        {
+          "name": "States of Matter",
+          "progress": 60,
+          "subConcepts": [
+            {
+              "name": "Solids",
+              "mastered": true,
+              "attemptsCorrect": 5,
+              "attemptsTotal": 6
+            },
+            {
+              "name": "Liquids",
+              "mastered": true,
+              "attemptsCorrect": 6,
+              "attemptsTotal": 7
+            },
+            {
+              "name": "Gases",
+              "mastered": false,
+              "attemptsCorrect": 3,
+              "attemptsTotal": 6
+            }
+          ],
+          "lastPracticed": "2025-11-04T15:45:00Z"
+        },
+        {
+          "name": "Simple Machines",
+          "progress": 30,
+          "subConcepts": [
+            {
+              "name": "Levers",
+              "mastered": false,
+              "attemptsCorrect": 2,
+              "attemptsTotal": 5
+            },
+            {
+              "name": "Pulleys",
+              "mastered": false,
+              "attemptsCorrect": 1,
+              "attemptsTotal": 4
+            }
+          ],
+          "lastPracticed": "2025-11-06T11:00:00Z"
+        }
+      ]
+    }
+  ],
+  "sessions": [
+    "session-lucas-1",
+    "session-lucas-2",
+    "session-lucas-3",
+    "session-lucas-4",
+    "session-lucas-5",
+    "session-lucas-6"
+  ],
+  "taskHistory": [],
+  "streaks": {
+    "current": 5,
+    "longest": 7,
+    "lastActiveDate": "2025-11-07T00:00:00Z"
+  },
+  "achievements": ["first_steps", "three_day_streak"],
+  "churnRisk": false,
+  "preferences": {
+    "aiColor": "#3B82F6",
+    "notificationEnabled": true,
+    "reminderTime": "16:00"
+  },
+  "friendConnections": ["student-eva"],
+  "messagesSentToday": 1,
+  "questionsAsked": 23,
+  "totalConversations": 12,
+  "createdAt": "2025-10-24T00:00:00Z",
+  "lastLoginAt": "2025-11-07T09:15:00Z"
+}

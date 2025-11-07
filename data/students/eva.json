@@ -1,0 +1,104 @@
+{
+  "id": "student-eva",
+  "name": "Eva",
+  "age": 12,
+  "grade": 7,
+  "goals": [
+    {
+      "id": "goal-eva-reading",
+      "subject": "Reading Comprehension",
+      "targetCompletion": "2025-12-10T00:00:00Z",
+      "progress": 72,
+      "topics": [
+        {
+          "name": "Literary Devices",
+          "progress": 65,
+          "lastPracticed": "2025-11-06T16:30:00Z"
+        },
+        {
+          "name": "Metaphors & Similes",
+          "progress": 55,
+          "lastPracticed": "2025-11-05T14:20:00Z"
+        },
+        {
+          "name": "Theme Analysis",
+          "progress": 80,
+          "lastPracticed": "2025-11-04T15:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "goal-eva-writing",
+      "subject": "Writing",
+      "targetCompletion": "2025-12-15T00:00:00Z",
+      "progress": 68,
+      "topics": [
+        {
+          "name": "Essay Structure",
+          "progress": 75,
+          "lastPracticed": "2025-11-06T10:45:00Z"
+        },
+        {
+          "name": "Persuasive Writing",
+          "progress": 60,
+          "lastPracticed": "2025-11-05T13:00:00Z"
+        },
+        {
+          "name": "Creative Writing",
+          "progress": 70,
+          "lastPracticed": "2025-11-03T16:15:00Z"
+        }
+      ]
+    },
+    {
+      "id": "goal-eva-history",
+      "subject": "History",
+      "targetCompletion": "2025-12-20T00:00:00Z",
+      "progress": 58,
+      "topics": [
+        {
+          "name": "American Revolution",
+          "progress": 70,
+          "lastPracticed": "2025-11-04T11:30:00Z"
+        },
+        {
+          "name": "Civil War",
+          "progress": 50,
+          "lastPracticed": "2025-11-02T14:00:00Z"
+        },
+        {
+          "name": "Industrial Revolution",
+          "progress": 45,
+          "lastPracticed": "2025-11-01T15:30:00Z"
+        }
+      ]
+    }
+  ],
+  "sessions": [
+    "session-eva-1",
+    "session-eva-2",
+    "session-eva-3",
+    "session-eva-4",
+    "session-eva-5",
+    "session-eva-6"
+  ],
+  "taskHistory": [],
+  "streaks": {
+    "current": 3,
+    "longest": 6,
+    "lastActiveDate": "2025-11-07T00:00:00Z"
+  },
+  "achievements": ["first_steps", "three_day_streak", "curious_mind"],
+  "churnRisk": false,
+  "preferences": {
+    "aiColor": "#A855F7",
+    "notificationEnabled": true,
+    "reminderTime": "15:30"
+  },
+  "friendConnections": ["student-lucas", "student-pat"],
+  "messagesSentToday": 2,
+  "questionsAsked": 18,
+  "totalConversations": 15,
+  "createdAt": "2025-10-20T00:00:00Z",
+  "lastLoginAt": "2025-11-07T10:30:00Z"
+}

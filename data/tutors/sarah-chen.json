@@ -1,0 +1,35 @@
+{
+  "id": "tutor-sarah-chen",
+  "name": "Dr. Sarah Chen",
+  "specialties": ["Mathematics", "Science", "Physics", "Chemistry"],
+  "bio": "PhD in Mathematics Education with 12 years of tutoring experience. Specializes in making complex concepts accessible through real-world examples and visual learning.",
+  "photoUrl": "/tutors/sarah-chen.jpg",
+  "students": ["student-lucas", "student-mia"],
+  "availableSlots": [
+    {
+      "datetime": "2025-11-10T14:00:00Z",
+      "duration": 60,
+      "available": true
+    },
+    {
+      "datetime": "2025-11-10T16:00:00Z",
+      "duration": 60,
+      "available": true
+    },
+    {
+      "datetime": "2025-11-11T10:00:00Z",
+      "duration": 60,
+      "available": true
+    },
+    {
+      "datetime": "2025-11-11T15:00:00Z",
+      "duration": 60,
+      "available": false
+    },
+    {
+      "datetime": "2025-11-12T13:00:00Z",
+      "duration": 60,
+      "available": true
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+[
+  {
+    "id": "session-mia-1",
+    "studentId": "student-mia",
+    "tutorId": "tutor-aisha-patel",
+    "date": "2025-11-01T14:00:00Z",
+    "duration": 50,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Mia! It's nice to meet you. I'm Ms. Patel. I hear you need help with Algebra II?",
+        "timestamp": "2025-11-01T14:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Yeah, I'm really struggling with it.",
+        "timestamp": "2025-11-01T14:00:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "That's okay - Algebra II can be challenging. Let's start with quadratic equations. Do you remember the quadratic formula?",
+        "timestamp": "2025-11-01T14:00:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Um, not really.",
+        "timestamp": "2025-11-01T14:00:50Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "No problem. It's x = [-b ± √(b² - 4ac)] / 2a. Let me write it out for you. This formula helps us solve equations like x² + 5x + 6 = 0.",
+        "timestamp": "2025-11-01T14:01:15Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Okay...",
+        "timestamp": "2025-11-01T14:01:45Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Let's work through an example together. In x² + 5x + 6 = 0, what's the value of a?",
+        "timestamp": "2025-11-01T14:02:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Is it 1?",
+        "timestamp": "2025-11-01T14:02:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Yes! Because x² is the same as 1x². Good job. Now what's b?",
+        "timestamp": "2025-11-01T14:02:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "5?",
+        "timestamp": "2025-11-01T14:02:50Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Correct! And c is 6. Now let's plug these into the formula...",
+        "timestamp": "2025-11-01T14:03:05Z"
+      },
+      {
+        "speaker": "student",
+        "message": "This is confusing.",
+        "timestamp": "2025-11-01T14:05:30Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "It takes practice. Let's do a few more examples and it will start to make sense.",
+        "timestamp": "2025-11-01T14:05:50Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Quadratic Equations",
+        "subConcepts": ["Quadratic formula", "Identifying coefficients"],
+        "strugglingPoints": ["Understanding formula application", "Mathematical confidence"],
+        "masteryLevel": 30
+      }
+    ],
+    "tutorNotes": "Mia seems discouraged and lacks confidence in math. She understands basic concepts when prompted but struggles to apply them independently. Need to build her confidence with smaller wins.",
+    "studentEngagement": "low",
+    "strugglingConcepts": ["Quadratic formula application", "General math confidence"]
+  },
+  {
+    "id": "session-mia-2",
+    "studentId": "student-mia",
+    "tutorId": "tutor-aisha-patel",
+    "date": "2025-11-02T14:00:00Z",
+    "duration": 45,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Mia! Today let's look at Biology - cell structure. How do you feel about Biology?",
+        "timestamp": "2025-11-02T14:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "It's okay, I guess. Better than math.",
+        "timestamp": "2025-11-02T14:00:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Good! Let's talk about cells. Do you know the difference between plant and animal cells?",
+        "timestamp": "2025-11-02T14:00:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Plant cells have cell walls?",
+        "timestamp": "2025-11-02T14:00:50Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! Plant cells have cell walls and chloroplasts, while animal cells don't. Both have cell membranes, nuclei, and mitochondria. Let me draw a diagram...",
+        "timestamp": "2025-11-02T14:01:10Z"
+      },
+      {
+        "speaker": "student",
+        "message": "What do mitochondria do again?",
+        "timestamp": "2025-11-02T14:02:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Great question! Mitochondria are the powerhouse of the cell - they create energy. Think of them like tiny batteries.",
+        "timestamp": "2025-11-02T14:02:20Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Oh okay. That makes sense.",
+        "timestamp": "2025-11-02T14:02:40Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "You're doing well with Biology! Let's review the other organelles...",
+        "timestamp": "2025-11-02T14:03:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Okay.",
+        "timestamp": "2025-11-02T14:03:15Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Cell Structure",
+        "subConcepts": ["Plant vs animal cells", "Cell organelles", "Mitochondria function"],
+        "strugglingPoints": ["Remembering organelle functions"],
+        "masteryLevel": 40
+      }
+    ],
+    "tutorNotes": "Mia showed slightly better engagement with Biology than Math. She responds better to visual learning and analogies. However, overall engagement is still low - brief answers, no follow-up questions. At risk of disengagement. Recommend frequent AI check-ins to maintain momentum.",
+    "studentEngagement": "low",
+    "strugglingConcepts": ["Organelle functions and names"]
+  }
+]
+

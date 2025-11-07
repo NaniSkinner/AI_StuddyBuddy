@@ -1,0 +1,74 @@
+{
+  "id": "student-mia",
+  "name": "Mia",
+  "age": 14,
+  "grade": 9,
+  "goals": [
+    {
+      "id": "goal-mia-algebra",
+      "subject": "Algebra II",
+      "targetCompletion": "2026-01-15T00:00:00Z",
+      "progress": 28,
+      "topics": [
+        {
+          "name": "Quadratic Equations",
+          "progress": 35,
+          "lastPracticed": "2025-11-02T14:00:00Z"
+        },
+        {
+          "name": "Functions",
+          "progress": 25,
+          "lastPracticed": "2025-11-01T10:30:00Z"
+        },
+        {
+          "name": "Polynomials",
+          "progress": 20,
+          "lastPracticed": "2025-10-31T13:45:00Z"
+        }
+      ]
+    },
+    {
+      "id": "goal-mia-biology",
+      "subject": "Biology",
+      "targetCompletion": "2026-01-20T00:00:00Z",
+      "progress": 22,
+      "topics": [
+        {
+          "name": "Cell Structure",
+          "progress": 30,
+          "lastPracticed": "2025-11-02T15:30:00Z"
+        },
+        {
+          "name": "Photosynthesis",
+          "progress": 18,
+          "lastPracticed": "2025-11-01T11:00:00Z"
+        },
+        {
+          "name": "Cellular Respiration",
+          "progress": 15,
+          "lastPracticed": "2025-10-31T14:15:00Z"
+        }
+      ]
+    }
+  ],
+  "sessions": ["session-mia-1", "session-mia-2"],
+  "taskHistory": [],
+  "streaks": {
+    "current": 0,
+    "longest": 2,
+    "lastActiveDate": "2025-11-02T00:00:00Z"
+  },
+  "achievements": ["first_steps"],
+  "churnRisk": true,
+  "preferences": {
+    "aiColor": "#EC4899",
+    "notificationEnabled": true,
+    "reminderTime": "17:00"
+  },
+  "friendConnections": [],
+  "messagesSentToday": 0,
+  "questionsAsked": 7,
+  "totalConversations": 4,
+  "createdAt": "2025-10-31T00:00:00Z",
+  "lastLoginAt": "2025-11-02T15:45:00Z"
+}

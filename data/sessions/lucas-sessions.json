@@ -1,0 +1,455 @@
+[
+  {
+    "id": "session-lucas-1",
+    "studentId": "student-lucas",
+    "tutorId": "tutor-sarah-chen",
+    "date": "2025-10-28T14:00:00Z",
+    "duration": 45,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Lucas! How are you today?",
+        "timestamp": "2025-10-28T14:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Good! I'm excited to learn about fractions!",
+        "timestamp": "2025-10-28T14:00:30Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "That's wonderful! Let's start with something you already know. If you have a pizza and you cut it into 2 equal pieces, what do we call each piece?",
+        "timestamp": "2025-10-28T14:01:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "A half!",
+        "timestamp": "2025-10-28T14:01:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect! And we write that as 1/2. The bottom number, called the denominator, tells us how many equal pieces the whole is divided into. The top number, the numerator, tells us how many pieces we're talking about.",
+        "timestamp": "2025-10-28T14:01:45Z"
+      },
+      {
+        "speaker": "student",
+        "message": "So if I eat one piece of the pizza cut in half, I ate 1/2?",
+        "timestamp": "2025-10-28T14:02:30Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! Now, what if we cut the pizza into 3 equal pieces instead? What would we call each piece?",
+        "timestamp": "2025-10-28T14:03:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Um... a third?",
+        "timestamp": "2025-10-28T14:03:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Yes! One third, which we write as 1/3. Let me draw this for you.",
+        "timestamp": "2025-10-28T14:03:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Oh! So the 3 on the bottom means three pieces total!",
+        "timestamp": "2025-10-28T14:05:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly right! You're getting it. Now if you ate 2 pieces out of 3, what fraction did you eat?",
+        "timestamp": "2025-10-28T14:05:30Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Two thirds? 2/3?",
+        "timestamp": "2025-10-28T14:06:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect! You're doing great, Lucas. Let's practice with some more examples...",
+        "timestamp": "2025-10-28T14:06:20Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Fractions",
+        "subConcepts": [
+          "Halves",
+          "Thirds",
+          "Introduction to numerator and denominator"
+        ],
+        "strugglingPoints": [],
+        "masteryLevel": 75
+      }
+    ],
+    "tutorNotes": "Lucas showed excellent understanding of halves and quickly grasped the concept of thirds. Very engaged and asks good questions. His use of real-world examples (pizza) helps him understand abstract concepts.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-lucas-2",
+    "studentId": "student-lucas",
+    "tutorId": "tutor-sarah-chen",
+    "date": "2025-10-30T14:00:00Z",
+    "duration": 45,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Welcome back, Lucas! Today we're going to learn about quarters. Do you remember what we learned last time?",
+        "timestamp": "2025-10-30T14:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Yes! We learned about halves and thirds. A half is 1/2 and a third is 1/3!",
+        "timestamp": "2025-10-30T14:00:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Excellent memory! Now, imagine you have a chocolate bar and you want to share it equally with 3 friends, so 4 people total. How many pieces would you need?",
+        "timestamp": "2025-10-30T14:00:50Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Four pieces!",
+        "timestamp": "2025-10-30T14:01:10Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Right! And each piece would be called a quarter, or 1/4. Quarter means one out of four equal parts.",
+        "timestamp": "2025-10-30T14:01:30Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Like a quarter of a dollar! 25 cents!",
+        "timestamp": "2025-10-30T14:02:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! A quarter is 1/4 of a dollar. You're making great connections, Lucas!",
+        "timestamp": "2025-10-30T14:02:20Z"
+      },
+      {
+        "speaker": "student",
+        "message": "So if I have 3 quarters, that's 3/4?",
+        "timestamp": "2025-10-30T14:03:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect! Let's do some practice problems together...",
+        "timestamp": "2025-10-30T14:03:20Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Fractions",
+        "subConcepts": ["Quarters", "Comparing fractions"],
+        "strugglingPoints": [],
+        "masteryLevel": 80
+      }
+    ],
+    "tutorNotes": "Lucas continues to excel with fractions. His real-world connections (money) show strong conceptual understanding. Ready to move forward with more complex fraction work.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-lucas-3",
+    "studentId": "student-lucas",
+    "tutorId": "tutor-sarah-chen",
+    "date": "2025-11-01T14:00:00Z",
+    "duration": 45,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Lucas! Today we're switching gears to science. We're going to learn about the three states of matter.",
+        "timestamp": "2025-11-01T14:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "What's matter?",
+        "timestamp": "2025-11-01T14:00:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Great question! Matter is anything that takes up space and has weight. This book, the air, water - they're all matter.",
+        "timestamp": "2025-11-01T14:00:40Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Oh! So everything around us is matter?",
+        "timestamp": "2025-11-01T14:01:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! And matter comes in three main forms, or states: solid, liquid, and gas. Can you think of an example of a solid?",
+        "timestamp": "2025-11-01T14:01:20Z"
+      },
+      {
+        "speaker": "student",
+        "message": "A rock! And ice!",
+        "timestamp": "2025-11-01T14:01:35Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect examples! Solids have a definite shape and volume. Now what about a liquid?",
+        "timestamp": "2025-11-01T14:02:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Water! And juice!",
+        "timestamp": "2025-11-01T14:02:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Great! Liquids take the shape of their container but have a definite volume. Finally, can you think of a gas?",
+        "timestamp": "2025-11-01T14:02:40Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Umm... air?",
+        "timestamp": "2025-11-01T14:03:05Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Yes! Air is made of gases. Gases don't have a definite shape OR volume - they spread out to fill whatever space they're in. Let's do an experiment...",
+        "timestamp": "2025-11-01T14:03:25Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "States of Matter",
+        "subConcepts": [
+          "Solids",
+          "Liquids",
+          "Gases",
+          "Properties of each state"
+        ],
+        "strugglingPoints": ["Understanding what gas is"],
+        "masteryLevel": 65
+      }
+    ],
+    "tutorNotes": "Lucas transitioned well to science. He understands solids and liquids very well but needed more explanation for gases since they're less tangible. Great curiosity and engagement.",
+    "studentEngagement": "high",
+    "strugglingConcepts": ["Gases"]
+  },
+  {
+    "id": "session-lucas-4",
+    "studentId": "student-lucas",
+    "tutorId": "tutor-sarah-chen",
+    "date": "2025-11-03T14:00:00Z",
+    "duration": 45,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Lucas! Let's review fractions today. I want to make sure you really understand thirds.",
+        "timestamp": "2025-11-03T14:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Okay!",
+        "timestamp": "2025-11-03T14:00:10Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "If you have a candy bar divided into 3 equal pieces and you eat 1 piece, what fraction did you eat?",
+        "timestamp": "2025-11-03T14:00:25Z"
+      },
+      {
+        "speaker": "student",
+        "message": "1/3!",
+        "timestamp": "2025-11-03T14:00:40Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Good! Now, which is bigger: 1/2 or 1/3?",
+        "timestamp": "2025-11-03T14:01:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "1/3 because 3 is bigger than 2?",
+        "timestamp": "2025-11-03T14:01:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "That's a common mistake! Let me draw two pizzas. One is cut into 2 pieces, one into 3 pieces. Which single piece is bigger?",
+        "timestamp": "2025-11-03T14:01:45Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Oh! The half is bigger because it's split into fewer pieces!",
+        "timestamp": "2025-11-03T14:03:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly! When the denominator is bigger, the pieces are actually smaller. Let's practice more...",
+        "timestamp": "2025-11-03T14:03:20Z"
+      },
+      {
+        "speaker": "student",
+        "message": "This is confusing...",
+        "timestamp": "2025-11-03T14:10:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "It's okay to find it tricky! Let's draw more pictures. Visual models really help with fractions.",
+        "timestamp": "2025-11-03T14:10:20Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Fractions",
+        "subConcepts": [
+          "Thirds",
+          "Comparing fractions",
+          "Understanding denominator size"
+        ],
+        "strugglingPoints": [
+          "Comparing fractions with different denominators",
+          "Inverse relationship of denominator size"
+        ],
+        "masteryLevel": 60
+      }
+    ],
+    "tutorNotes": "Lucas struggled with comparing fractions today, particularly understanding that a larger denominator means smaller pieces. This is very common at his age. Recommend more visual practice with thirds specifically. May need AI to provide additional pizza/pie analogies.",
+    "studentEngagement": "medium",
+    "strugglingConcepts": [
+      "Comparing fractions (thirds vs halves)",
+      "Understanding denominator size impact"
+    ]
+  },
+  {
+    "id": "session-lucas-5",
+    "studentId": "student-lucas",
+    "tutorId": "tutor-sarah-chen",
+    "date": "2025-11-05T14:00:00Z",
+    "duration": 45,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Welcome back! Today we're doing more science - simple machines! Do you know what a machine is?",
+        "timestamp": "2025-11-05T14:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Like a robot?",
+        "timestamp": "2025-11-05T14:00:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Robots are machines, but machines are anything that helps us do work more easily. A simple machine is a basic tool. Let's talk about levers first!",
+        "timestamp": "2025-11-05T14:00:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "What's a lever?",
+        "timestamp": "2025-11-05T14:00:50Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "A lever is like a seesaw! It's a bar that pivots on a point called a fulcrum. Have you ever used a seesaw?",
+        "timestamp": "2025-11-05T14:01:10Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Yes! At the park!",
+        "timestamp": "2025-11-05T14:01:25Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect! A seesaw is a lever. The middle point where it balances is the fulcrum. Levers help us lift heavy things more easily.",
+        "timestamp": "2025-11-05T14:01:50Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Cool! What other simple machines are there?",
+        "timestamp": "2025-11-05T14:02:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Great question! Let's talk about pulleys next. A pulley is a wheel with a rope...",
+        "timestamp": "2025-11-05T14:02:40Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Simple Machines",
+        "subConcepts": ["Levers", "Pulleys", "Fulcrum"],
+        "strugglingPoints": [],
+        "masteryLevel": 70
+      }
+    ],
+    "tutorNotes": "Lucas was very engaged with simple machines. The seesaw analogy for levers worked perfectly. He's making good connections to real-world examples.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-lucas-6",
+    "studentId": "student-lucas",
+    "tutorId": "tutor-sarah-chen",
+    "date": "2025-11-06T14:00:00Z",
+    "duration": 45,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Lucas! Today let's review everything we've learned. Are you ready?",
+        "timestamp": "2025-11-06T14:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Yes! I've been practicing!",
+        "timestamp": "2025-11-06T14:00:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "That's great! Let's start with fractions. What's 2/4 equivalent to?",
+        "timestamp": "2025-11-06T14:00:30Z"
+      },
+      {
+        "speaker": "student",
+        "message": "1/2! Because it's half!",
+        "timestamp": "2025-11-06T14:00:50Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Excellent! Now tell me about the three states of matter.",
+        "timestamp": "2025-11-06T14:01:10Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Solid, liquid, and gas! Solids have a shape, liquids take the shape of the container, and gases spread everywhere!",
+        "timestamp": "2025-11-06T14:01:40Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect explanation! You've learned so much. What was your favorite topic?",
+        "timestamp": "2025-11-06T14:02:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I liked the simple machines! They're like real-life tools!",
+        "timestamp": "2025-11-06T14:02:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "I'm so proud of your progress, Lucas. Keep practicing with the AI tutor between our sessions!",
+        "timestamp": "2025-11-06T14:02:45Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Mixed Review",
+        "subConcepts": [
+          "Fractions review",
+          "States of matter review",
+          "Simple machines review"
+        ],
+        "strugglingPoints": [],
+        "masteryLevel": 80
+      }
+    ],
+    "tutorNotes": "Great review session. Lucas has made excellent progress. His understanding of fractions has improved since session 4. Recommend continued practice with thirds using visual models in AI sessions.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  }
+]

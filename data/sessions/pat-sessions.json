@@ -1,0 +1,303 @@
+[
+  {
+    "id": "session-pat-1",
+    "studentId": "student-pat",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-10-20T16:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Pat! I understand you're preparing for the SAT. When's your test date?",
+        "timestamp": "2025-10-20T16:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "December 7th. I'm aiming for a 1500+.",
+        "timestamp": "2025-10-20T16:00:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "That's a strong goal. Let's start with the SAT Reading section. The key is active reading - annotating and identifying main ideas quickly. Have you taken a practice test yet?",
+        "timestamp": "2025-10-20T16:00:40Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Yes, I scored 680 on Reading. My math is stronger at 770.",
+        "timestamp": "2025-10-20T16:01:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Good baseline. We can definitely improve that reading score. Let's work through a passage together and I'll show you my annotation strategy...",
+        "timestamp": "2025-10-20T16:01:25Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "SAT Reading",
+        "subConcepts": ["Active reading", "Annotation strategies", "Main idea identification"],
+        "strugglingPoints": [],
+        "masteryLevel": 75
+      }
+    ],
+    "tutorNotes": "Pat is highly motivated and goal-oriented. Strong baseline scores. Focus on reading comprehension speed and accuracy.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-pat-2",
+    "studentId": "student-pat",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-10-24T16:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Welcome back! Today let's focus on SAT Writing - specifically grammar rules and sentence structure.",
+        "timestamp": "2025-10-24T16:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I usually do well on grammar, but sometimes the questions trip me up.",
+        "timestamp": "2025-10-24T16:00:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "The SAT tests specific grammar concepts repeatedly. Let's review the most common: subject-verb agreement, pronoun clarity, parallelism, and modifiers.",
+        "timestamp": "2025-10-24T16:00:45Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I struggle most with parallelism.",
+        "timestamp": "2025-10-24T16:01:05Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Good awareness. Parallelism means using the same grammatical structure for items in a list. For example: 'I like running, swimming, and biking' not 'I like running, swimming, and to bike.' See the difference?",
+        "timestamp": "2025-10-24T16:01:30Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Yes! They need to match in form.",
+        "timestamp": "2025-10-24T16:02:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Exactly. Let's practice identifying parallelism errors...",
+        "timestamp": "2025-10-24T16:02:20Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "SAT Writing",
+        "subConcepts": ["Grammar rules", "Parallelism", "Sentence structure"],
+        "strugglingPoints": ["Parallelism identification"],
+        "masteryLevel": 80
+      }
+    ],
+    "tutorNotes": "Pat learns quickly. Parallelism was the only weak spot, which we addressed. Very efficient study session.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-pat-3",
+    "studentId": "student-pat",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-10-28T16:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Pat! Your SAT scores are looking great. Let's start thinking about college essays. Have you brainstormed topics yet?",
+        "timestamp": "2025-10-28T16:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "A little. I'm not sure what colleges want to hear about.",
+        "timestamp": "2025-10-28T16:00:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "They want to hear YOUR authentic voice. What makes you unique? What experiences have shaped who you are? Think about challenges you've overcome, passions you have, or moments of growth.",
+        "timestamp": "2025-10-28T16:00:50Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I started a coding club at school and taught younger students programming. Is that interesting enough?",
+        "timestamp": "2025-10-28T16:01:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Absolutely! That shows leadership, initiative, and a passion for teaching. What did you learn from that experience?",
+        "timestamp": "2025-10-28T16:01:45Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I learned that explaining concepts in simple terms is harder than I thought. And I really enjoyed seeing them succeed.",
+        "timestamp": "2025-10-28T16:02:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect insights! That's essay material. Let's outline your personal statement...",
+        "timestamp": "2025-10-28T16:02:40Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Personal Statement",
+        "subConcepts": ["Topic selection", "Authentic voice", "Storytelling"],
+        "strugglingPoints": [],
+        "masteryLevel": 70
+      }
+    ],
+    "tutorNotes": "Pat has strong content for essays. Just needs guidance on structure and showing vulnerability/growth. Excellent reflective thinking.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-pat-4",
+    "studentId": "student-pat",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-11-01T16:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Pat! Let's review your SAT Math strategies today. Even though it's your stronger section, let's ensure you're at 100%.",
+        "timestamp": "2025-11-01T16:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Sounds good. I sometimes make careless errors on easier problems.",
+        "timestamp": "2025-11-01T16:00:20Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "That's common. The key is to stay focused even on simple questions. Let's go through some common traps on the SAT Math section...",
+        "timestamp": "2025-11-01T16:00:45Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I also want to make sure I know all the formulas.",
+        "timestamp": "2025-11-01T16:01:10Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Good thinking. The SAT provides some formulas, but memorizing key ones saves time. Let's review: area of a circle, distance formula, slope...",
+        "timestamp": "2025-11-01T16:01:35Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "SAT Math",
+        "subConcepts": ["Formula review", "Error prevention", "Time management"],
+        "strugglingPoints": [],
+        "masteryLevel": 95
+      }
+    ],
+    "tutorNotes": "Pat's math is excellent. Just needs to maintain focus and avoid careless mistakes. Ready for full-length practice tests.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  },
+  {
+    "id": "session-pat-5",
+    "studentId": "student-pat",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-11-04T16:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Welcome back! Let's work on your personal statement draft. Did you start writing?",
+        "timestamp": "2025-11-04T16:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Yes, I have a rough draft about the coding club.",
+        "timestamp": "2025-11-04T16:00:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Great! Let's read through it together. Remember, colleges want to see growth and self-reflection, not just accomplishments.",
+        "timestamp": "2025-11-04T16:00:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I'm worried it sounds like I'm bragging.",
+        "timestamp": "2025-11-04T16:01:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "That's a valid concern. The key is to focus on what you learned, not just what you did. Show your thought process, challenges, and growth. Let's revise together...",
+        "timestamp": "2025-11-04T16:01:25Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "Personal Statement",
+        "subConcepts": ["Essay revision", "Showing growth", "Avoiding bragging"],
+        "strugglingPoints": ["Balancing accomplishment with humility"],
+        "masteryLevel": 65
+      }
+    ],
+    "tutorNotes": "Pat is a strong writer but struggles with vulnerability in essays. Common issue for high-achieving students. Working on showing personal growth rather than just achievements.",
+    "studentEngagement": "high",
+    "strugglingConcepts": ["Showing vulnerability in writing"]
+  },
+  {
+    "id": "session-pat-6",
+    "studentId": "student-pat",
+    "tutorId": "tutor-james-rodriguez",
+    "date": "2025-11-06T16:00:00Z",
+    "duration": 60,
+    "transcript": [
+      {
+        "speaker": "tutor",
+        "message": "Hi Pat! Let's do a final review for your SAT. You've made incredible progress.",
+        "timestamp": "2025-11-06T16:00:00Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Thanks! I feel much more confident now.",
+        "timestamp": "2025-11-06T16:00:15Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Your last practice test was 1520 - that's fantastic improvement from 1450. What are your strategies for test day?",
+        "timestamp": "2025-11-06T16:00:35Z"
+      },
+      {
+        "speaker": "student",
+        "message": "Start with the passages I feel most comfortable with, manage my time carefully, and double-check my math answers.",
+        "timestamp": "2025-11-06T16:01:05Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "Perfect strategy. You're ready. Keep practicing with the AI tutor between now and December, and we'll work more on your college essays.",
+        "timestamp": "2025-11-06T16:01:30Z"
+      },
+      {
+        "speaker": "student",
+        "message": "I'm actually thinking about adding another goal - maybe AP Physics to complement my Calculus?",
+        "timestamp": "2025-11-06T16:02:00Z"
+      },
+      {
+        "speaker": "tutor",
+        "message": "That's ambitious! Let's finish your current goals strong first, then we can discuss adding new subjects.",
+        "timestamp": "2025-11-06T16:02:25Z"
+      }
+    ],
+    "topicsCovered": [
+      {
+        "topic": "SAT Review",
+        "subConcepts": ["Test day strategies", "Confidence building", "Final tips"],
+        "strugglingPoints": [],
+        "masteryLevel": 90
+      }
+    ],
+    "tutorNotes": "Pat is exceeding expectations. SAT Math essentially complete at 95%. Ready for subject expansion after completing current goals. Excellent candidate for the cross-subject recommendation feature.",
+    "studentEngagement": "high",
+    "strugglingConcepts": []
+  }
+]
+
