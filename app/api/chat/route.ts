@@ -2,8 +2,65 @@ import { NextResponse } from "next/server";
 import { generateAIResponse } from "@/lib/services/aiService";
 import { getStudentById } from "@/lib/services/studentService";
 import { moderateMessage } from "@/lib/services/safetyService";
-import { Message } from "@/types";
+import { Message, Student } from "@/types";
 import { getRecentSessions } from "@/lib/services/sessionService";
+
+/**
+ * Detect which goal/topic the student is currently discussing
+ * Uses recent messages to match against student's goals
+ */
+async function detectCurrentGoal(
+  student: Student,
+  messages: Message[]
+): Promise<string | null> {
+  if (student.goals.length === 0) return null;
+  if (messages.length === 0) return student.goals[0].id;
+
+  // Get last 5 messages to analyze
+  const recentMessages = messages.slice(-5);
+  const conversationText = recentMessages
+    .map((m) => m.message)
+    .join(" ")
+    .toLowerCase();
+
+  // Score each goal based on keyword matches
+  const goalScores = student.goals.map((goal) => {
+    let score = 0;
+    const goalKeywords = [
+      goal.subject.toLowerCase(),
+      ...goal.topics.map((t) => t.name.toLowerCase()),
+    ];
+
+    // Check if any keywords appear in recent conversation
+    goalKeywords.forEach((keyword) => {
+      const keywordParts = keyword.split(" ");
+      keywordParts.forEach((part) => {
+        if (conversationText.includes(part)) {
+          score += 1;
+        }
+      });
+    });
+
+    return { goalId: goal.id, score, subject: goal.subject };
+  });
+
+  // Sort by score
+  goalScores.sort((a, b) => b.score - a.score);
+
+  // If top score is 0, default to first goal
+  if (goalScores[0].score === 0) {
+    return student.goals[0].id;
+  }
+
+  console.log(
+    "🎯 Detected topic:",
+    goalScores[0].subject,
+    "with score:",
+    goalScores[0].score
+  );
+
+  return goalScores[0].goalId;
+}
 
 export async function POST(request: Request) {
   try {
@@ -88,9 +145,13 @@ export async function POST(request: Request) {
       aiResponse.substring(0, 50) + "..."
     );
 
+    // Detect current topic from conversation
+    const detectedGoalId = await detectCurrentGoal(student, messages);
+
     return NextResponse.json({
       response: aiResponse,
       flagged: false,
+      currentGoalId: detectedGoalId,
     });
   } catch (error) {
     console.error("❌ Chat API error:", error);

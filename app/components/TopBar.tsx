@@ -14,6 +14,7 @@ interface TopBarProps {
   onLogoutClick?: () => void;
   onAchievementsClick?: () => void;
   onTestNudge?: () => void;
+  onTestBooking?: () => void;
 }
 
 export default function TopBar({
@@ -24,6 +25,7 @@ export default function TopBar({
   onLogoutClick,
   onAchievementsClick,
   onTestNudge,
+  onTestBooking,
 }: TopBarProps) {
   const [showStreakModal, setShowStreakModal] = useState(false);
 
@@ -81,6 +83,26 @@ export default function TopBar({
                 🔔 Test Nudge
               </motion.button>
             </>
+          )}
+
+          {/* Test Booking Button (Dev/Demo) */}
+          {onTestBooking && (
+            <motion.button
+              onClick={onTestBooking}
+              className="px-3 py-2 bg-gradient-to-br from-blue-500 to-cyan-500 text-white rounded-lg border-2 border-doodle-sketch font-hand text-sm font-bold shadow-doodle"
+              style={{ transform: "rotate(1deg)" }}
+              whileHover={{
+                scale: 1.05,
+                rotate: -2,
+                boxShadow: "4px 4px 0px var(--doodle-sketch)",
+              }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              📚 Test Booking
+            </motion.button>
           )}
         </div>
 

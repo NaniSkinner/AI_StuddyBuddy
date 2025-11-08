@@ -12,13 +12,19 @@ import TaskSidebar from "@/app/components/TaskSidebar";
 import AnimatedBubble from "@/app/components/AnimatedBubble";
 import AchievementBadges from "@/app/components/AchievementBadges";
 import NudgePopup from "@/app/components/retention/NudgePopup";
-import { Message, ACHIEVEMENT_DEFINITIONS } from "@/types";
+import BookingInterface from "@/app/components/booking/BookingInterface";
+import AISuggestedSwitch from "@/app/components/AISuggestedSwitch";
+import { Message, ACHIEVEMENT_DEFINITIONS, Tutor, Goal } from "@/types";
 import {
   getStreakStatus,
   StreakStatus,
 } from "@/lib/services/streakService.client";
 import { getAchievementPoints } from "@/lib/services/achievementService.client";
 import { useNudgeSystem } from "@/lib/hooks/useNudgeSystem";
+import {
+  shouldSuggestTopicSwitch,
+  getAgeAppropriateReason,
+} from "@/lib/services/topicSwitchService";
 
 export default function LearnPage() {
   return (
@@ -52,6 +58,27 @@ function LearnPageContent() {
   // Nudge system integration
   const { currentNudge, acceptNudge, dismissNudge, forceCheckNudge } =
     useNudgeSystem(currentStudent?.id || null);
+
+  // Booking modal state
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingData, setBookingData] = useState<{
+    tutor: Tutor;
+    topic: string;
+    strugglingConcepts: string[];
+    taskAttempts: Array<{ correct: boolean; topic: string }>;
+  } | null>(null);
+
+  // Topic switching state
+  const [sessionStartTime] = useState(Date.now());
+  const [showTopicSuggestion, setShowTopicSuggestion] = useState(false);
+  const [topicSuggestion, setTopicSuggestion] = useState<{
+    suggestedGoal: Goal;
+    currentGoal: Goal;
+    reason: string;
+  } | null>(null);
+  const [lastSuggestionTime, setLastSuggestionTime] = useState<number | null>(null);
+  const [declinedGoalIds, setDeclinedGoalIds] = useState<string[]>([]);
+  const [currentGoalId, setCurrentGoalId] = useState<string | null>(null);
 
   // Mock tasks based on student
   const getMockTasks = () => {
@@ -237,6 +264,11 @@ function LearnPageContent() {
           setTasks(studentTasks);
         }
 
+        // Initialize current goal to first goal
+        if (currentStudent!.goals.length > 0 && !currentGoalId) {
+          setCurrentGoalId(currentStudent!.goals[0].id);
+        }
+
         // Add welcome message
         if (messages.length === 0 && currentStudent) {
           const welcomeMessage: Message = {
@@ -257,6 +289,145 @@ function LearnPageContent() {
     loadStudentData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStudent]);
+
+  // Handle opening booking modal
+  const handleOpenBooking = async (
+    tutorId: string,
+    topic: string,
+    strugglingConcepts: string[]
+  ) => {
+    try {
+      // Fetch tutor data
+      const tutorResponse = await fetch(`/api/tutors/${tutorId}`);
+      if (!tutorResponse.ok) {
+        console.error("Failed to fetch tutor data");
+        return;
+      }
+
+      const tutor = await tutorResponse.json();
+
+      // Get task attempts from recent messages (simplified for demo)
+      const taskAttempts = getMockTasks()
+        .filter((task) => task.attempts > 0)
+        .map((task) => ({
+          correct: task.attempts <= 2, // Assume success if attempts are low
+          topic: task.topic,
+        }));
+
+      setBookingData({
+        tutor,
+        topic,
+        strugglingConcepts,
+        taskAttempts,
+      });
+      setShowBookingModal(true);
+    } catch (error) {
+      console.error("Error opening booking modal:", error);
+    }
+  };
+
+  // Handle booking completion
+  const handleBookingComplete = (bookingId: string) => {
+    console.log("Booking completed:", bookingId);
+    setShowBookingModal(false);
+    setBookingData(null);
+
+    // Add confirmation message from AI
+    const confirmationMessage: Message = {
+      speaker: "ai",
+      message: "Great! I've sent your session request. Your tutor will be in touch soon! 📚",
+      timestamp: new Date().toISOString(),
+    };
+    addMessage(confirmationMessage);
+  };
+
+  // Test booking handler (for demo purposes)
+  const handleTestBooking = async () => {
+    // Use James Rodriguez as default tutor for Eva (Reading/English tutor)
+    await handleOpenBooking(
+      "tutor-james-rodriguez",
+      "Reading Comprehension - Metaphors",
+      ["Metaphors", "Figurative Language", "Literary Devices"]
+    );
+  };
+
+  // Check for topic switch suggestion
+  const checkTopicSwitch = () => {
+    if (!currentStudent || currentStudent.goals.length <= 1 || !currentGoalId) return;
+
+    // Get the actual current goal being discussed
+    const currentGoal = currentStudent.goals.find((g) => g.id === currentGoalId);
+    if (!currentGoal) return;
+
+    // Calculate conversation duration in minutes
+    const durationMinutes = (Date.now() - sessionStartTime) / 1000 / 60;
+
+    const suggestion = shouldSuggestTopicSwitch(
+      currentStudent,
+      currentGoal.id,
+      durationMinutes,
+      lastSuggestionTime,
+      declinedGoalIds
+    );
+
+    if (suggestion.shouldSuggest && suggestion.suggestedGoal && suggestion.currentGoal) {
+      const ageAppropriateReason = getAgeAppropriateReason(
+        suggestion.reason,
+        currentStudent.age,
+        suggestion.trigger
+      );
+
+      setTopicSuggestion({
+        suggestedGoal: suggestion.suggestedGoal,
+        currentGoal: suggestion.currentGoal,
+        reason: ageAppropriateReason,
+      });
+      setShowTopicSuggestion(true);
+      setLastSuggestionTime(Date.now());
+    }
+  };
+
+  // Handle accepting topic switch
+  const handleAcceptTopicSwitch = () => {
+    if (!topicSuggestion) return;
+
+    // Update the current goal being discussed
+    setCurrentGoalId(topicSuggestion.suggestedGoal.id);
+
+    // Add AI acknowledgment message
+    const switchMessage: Message = {
+      speaker: "ai",
+      message: `Great! Let's work on ${topicSuggestion.suggestedGoal.subject} now. 📚`,
+      timestamp: new Date().toISOString(),
+    };
+    addMessage(switchMessage);
+
+    // Hide suggestion
+    setShowTopicSuggestion(false);
+    setTopicSuggestion(null);
+
+    console.log("Switched to goal:", topicSuggestion.suggestedGoal.id);
+  };
+
+  // Handle declining topic switch
+  const handleDeclineTopicSwitch = () => {
+    if (!topicSuggestion) return;
+
+    // Track declined goal to avoid suggesting it again this session
+    setDeclinedGoalIds([...declinedGoalIds, topicSuggestion.suggestedGoal.id]);
+
+    // Add AI acknowledgment message
+    const declineMessage: Message = {
+      speaker: "ai",
+      message: "No problem! Let's keep going with what we're doing. 💪",
+      timestamp: new Date().toISOString(),
+    };
+    addMessage(declineMessage);
+
+    // Hide suggestion
+    setShowTopicSuggestion(false);
+    setTopicSuggestion(null);
+  };
 
   const handleSendMessage = async (messageText: string) => {
     if (!currentStudent || !messageText.trim()) return;
@@ -293,6 +464,12 @@ function LearnPageContent() {
         throw new Error(data.error || "Failed to get AI response");
       }
 
+      // Update current goal based on detected topic from conversation
+      if (data.currentGoalId && data.currentGoalId !== currentGoalId) {
+        console.log("🎯 Topic detected, updating from", currentGoalId, "to", data.currentGoalId);
+        setCurrentGoalId(data.currentGoalId);
+      }
+
       // Add AI response
       const aiMessage: Message = {
         speaker: "ai",
@@ -300,6 +477,21 @@ function LearnPageContent() {
         timestamp: new Date().toISOString(),
       };
       addMessage(aiMessage);
+
+      // Check for booking action in response
+      if (data.action && data.action.type === "suggest_booking") {
+        // Trigger booking modal
+        await handleOpenBooking(
+          data.action.tutorId,
+          data.action.topic,
+          data.action.strugglingConcepts || []
+        );
+      }
+
+      // Check if we should suggest topic switch after this message
+      setTimeout(() => {
+        checkTopicSwitch();
+      }, 1000); // Small delay to let message appear first
     } catch (error) {
       console.error("Error sending message:", error);
 
@@ -342,6 +534,7 @@ function LearnPageContent() {
           onLogoutClick={() => router.push("/")}
           onAchievementsClick={() => router.push("/achievements")}
           onTestNudge={forceCheckNudge}
+          onTestBooking={handleTestBooking}
         />
       </header>
 
@@ -415,14 +608,29 @@ function LearnPageContent() {
                 </div>
               </div>
             ) : (
-              <div className="w-full h-full">
-                <ChatInterface
-                  messages={messages}
-                  onSendMessage={handleSendMessage}
-                  isAITyping={isTyping}
-                  aiColor={currentStudent.preferences.aiColor}
-                  studentName={currentStudent.name}
-                />
+              <div className="w-full h-full flex flex-col">
+                {/* Topic Switch Suggestion Banner */}
+                {showTopicSuggestion && topicSuggestion && (
+                  <AISuggestedSwitch
+                    suggestedGoal={topicSuggestion.suggestedGoal}
+                    currentGoal={topicSuggestion.currentGoal}
+                    reason={topicSuggestion.reason}
+                    studentColor={currentStudent.preferences.aiColor}
+                    onAccept={handleAcceptTopicSwitch}
+                    onDecline={handleDeclineTopicSwitch}
+                  />
+                )}
+
+                {/* Chat Interface */}
+                <div className="flex-1 overflow-hidden">
+                  <ChatInterface
+                    messages={messages}
+                    onSendMessage={handleSendMessage}
+                    isAITyping={isTyping}
+                    aiColor={currentStudent.preferences.aiColor}
+                    studentName={currentStudent.name}
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -623,6 +831,27 @@ function LearnPageContent() {
           nudge={currentNudge}
           onAccept={acceptNudge}
           onDismiss={dismissNudge}
+        />
+      )}
+
+      {/* Booking Modal */}
+      {showBookingModal && bookingData && (
+        <BookingInterface
+          tutor={bookingData.tutor}
+          studentId={currentStudent.id}
+          studentColor={currentStudent.preferences.aiColor}
+          suggestedTopic={bookingData.topic}
+          strugglingConcepts={bookingData.strugglingConcepts}
+          taskAttempts={bookingData.taskAttempts}
+          conversationContext={messages
+            .slice(-5)
+            .map((m) => `${m.speaker}: ${m.message}`)
+            .join("\n")}
+          onClose={() => {
+            setShowBookingModal(false);
+            setBookingData(null);
+          }}
+          onBookingComplete={handleBookingComplete}
         />
       )}
     </div>
