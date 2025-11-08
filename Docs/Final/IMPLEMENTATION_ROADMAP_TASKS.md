@@ -19,6 +19,10 @@ This document provides a week-by-week checklist for completing Phase 1 MVP.
 
 **Total Tasks:** 55/192 complete (29%)
 
+**Recent Updates (November 8, 2025):**
+- ✅ Topic switching now context-aware - detects current topic from conversation
+- ✅ Changed demo trigger from 1 minute to 2 minutes
+
 ---
 
 ## Week 1: Tutor Booking Interface (4-5 days) ✅ COMPLETE
@@ -670,10 +674,12 @@ This document provides a week-by-week checklist for completing Phase 1 MVP.
 - `lib/services/topicSwitchService.ts` - Topic switching logic with 3 triggers
 
 **Files Modified:**
-- `app/learn/page.tsx` - Added session timer, topic switching state, and integration
+- `app/learn/page.tsx` - Added session timer, topic switching state, context-aware tracking
+- `app/api/chat/route.ts` - Added detectCurrentGoal() function for topic detection
 
 **Features Implemented:**
-- ✅ 1-minute trigger for demo (30 minutes for production)
+- ✅ 2-minute trigger for demo (30 minutes for production)
+- ✅ **Context-aware topic detection** - analyzes conversation to detect current topic
 - ✅ Progress-based trigger (>85% completion)
 - ✅ Balance-based trigger (>30% progress gap)
 - ✅ 15-minute cooldown between suggestions
@@ -682,7 +688,13 @@ This document provides a week-by-week checklist for completing Phase 1 MVP.
 - ✅ Smooth accept/decline flow with AI acknowledgment
 - ✅ Beautiful banner UI with student's custom color
 
-**Testing:** Ready to test after 1 minute of conversation!
+**How Context-Awareness Works:**
+1. Chat API analyzes last 5 messages for keywords
+2. Scores each goal based on subject/topic matches
+3. Returns detected goal ID to learn page
+4. Topic suggestions use actual current topic (not hardcoded)
+
+**Testing:** ✅ TESTED - Suggestions now accurately reflect what student is discussing!
 
 ---
 

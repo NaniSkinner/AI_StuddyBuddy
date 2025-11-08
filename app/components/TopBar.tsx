@@ -13,6 +13,7 @@ interface TopBarProps {
   onSettingsClick?: () => void;
   onLogoutClick?: () => void;
   onAchievementsClick?: () => void;
+  onFriendsClick?: () => void;
   onTestNudge?: () => void;
   onTestBooking?: () => void;
 }
@@ -24,6 +25,7 @@ export default function TopBar({
   onSettingsClick,
   onLogoutClick,
   onAchievementsClick,
+  onFriendsClick,
   onTestNudge,
   onTestBooking,
 }: TopBarProps) {
@@ -134,6 +136,24 @@ export default function TopBar({
                 onClick={() => setShowStreakModal(true)}
               />
             </motion.div>
+          )}
+
+          {/* Friends Button */}
+          {onFriendsClick && (
+            <motion.button
+              onClick={onFriendsClick}
+              className="p-3 bg-white border-2 border-doodle-sketch rounded-full"
+              style={{ transform: "rotate(2deg)" }}
+              whileHover={{
+                scale: 1.1,
+                rotate: -5,
+                boxShadow: "3px 3px 0px var(--doodle-sketch)",
+              }}
+              whileTap={{ scale: 0.9 }}
+              aria-label="View Friends"
+            >
+              <span className="text-2xl">👥</span>
+            </motion.button>
           )}
 
           {/* Achievements Button */}

@@ -533,6 +533,7 @@ function LearnPageContent() {
           totalPoints={totalPoints}
           onLogoutClick={() => router.push("/")}
           onAchievementsClick={() => router.push("/achievements")}
+          onFriendsClick={() => router.push("/friends")}
           onTestNudge={forceCheckNudge}
           onTestBooking={handleTestBooking}
         />
