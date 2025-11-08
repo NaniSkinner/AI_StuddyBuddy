@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { NudgeMessage } from "@/types";
 
 interface NudgePopupProps {
@@ -16,33 +16,138 @@ export default function NudgePopup({
   onDismiss,
 }: NudgePopupProps) {
   const [isClosing, setIsClosing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
+  const acceptButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
-  const handleAccept = () => {
-    setIsClosing(true);
-    setTimeout(() => onAccept(), 300);
-  };
+  // Store previous focus for restoration
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      previousFocusRef.current = document.activeElement as HTMLElement;
+    }
+  }, []);
 
-  const handleDismiss = () => {
+  // Focus management - focus popup on mount
+  useEffect(() => {
+    if (acceptButtonRef.current) {
+      acceptButtonRef.current.focus();
+    }
+
+    return () => {
+      // Restore focus on unmount
+      if (previousFocusRef.current && typeof window !== "undefined") {
+        previousFocusRef.current.focus();
+      }
+    };
+  }, []);
+
+  // Handle Escape key with proper cleanup
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !isClosing && !isLoading) {
+        e.preventDefault();
+        handleDismiss();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isClosing, isLoading]);
+
+  // Multi-tab sync - dismiss if dismissed in another tab
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === `nudge_dismissed_${nudge.id}` && e.newValue === "true") {
+        handleDismiss();
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [nudge.id]);
+
+  const handleAccept = useCallback(async () => {
+    if (isLoading || isClosing) return; // Prevent race conditions
+
+    setIsLoading(true);
     setIsClosing(true);
-    setTimeout(() => onDismiss(), 300);
-  };
+
+    try {
+      // Sync across tabs
+      if (typeof window !== "undefined") {
+        localStorage.setItem(`nudge_dismissed_${nudge.id}`, "true");
+      }
+
+      setTimeout(async () => {
+        await onAccept();
+        setIsLoading(false);
+      }, 300);
+    } catch (error) {
+      console.error("Error accepting nudge:", error);
+      setIsLoading(false);
+      setIsClosing(false);
+      // Show error to user (could add toast here)
+    }
+  }, [nudge.id, onAccept, isLoading, isClosing]);
+
+  const handleDismiss = useCallback(async () => {
+    if (isLoading || isClosing) return; // Prevent race conditions
+
+    setIsLoading(true);
+    setIsClosing(true);
+
+    try {
+      // Sync across tabs
+      if (typeof window !== "undefined") {
+        localStorage.setItem(`nudge_dismissed_${nudge.id}`, "true");
+      }
+
+      setTimeout(async () => {
+        await onDismiss();
+        setIsLoading(false);
+      }, 300);
+    } catch (error) {
+      console.error("Error dismissing nudge:", error);
+      setIsLoading(false);
+      setIsClosing(false);
+    }
+  }, [nudge.id, onDismiss, isLoading, isClosing]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
+    if (e.target === e.currentTarget && !isLoading) {
       handleDismiss();
     }
   };
 
-  // Handle Escape key
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      handleDismiss();
+  // Focus trap - keep focus within popup
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Tab" && popupRef.current) {
+      const focusableElements = popupRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[
+        focusableElements.length - 1
+      ] as HTMLElement;
+
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement?.focus();
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement?.focus();
+      }
     }
   };
 
-  // Add event listener for Escape key
-  if (typeof window !== "undefined") {
-    window.addEventListener("keydown", handleKeyDown);
+  // Validate nudge data (edge case: corrupted data)
+  if (!nudge || !nudge.encouragement) {
+    console.error("Invalid nudge data received:", nudge);
+    return null;
   }
 
   return (
@@ -60,6 +165,12 @@ export default function NudgePopup({
 
           {/* Popup */}
           <motion.div
+            ref={popupRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="nudge-title"
+            aria-describedby="nudge-description"
+            onKeyDown={handleKeyDown}
             className="fixed top-1/2 left-1/2 z-[9999]
                        w-[400px] max-w-[90vw] p-8
                        bg-white rounded-3xl
@@ -109,13 +220,19 @@ export default function NudgePopup({
             <div className="space-y-4 mb-6 text-center">
               {/* Celebration */}
               {nudge.celebration && (
-                <p className="font-['Architects_Daughter'] text-lg font-bold text-[#F97316]">
+                <p
+                  id="nudge-title"
+                  className="font-['Architects_Daughter'] text-lg font-bold text-[#F97316]"
+                >
                   {nudge.celebration}
                 </p>
               )}
 
               {/* Encouragement */}
-              <p className="font-['Architects_Daughter'] text-md text-[#2D3748] leading-relaxed">
+              <p
+                id="nudge-description"
+                className="font-['Architects_Daughter'] text-md text-[#2D3748] leading-relaxed"
+              >
                 {nudge.encouragement}
               </p>
             </div>
@@ -123,18 +240,23 @@ export default function NudgePopup({
             {/* Actions */}
             <div className="flex flex-col gap-3">
               <motion.button
+                ref={acceptButtonRef}
                 className="w-full px-6 py-3 rounded-xl
                          bg-[#6FB1FC] text-white font-['Architects_Daughter'] font-bold text-lg
                          border-3 border-[#2D3748]
                          shadow-[4px_4px_0px_rgba(0,0,0,0.15)]
                          hover:shadow-[2px_2px_0px_rgba(0,0,0,0.15)]
                          hover:translate-x-[2px] hover:translate-y-[2px]
-                         transition-all duration-150"
+                         transition-all duration-150
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         focus:outline-none focus:ring-4 focus:ring-[#6FB1FC]/50"
                 onClick={handleAccept}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                disabled={isLoading}
+                aria-busy={isLoading}
+                whileHover={!isLoading ? { scale: 1.02 } : {}}
+                whileTap={!isLoading ? { scale: 0.98 } : {}}
               >
-                {nudge.cta}
+                {isLoading ? "Loading..." : nudge.cta}
               </motion.button>
 
               <button
@@ -142,8 +264,11 @@ export default function NudgePopup({
                          bg-transparent text-[#2D3748] font-['Architects_Daughter'] text-md
                          border-2 border-[#2D3748]
                          hover:bg-[#F7FAFC]
-                         transition-colors duration-150"
+                         transition-colors duration-150
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         focus:outline-none focus:ring-4 focus:ring-[#2D3748]/20"
                 onClick={handleDismiss}
+                disabled={isLoading}
               >
                 Maybe later
               </button>
@@ -156,9 +281,13 @@ export default function NudgePopup({
                        flex items-center justify-center
                        text-[#2D3748] text-lg font-bold
                        hover:bg-[#F7FAFC] hover:rotate-90
-                       transition-all duration-200"
+                       transition-all duration-200
+                       disabled:opacity-50 disabled:cursor-not-allowed
+                       focus:outline-none focus:ring-4 focus:ring-[#2D3748]/20"
               onClick={handleDismiss}
-              aria-label="Close"
+              disabled={isLoading}
+              aria-label="Close notification"
+              title="Close (Esc)"
             >
               ✕
             </button>

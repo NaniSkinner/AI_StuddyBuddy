@@ -12,7 +12,8 @@
     "test:quick": "bun run scripts/quick-test.ts",
     "test:churn": "bun run scripts/test-churn-detection.ts",
     "test:nudge": "bun run scripts/test-nudge-generation.ts",
-    "test:events": "bun run scripts/test-event-triggers.ts"
+    "test:events": "bun run scripts/test-event-triggers.ts",
+    "test:retention": "bun run scripts/test-retention.ts"
   },
   "dependencies": {
     "next": "^14.0.0",

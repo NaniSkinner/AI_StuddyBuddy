@@ -107,16 +107,30 @@
   "totalPoints": 100,
   "churnRisk": false,
   "preferences": {
-    "aiColor": "#10B981",
+    "aiColor": "#06B6D4",
     "notificationEnabled": true,
     "reminderTime": "18:00",
-    "hasCompletedOnboarding": false
+    "hasCompletedOnboarding": true
   },
-  "friendConnections": ["student-eva"],
+  "friendConnections": [
+    "student-eva"
+  ],
   "messagesSentToday": 0,
   "questionsAsked": 31,
   "totalConversations": 24,
   "createdAt": "2025-10-15T00:00:00Z",
-  "lastLoginAt": "2025-11-07T22:08:50.896Z",
-  "metadata": {}
+  "lastLoginAt": "2025-11-08T05:24:30.165Z",
+  "metadata": {
+    "lastNudgeShown": "2025-11-08T05:25:08.900Z",
+    "lastNudgeId": "nudge-1762579508864-sp0ylrp",
+    "nudgeHistory": [
+      {
+        "id": "nudge-1762579508864-sp0ylrp",
+        "type": "nudge",
+        "shownAt": "2025-11-08T05:25:27.850Z",
+        "action": "accepted",
+        "actionAt": "2025-11-08T05:25:27.850Z"
+      }
+    ]
+  }
 }
