@@ -690,7 +690,7 @@ select {
    Authentication Styles
    ================================ */
 
-/* Login Screen */
+/* Login Screen - Allow cards to animate from outside viewport */
 .login-screen {
   display: flex;
   flex-direction: column;
@@ -699,6 +699,7 @@ select {
   min-height: 100vh;
   padding: 40px;
   background: var(--doodle-cream);
+  overflow: hidden; /* Hide scrollbars during entrance animation */
 }
 
 /* Login Title */
@@ -721,7 +722,7 @@ select {
   text-align: center;
 }
 
-/* Student Grid */
+/* Student Grid - Optimized for smooth animations */
 .student-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -730,6 +731,14 @@ select {
   max-width: 500px;
   width: 100%;
   justify-self: center;
+
+  /* GPU acceleration for child animations */
+  transform: translateZ(0);
+  will-change: opacity;
+
+  /* Allow cards to fly in from outside */
+  overflow: visible;
+  position: relative;
 }
 
 @media (max-width: 768px) {
@@ -739,7 +748,7 @@ select {
   }
 }
 
-/* Student Card */
+/* Student Card - Optimized for 60fps animations */
 .student-card {
   position: relative;
   display: flex;
@@ -751,12 +760,18 @@ select {
   border: 3px solid var(--doodle-sketch);
   border-radius: 16px;
   cursor: pointer;
-  transform: rotate(calc(var(--rotation) * 1deg));
-  transition: all 0.3s var(--ease-bounce);
+
+  /* GPU acceleration for smooth animations */
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+
+  /* Optimized transitions - only animate transform properties */
+  transition: transform 0.3s var(--ease-bounce), box-shadow 0.3s ease;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
 }
 
-/* Random rotation for each card */
+/* Remove conflicting static rotations - handled by Framer Motion */
 .student-card:nth-child(1) {
   --rotation: -2;
 }
@@ -770,8 +785,8 @@ select {
   --rotation: -1;
 }
 
+/* Hover state - simplified for better performance */
 .student-card:hover {
-  transform: rotate(0deg) translateY(-8px) scale(1.05);
   box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.15);
 }
 

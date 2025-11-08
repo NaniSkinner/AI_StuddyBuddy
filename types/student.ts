@@ -15,11 +15,23 @@ export interface Student {
 
   // Engagement Metrics
   streaks: {
-    current: number;
-    longest: number;
-    lastActiveDate: string;
+    login: {
+      current: number;
+      longest: number;
+      lastDate: string;
+    };
+    practice: {
+      current: number;
+      longest: number;
+      lastDate: string;
+    };
+    // Legacy field for backwards compatibility
+    current?: number;
+    longest?: number;
+    lastActiveDate?: string;
   };
   achievements: AchievementId[];
+  totalPoints: number;
   churnRisk: boolean;
 
   // Preferences

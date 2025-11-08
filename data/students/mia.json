@@ -54,11 +54,22 @@
   "sessions": ["session-mia-1", "session-mia-2"],
   "taskHistory": [],
   "streaks": {
+    "login": {
+      "current": 0,
+      "longest": 2,
+      "lastDate": "2025-11-02T00:00:00Z"
+    },
+    "practice": {
+      "current": 0,
+      "longest": 1,
+      "lastDate": "2025-11-02T00:00:00Z"
+    },
     "current": 0,
     "longest": 2,
     "lastActiveDate": "2025-11-02T00:00:00Z"
   },
   "achievements": ["first_steps"],
+  "totalPoints": 10,
   "churnRisk": true,
   "preferences": {
     "aiColor": "#EC4899",

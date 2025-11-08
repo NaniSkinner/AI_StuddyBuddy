@@ -66,7 +66,11 @@ export async function calculateChurnRisk(
     }
 
     // Factor 3: Streak status
-    if (student.streaks.current === 0 && student.streaks.longest > 0) {
+    const currentStreak =
+      student.streaks.login?.current || student.streaks.current || 0;
+    const longestStreak =
+      student.streaks.login?.longest || student.streaks.longest || 0;
+    if (currentStreak === 0 && longestStreak > 0) {
       score += 15;
       factors.push("Lost previous streak");
       recommendations.push("Encourage streak rebuild");

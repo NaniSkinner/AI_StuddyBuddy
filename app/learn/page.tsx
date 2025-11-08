@@ -12,6 +12,11 @@ import TaskSidebar from "@/app/components/TaskSidebar";
 import AnimatedBubble from "@/app/components/AnimatedBubble";
 import AchievementBadges from "@/app/components/AchievementBadges";
 import { Message, ACHIEVEMENT_DEFINITIONS } from "@/types";
+import {
+  getStreakStatus,
+  StreakStatus,
+} from "@/lib/services/streakService.client";
+import { getAchievementPoints } from "@/lib/services/achievementService.client";
 
 export default function LearnPage() {
   return (
@@ -34,6 +39,13 @@ function LearnPageContent() {
   const [showChat, setShowChat] = useState(false);
   const [showTasksSection, setShowTasksSection] = useState(true);
   const [showAchievementsSection, setShowAchievementsSection] = useState(false);
+  const [streakStatus, setStreakStatus] = useState<StreakStatus>({
+    login: { current: 0, longest: 0, isActive: false },
+    practice: { current: 0, longest: 0, isActive: false },
+    best: { current: 0, type: "login" },
+    message: "",
+  });
+  const [totalPoints, setTotalPoints] = useState(0);
 
   // Mock tasks based on student
   const getMockTasks = () => {
@@ -205,6 +217,13 @@ function LearnPageContent() {
 
     async function loadStudentData() {
       try {
+        // Load gamification data (passing Student object for client-side use)
+        const status = await getStreakStatus(currentStudent!);
+        setStreakStatus(status);
+
+        const points = await getAchievementPoints(currentStudent!);
+        setTotalPoints(points);
+
         // Load tasks via API
         const tasksResponse = await fetch(`/api/tasks/${currentStudent!.id}`);
         if (tasksResponse.ok) {
@@ -280,8 +299,10 @@ function LearnPageContent() {
       <header role="banner">
         <TopBar
           studentName={currentStudent.name}
-          currentStreak={currentStudent.streaks.current}
+          streakStatus={streakStatus}
+          totalPoints={totalPoints}
           onLogoutClick={() => router.push("/")}
+          onAchievementsClick={() => router.push("/achievements")}
         />
       </header>
 
@@ -297,7 +318,11 @@ function LearnPageContent() {
             <ProgressCard
               goals={currentStudent.goals}
               studentAge={currentStudent.age}
-              streakDays={currentStudent.streaks.current}
+              streakDays={
+                currentStudent.streaks.login?.current ||
+                currentStudent.streaks.current ||
+                0
+              }
             />
           </div>
         </div>
@@ -337,7 +362,11 @@ function LearnPageContent() {
                 </p>
                 <div className="max-w-md mx-auto space-y-1 md:space-y-2 font-sketch text-doodle-sketch text-lg md:text-xl lg:text-2xl">
                   <p>
-                    🔥 Current Streak: {currentStudent.streaks.current} days
+                    🔥 Current Streak:{" "}
+                    {currentStudent.streaks.login?.current ||
+                      currentStudent.streaks.current ||
+                      0}{" "}
+                    days
                   </p>
                   <p>🎯 Goals: {currentStudent.goals.length}</p>
                   <p>
@@ -540,7 +569,11 @@ function LearnPageContent() {
           <ProgressCard
             goals={currentStudent.goals}
             studentAge={currentStudent.age}
-            streakDays={currentStudent.streaks.current}
+            streakDays={
+              currentStudent.streaks.login?.current ||
+              currentStudent.streaks.current ||
+              0
+            }
           />
         </div>
       </footer>

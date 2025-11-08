@@ -1,5 +1,35 @@
-import { AchievementId, ACHIEVEMENT_DEFINITIONS, Achievement } from "@/types";
-import { getStudentById, saveStudentData } from "./studentService";
+import {
+  AchievementId,
+  ACHIEVEMENT_DEFINITIONS,
+  Achievement,
+  BadgeRarity,
+  RARITY_ORDER,
+  Student,
+} from "@/types";
+
+// These functions will only work server-side (Node environment)
+// They will throw an error if called client-side with a string ID
+async function getStudentById(id: string) {
+  if (typeof window !== "undefined") {
+    throw new Error(
+      "getStudentById cannot be called client-side. Pass a Student object instead of ID."
+    );
+  }
+  // Dynamic import to avoid bundling fs module
+  const { getStudentById: getStudent } = await import("./studentService");
+  return getStudent(id);
+}
+
+async function saveStudentData(student: Student) {
+  if (typeof window !== "undefined") {
+    throw new Error(
+      "saveStudentData cannot be called client-side. Use API routes instead."
+    );
+  }
+  // Dynamic import to avoid bundling fs module
+  const { saveStudentData: saveStudent } = await import("./studentService");
+  return saveStudent(student);
+}
 
 /**
  * Check if student has unlocked an achievement
@@ -38,8 +68,16 @@ export async function unlockAchievement(
       return false; // Already has it
     }
 
+    // Get achievement definition for points
+    const achievementDef = ACHIEVEMENT_DEFINITIONS[achievementId];
+    if (!achievementDef) return false;
+
     // Add achievement
     student.achievements.push(achievementId);
+
+    // Add points
+    student.totalPoints = (student.totalPoints || 0) + achievementDef.points;
+
     await saveStudentData(student);
 
     return true; // Successfully unlocked
@@ -76,10 +114,13 @@ export async function getStudentAchievements(
  * Get all available achievements with locked/unlocked status
  */
 export async function getAllAchievementsWithStatus(
-  studentId: string
+  studentOrId: string | Student
 ): Promise<Array<Achievement & { unlocked: boolean }>> {
   try {
-    const student = await getStudentById(studentId);
+    const student =
+      typeof studentOrId === "string"
+        ? await getStudentById(studentOrId)
+        : studentOrId;
     if (!student) return [];
 
     return Object.values(ACHIEVEMENT_DEFINITIONS).map((achievement) => ({
@@ -88,8 +129,9 @@ export async function getAllAchievementsWithStatus(
       unlockedAt: undefined,
     }));
   } catch (error) {
+    const id = typeof studentOrId === "string" ? studentOrId : studentOrId.id;
     console.error(
-      `Error getting all achievements with status for ${studentId}:`,
+      `Error getting all achievements with status for ${id}:`,
       error
     );
     return [];
@@ -130,8 +172,13 @@ export async function checkThreeDayStreak(studentId: string): Promise<boolean> {
     const student = await getStudentById(studentId);
     if (!student) return false;
 
-    // Unlock if streak is 3 or more
-    if (student.streaks.current >= 3) {
+    // Unlock if streak is 3 or more (check both login and practice)
+    const loginCurrent =
+      student.streaks.login?.current || student.streaks.current || 0;
+    const practiceCurrent = student.streaks.practice?.current || 0;
+    const maxStreak = Math.max(loginCurrent, practiceCurrent);
+
+    if (maxStreak >= 3) {
       return await unlockAchievement(studentId, "three_day_streak");
     }
 
@@ -233,8 +280,18 @@ export async function checkStreakBreaker(studentId: string): Promise<boolean> {
     const student = await getStudentById(studentId);
     if (!student) return false;
 
-    // Unlock if current streak equals or exceeds previous longest
-    if (student.streaks.current > student.streaks.longest) {
+    // Unlock if current streak exceeds previous longest
+    const loginCurrent =
+      student.streaks.login?.current || student.streaks.current || 0;
+    const practiceCurrent = student.streaks.practice?.current || 0;
+    const maxCurrent = Math.max(loginCurrent, practiceCurrent);
+
+    const loginLongest =
+      student.streaks.login?.longest || student.streaks.longest || 0;
+    const practiceLongest = student.streaks.practice?.longest || 0;
+    const maxLongest = Math.max(loginLongest, practiceLongest);
+
+    if (maxCurrent > maxLongest) {
       return await unlockAchievement(studentId, "streak_breaker");
     }
 
@@ -285,25 +342,31 @@ export interface AchievementProgress {
   totalAchievements: number;
   unlockedCount: number;
   percentage: number;
+  totalPoints: number;
   nextToUnlock?: Achievement;
 }
 
 export async function getAchievementProgress(
-  studentId: string
+  studentOrId: string | Student
 ): Promise<AchievementProgress> {
   try {
-    const student = await getStudentById(studentId);
+    const student =
+      typeof studentOrId === "string"
+        ? await getStudentById(studentOrId)
+        : studentOrId;
     if (!student) {
       return {
         totalAchievements: 6,
         unlockedCount: 0,
         percentage: 0,
+        totalPoints: 0,
       };
     }
 
     const totalAchievements = Object.keys(ACHIEVEMENT_DEFINITIONS).length;
     const unlockedCount = student.achievements.length;
     const percentage = Math.round((unlockedCount / totalAchievements) * 100);
+    const totalPoints = student.totalPoints || 0;
 
     // Find next achievement to unlock (simple heuristic)
     let nextToUnlock: Achievement | undefined;
@@ -319,17 +382,113 @@ export async function getAchievementProgress(
       totalAchievements,
       unlockedCount,
       percentage,
+      totalPoints,
       nextToUnlock,
     };
   } catch (error) {
-    console.error(
-      `Error getting achievement progress for ${studentId}:`,
-      error
-    );
+    const id = typeof studentOrId === "string" ? studentOrId : studentOrId.id;
+    console.error(`Error getting achievement progress for ${id}:`, error);
     return {
       totalAchievements: 6,
       unlockedCount: 0,
       percentage: 0,
+      totalPoints: 0,
+    };
+  }
+}
+
+/**
+ * Get total achievement points for a student
+ */
+export async function getAchievementPoints(
+  studentOrId: string | Student
+): Promise<number> {
+  try {
+    const student =
+      typeof studentOrId === "string"
+        ? await getStudentById(studentOrId)
+        : studentOrId;
+    if (!student) return 0;
+
+    return student.totalPoints || 0;
+  } catch (error) {
+    const studentId =
+      typeof studentOrId === "string" ? studentOrId : studentOrId.id;
+    console.error(`Error getting achievement points for ${studentId}:`, error);
+    return 0;
+  }
+}
+
+/**
+ * Get achievements filtered by rarity
+ */
+export async function getAchievementsByRarity(
+  studentId: string,
+  rarity: BadgeRarity
+): Promise<Achievement[]> {
+  try {
+    const allAchievements = await getAllAchievementsWithStatus(studentId);
+
+    return allAchievements
+      .filter(
+        (achievement) =>
+          "rarity" in achievement && achievement.rarity === rarity
+      )
+      .map(({ unlocked, ...achievement }) => achievement);
+  } catch (error) {
+    console.error(
+      `Error getting achievements by rarity for ${studentId}:`,
+      error
+    );
+    return [];
+  }
+}
+
+/**
+ * Sort achievements by rarity (common → legendary)
+ */
+export function sortAchievementsByRarity(
+  achievements: Achievement[]
+): Achievement[] {
+  return [...achievements].sort((a, b) => {
+    const rarityA = "rarity" in a ? a.rarity : "common";
+    const rarityB = "rarity" in b ? b.rarity : "common";
+    return RARITY_ORDER[rarityA] - RARITY_ORDER[rarityB];
+  });
+}
+
+/**
+ * Get achievements grouped by rarity
+ */
+export async function getAchievementsGroupedByRarity(
+  studentId: string
+): Promise<Record<BadgeRarity, Achievement[]>> {
+  try {
+    const allAchievements = await getAllAchievementsWithStatus(studentId);
+
+    const grouped: Record<BadgeRarity, Achievement[]> = {
+      common: [],
+      uncommon: [],
+      rare: [],
+      legendary: [],
+    };
+
+    allAchievements.forEach((achievement) => {
+      const rarity = "rarity" in achievement ? achievement.rarity : "common";
+      grouped[rarity].push(achievement as Achievement);
+    });
+
+    return grouped;
+  } catch (error) {
+    console.error(
+      `Error grouping achievements by rarity for ${studentId}:`,
+      error
+    );
+    return {
+      common: [],
+      uncommon: [],
+      rare: [],
+      legendary: [],
     };
   }
 }

@@ -149,8 +149,8 @@ export default function ChatInterface({
               Hi, {studentName}! 👋
             </h2>
             <p className="text-doodle-sketch opacity-80 mb-6 max-w-md text-lg font-sketch">
-              I'm your AI study companion! I remember everything we've learned
-              together and I'm here to help you practice and grow.
+              I&apos;m your AI study companion! I remember everything we&apos;ve
+              learned together and I&apos;m here to help you practice and grow.
             </p>
             <div className="grid grid-cols-3 gap-3">
               {quickActions.map((action) => (

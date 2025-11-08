@@ -84,6 +84,16 @@
   ],
   "taskHistory": [],
   "streaks": {
+    "login": {
+      "current": 12,
+      "longest": 14,
+      "lastDate": "2025-11-07T00:00:00Z"
+    },
+    "practice": {
+      "current": 10,
+      "longest": 12,
+      "lastDate": "2025-11-07T00:00:00Z"
+    },
     "current": 12,
     "longest": 14,
     "lastActiveDate": "2025-11-07T00:00:00Z"
@@ -94,6 +104,7 @@
     "topic_master",
     "streak_breaker"
   ],
+  "totalPoints": 100,
   "churnRisk": false,
   "preferences": {
     "aiColor": "#10B981",

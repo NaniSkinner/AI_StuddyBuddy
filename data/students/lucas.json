@@ -138,22 +138,28 @@
   ],
   "taskHistory": [],
   "streaks": {
+    "login": {
+      "current": 5,
+      "longest": 7,
+      "lastDate": "2025-11-07T00:00:00Z"
+    },
+    "practice": {
+      "current": 3,
+      "longest": 5,
+      "lastDate": "2025-11-07T00:00:00Z"
+    },
     "current": 5,
     "longest": 7,
     "lastActiveDate": "2025-11-07T00:00:00Z"
   },
-  "achievements": [
-    "first_steps",
-    "three_day_streak"
-  ],
+  "achievements": ["first_steps", "three_day_streak"],
+  "totalPoints": 30,
   "churnRisk": false,
   "preferences": {
     "hasCompletedOnboarding": true,
     "aiColor": "#6FB1FC"
   },
-  "friendConnections": [
-    "student-eva"
-  ],
+  "friendConnections": ["student-eva"],
   "messagesSentToday": 1,
   "questionsAsked": 23,
   "totalConversations": 12,

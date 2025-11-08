@@ -39,6 +39,39 @@ export default function StudentCard({
     return `${days} day${days !== 1 ? "s" : ""}`;
   };
 
+  /**
+   * Get unique entrance animation for each card
+   * Cards fly in from different parts of the screen
+   */
+  const getEntranceAnimation = (index: number) => {
+    const animations = [
+      // Card 0: Fly from top-left with spin
+      {
+        initial: { x: -400, y: -300, rotate: -180, scale: 0.3, opacity: 0 },
+        rotate: -15,
+      },
+      // Card 1: Fly from top-right with reverse spin
+      {
+        initial: { x: 400, y: -300, rotate: 180, scale: 0.3, opacity: 0 },
+        rotate: 15,
+      },
+      // Card 2: Fly from bottom-left with tumble
+      {
+        initial: { x: -400, y: 300, rotate: -270, scale: 0.2, opacity: 0 },
+        rotate: -10,
+      },
+      // Card 3: Fly from bottom-right with flip
+      {
+        initial: { x: 400, y: 300, rotate: 270, scale: 0.2, opacity: 0 },
+        rotate: 10,
+      },
+    ];
+
+    return animations[index % animations.length];
+  };
+
+  const animation = getEntranceAnimation(delay);
+
   return (
     <motion.button
       className={`student-card ${
@@ -50,30 +83,47 @@ export default function StudentCard({
       }}
       type="button"
       aria-label={`Login as ${student.name}, ${formatStreak(
-        student.streaks.current
+        student.streaks.login?.current || student.streaks.current || 0
       )} streak`}
-      // Entrance animation - bouncy but optimized
-      initial={{ scale: 0, rotate: -10, opacity: 0 }}
-      animate={{ scale: 1, rotate: 0, opacity: 1 }}
-      transition={{
-        delay: delay * 0.06, // Slight stagger for wave effect
-        type: "spring",
-        stiffness: 260, // Bouncy but controlled
-        damping: 18, // Smooth settling
-        mass: 0.8, // Light and responsive
-        velocity: 2, // Initial velocity for pop effect
+      // Dynamic entrance - each card flies from a different direction!
+      initial={animation.initial}
+      animate={{
+        x: 0,
+        y: 0,
+        scale: 1,
+        rotate: 0,
+        opacity: 1,
       }}
-      // Hover animation
-      whileHover={{ scale: 1.05, rotate: 0, translateY: -8 }}
+      transition={{
+        delay: delay * 0.15, // More stagger for dramatic entrance
+        type: "spring",
+        stiffness: 80, // Slower, more graceful
+        damping: 12, // More bouncy overshoot
+        mass: 1.2, // Heavier feel, slower motion
+        duration: 1.2, // Longer animation
+      }}
+      // Hover animation - scale, rotate, and lift
+      whileHover={{
+        scale: 1.05,
+        rotate: 0,
+        y: -8,
+        transition: { duration: 0.2, ease: "easeOut" },
+      }}
       // Tap animation
-      whileTap={{ scale: 0.95 }}
+      whileTap={{
+        scale: 0.95,
+        transition: { duration: 0.1 },
+      }}
     >
       <span className="student-avatar" aria-hidden="true">
         {getAvatar(student.name)}
       </span>
       <span className="student-name">{student.name}</span>
       <span className="student-streak">
-        🔥 {formatStreak(student.streaks.current)}
+        🔥{" "}
+        {formatStreak(
+          student.streaks.login?.current || student.streaks.current || 0
+        )}
       </span>
     </motion.button>
   );
