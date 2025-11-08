@@ -1,6 +1,17 @@
 import { Goal } from "./goal";
 import { AchievementId } from "./achievement";
 
+/**
+ * Nudge interaction tracking
+ */
+export interface NudgeInteraction {
+  id: string;
+  type: string;
+  shownAt: string;
+  action: "accepted" | "dismissed" | "expired";
+  actionAt?: string;
+}
+
 export interface Student {
   id: string;
   name: string;
@@ -53,4 +64,9 @@ export interface Student {
   // Metadata
   createdAt: string;
   lastLoginAt: string;
+  metadata?: {
+    lastNudgeShown?: string;
+    lastNudgeId?: string;
+    nudgeHistory?: NudgeInteraction[];
+  };
 }

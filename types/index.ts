@@ -4,6 +4,7 @@ export * from "./booking";
 export * from "./context";
 export * from "./goal";
 export * from "./message";
+export * from "./nudge";
 export * from "./session";
 export * from "./student";
 export * from "./task";

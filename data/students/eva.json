@@ -119,5 +119,39 @@
   "questionsAsked": 18,
   "totalConversations": 15,
   "createdAt": "2025-10-20T00:00:00Z",
-  "lastLoginAt": "2025-11-08T02:17:41.937Z"
+  "lastLoginAt": "2025-11-08T04:19:42.400Z",
+  "metadata": {
+    "lastNudgeShown": "2025-11-08T04:18:36.975Z",
+    "lastNudgeId": "nudge-1762575516952-a62ei3i",
+    "nudgeHistory": [
+      {
+        "id": "nudge-1762575516952-a62ei3i",
+        "type": "nudge",
+        "shownAt": "2025-11-08T04:18:41.007Z",
+        "action": "dismissed",
+        "actionAt": "2025-11-08T04:18:41.007Z"
+      },
+      {
+        "id": "nudge-demo-1762575679937",
+        "type": "nudge",
+        "shownAt": "2025-11-08T04:21:29.574Z",
+        "action": "dismissed",
+        "actionAt": "2025-11-08T04:21:29.574Z"
+      },
+      {
+        "id": "nudge-demo-1762575690596",
+        "type": "nudge",
+        "shownAt": "2025-11-08T04:21:34.595Z",
+        "action": "accepted",
+        "actionAt": "2025-11-08T04:21:34.595Z"
+      },
+      {
+        "id": "nudge-demo-1762575803395",
+        "type": "nudge",
+        "shownAt": "2025-11-08T04:23:34.581Z",
+        "action": "dismissed",
+        "actionAt": "2025-11-08T04:23:34.581Z"
+      }
+    ]
+  }
 }

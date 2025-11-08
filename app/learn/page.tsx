@@ -11,12 +11,15 @@ import ProgressCard from "@/app/components/ProgressCard";
 import TaskSidebar from "@/app/components/TaskSidebar";
 import AnimatedBubble from "@/app/components/AnimatedBubble";
 import AchievementBadges from "@/app/components/AchievementBadges";
+import NudgePopup from "@/app/components/retention/NudgePopup";
+import NudgeTrigger from "@/app/components/retention/NudgeTrigger";
 import { Message, ACHIEVEMENT_DEFINITIONS } from "@/types";
 import {
   getStreakStatus,
   StreakStatus,
 } from "@/lib/services/streakService.client";
 import { getAchievementPoints } from "@/lib/services/achievementService.client";
+import { useNudgeSystem } from "@/lib/hooks/useNudgeSystem";
 
 export default function LearnPage() {
   return (
@@ -46,6 +49,10 @@ function LearnPageContent() {
     message: "",
   });
   const [totalPoints, setTotalPoints] = useState(0);
+
+  // Nudge system integration
+  const { currentNudge, acceptNudge, dismissNudge, forceCheckNudge } =
+    useNudgeSystem(currentStudent?.id || null);
 
   // Mock tasks based on student
   const getMockTasks = () => {
@@ -609,6 +616,18 @@ function LearnPageContent() {
           />
         </div>
       </footer>
+
+      {/* Nudge System */}
+      {currentNudge && (
+        <NudgePopup
+          nudge={currentNudge}
+          onAccept={acceptNudge}
+          onDismiss={dismissNudge}
+        />
+      )}
+
+      {/* Demo Trigger (dev only) */}
+      <NudgeTrigger onTrigger={() => forceCheckNudge()} />
     </div>
   );
 }

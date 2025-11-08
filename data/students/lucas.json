@@ -169,5 +169,18 @@
   "questionsAsked": 23,
   "totalConversations": 12,
   "createdAt": "2025-10-24T00:00:00Z",
-  "lastLoginAt": "2025-11-08T02:41:29.377Z"
+  "lastLoginAt": "2025-11-08T04:18:56.662Z",
+  "metadata": {
+    "lastNudgeShown": "2025-11-08T04:18:57.236Z",
+    "lastNudgeId": "nudge-1762575537201-68gpqi1",
+    "nudgeHistory": [
+      {
+        "id": "nudge-1762575537201-68gpqi1",
+        "type": "nudge",
+        "shownAt": "2025-11-08T04:19:04.260Z",
+        "action": "accepted",
+        "actionAt": "2025-11-08T04:19:04.260Z"
+      }
+    ]
+  }
 }
