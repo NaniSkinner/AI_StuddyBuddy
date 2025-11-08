@@ -263,19 +263,51 @@ function LearnPageContent() {
     };
     addMessage(userMessage);
 
-    // Simulate AI typing
+    // Show AI typing indicator
     setIsTyping(true);
 
-    // Simulate AI response (in a real app, this would call the AI service)
-    setTimeout(() => {
+    try {
+      // Call the AI chat API
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          studentId: currentStudent.id,
+          message: messageText,
+          sessionId: `session-${Date.now()}`,
+          conversationHistory: messages,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to get AI response");
+      }
+
+      // Add AI response
       const aiMessage: Message = {
         speaker: "ai",
-        message: `I understand you want to work on "${messageText}". Let's break this down together! What specific part would you like to focus on first?`,
+        message: data.response,
         timestamp: new Date().toISOString(),
       };
       addMessage(aiMessage);
+    } catch (error) {
+      console.error("Error sending message:", error);
+
+      // Add error message
+      const errorMessage: Message = {
+        speaker: "ai",
+        message:
+          "I'm having trouble thinking right now. Can you try asking again?",
+        timestamp: new Date().toISOString(),
+      };
+      addMessage(errorMessage);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   if (!currentStudent) {

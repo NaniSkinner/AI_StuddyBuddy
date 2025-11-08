@@ -42,6 +42,21 @@ cp .env.example .env.local
 OPENAI_API_KEY=your-api-key-here
 ```
 
+5. Verify your OpenAI setup:
+
+```bash
+bun run verify-openai
+```
+
+You should see "✅ All checks passed! OpenAI integration is ready."
+
+📚 **Documentation & Testing:**
+
+- **Setup Guide:** [Docs/ENV_SETUP.md](Docs/ENV_SETUP.md) - Detailed environment configuration
+- **Testing Guide:** [Docs/TESTING_GUIDE.md](Docs/TESTING_GUIDE.md) - Comprehensive testing instructions
+- **Quick Checklist:** [TESTING_CHECKLIST.md](TESTING_CHECKLIST.md) - 15-minute feature verification
+- **Implementation Docs:** [Docs/PRD5/AITasks.md](Docs/PRD5/AITasks.md) - Complete AI integration details
+
 ### Development
 
 Run the development server:
