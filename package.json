@@ -11,7 +11,8 @@
     "test:ai": "bun run scripts/test-ai-features.ts",
     "test:quick": "bun run scripts/quick-test.ts",
     "test:churn": "bun run scripts/test-churn-detection.ts",
-    "test:nudge": "bun run scripts/test-nudge-generation.ts"
+    "test:nudge": "bun run scripts/test-nudge-generation.ts",
+    "test:events": "bun run scripts/test-event-triggers.ts"
   },
   "dependencies": {
     "next": "^14.0.0",

@@ -151,7 +151,8 @@ const NUDGE_TEMPLATES: NudgeTemplate[] = [
     trigger: "streak_broken",
     ageGroup: "teen",
     messages: {
-      celebration: "You built a {longest_streak}-day streak before - solid discipline.",
+      celebration:
+        "You built a {longest_streak}-day streak before - solid discipline.",
       encouragement:
         "The streak broke, but the habits you built are still there. Time to rebuild.",
       cta: "Start your comeback streak today?",
@@ -214,7 +215,11 @@ export function determineTrigger(
   if (risk.reasons.includes("Completed goal, no new goals")) {
     return "goal_completed";
   }
-  if (risk.reasons.some((r) => r.includes("No activity") || r.includes("Inactive"))) {
+  if (
+    risk.reasons.some(
+      (r) => r.includes("No activity") || r.includes("Inactive")
+    )
+  ) {
     return "inactive";
   }
   if (risk.reasons.includes("Lost previous streak")) {
@@ -256,7 +261,7 @@ export function selectTemplate(
   }
 
   // Select based on intensity matching risk level
-  if (risk.level === ChurnRisk.HIGH || risk.level === "high") {
+  if (risk.level === ChurnRisk.HIGH) {
     const urgent = candidates.find((t) => t.intensity === "urgent");
     if (urgent) return urgent;
   }
@@ -268,7 +273,10 @@ export function selectTemplate(
 /**
  * Get fallback general template
  */
-function getGeneralTemplate(ageGroup: AgeGroup, riskLevel: ChurnRisk | string): NudgeTemplate {
+function getGeneralTemplate(
+  ageGroup: AgeGroup,
+  riskLevel: ChurnRisk | string
+): NudgeTemplate {
   const general = NUDGE_TEMPLATES.find(
     (t) => t.trigger === "general_encouragement" && t.ageGroup === ageGroup
   );
@@ -429,7 +437,7 @@ export async function generateNudge(
     const risk = await assessRisk(student);
 
     // Only nudge if at least LOW risk
-    if (risk.level === ChurnRisk.NONE || risk.level === "none") {
+    if (risk.level === ChurnRisk.NONE) {
       return null;
     }
 
@@ -477,7 +485,9 @@ export async function generateNudge(
  */
 export async function markNudgeShown(
   studentId: string,
-  nudgeId: string
+  nudgeId: string,
+  trigger?: string,
+  priority?: string
 ): Promise<void> {
   try {
     const student = await getStudentById(studentId);
@@ -491,6 +501,20 @@ export async function markNudgeShown(
     // Update last nudge info
     student.metadata.lastNudgeShown = new Date().toISOString();
     student.metadata.lastNudgeId = nudgeId;
+
+    // Record in metrics service
+    try {
+      const { recordMetric } = await import("./metricsService");
+      recordMetric(
+        studentId,
+        nudgeId,
+        trigger || "unknown",
+        "shown",
+        priority || "medium"
+      );
+    } catch (error) {
+      console.error("Error recording shown metric:", error);
+    }
 
     // Save student data
     await saveStudentData(student);
@@ -520,7 +544,9 @@ export async function recordNudgeInteraction(
     }
 
     // Find existing interaction or create new
-    const existing = student.metadata.nudgeHistory.find((n) => n.id === nudgeId);
+    const existing = student.metadata.nudgeHistory.find(
+      (n) => n.id === nudgeId
+    );
     if (existing) {
       existing.action = action;
       existing.actionAt = new Date().toISOString();
@@ -538,16 +564,24 @@ export async function recordNudgeInteraction(
     const color = action === "accepted" ? "\x1b[32m" : "\x1b[33m";
     const reset = "\x1b[0m";
     console.log(
-      `${color}📊 Nudge ${action.toUpperCase()}:${reset} ${nudgeId} by ${student.name}`
+      `${color}📊 Nudge ${action.toUpperCase()}:${reset} ${nudgeId} by ${
+        student.name
+      }`
     );
+
+    // Record in metrics service
+    try {
+      const { recordMetric } = await import("./metricsService");
+      recordMetric(studentId, nudgeId, "unknown", action, "medium");
+    } catch (error) {
+      // Metrics service not critical, log error but continue
+      console.error("Error recording metric:", error);
+    }
 
     // Save student data
     await saveStudentData(student);
   } catch (error) {
-    console.error(
-      `Error recording nudge interaction for ${studentId}:`,
-      error
-    );
+    console.error(`Error recording nudge interaction for ${studentId}:`, error);
   }
 }
 

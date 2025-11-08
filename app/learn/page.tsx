@@ -12,7 +12,6 @@ import TaskSidebar from "@/app/components/TaskSidebar";
 import AnimatedBubble from "@/app/components/AnimatedBubble";
 import AchievementBadges from "@/app/components/AchievementBadges";
 import NudgePopup from "@/app/components/retention/NudgePopup";
-import NudgeTrigger from "@/app/components/retention/NudgeTrigger";
 import { Message, ACHIEVEMENT_DEFINITIONS } from "@/types";
 import {
   getStreakStatus,
@@ -342,6 +341,7 @@ function LearnPageContent() {
           totalPoints={totalPoints}
           onLogoutClick={() => router.push("/")}
           onAchievementsClick={() => router.push("/achievements")}
+          onTestNudge={forceCheckNudge}
         />
       </header>
 
@@ -625,9 +625,6 @@ function LearnPageContent() {
           onDismiss={dismissNudge}
         />
       )}
-
-      {/* Demo Trigger (dev only) */}
-      <NudgeTrigger onTrigger={() => forceCheckNudge()} />
     </div>
   );
 }

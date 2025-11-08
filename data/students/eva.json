@@ -151,6 +151,13 @@
         "shownAt": "2025-11-08T04:23:34.581Z",
         "action": "dismissed",
         "actionAt": "2025-11-08T04:23:34.581Z"
+      },
+      {
+        "id": "nudge-demo-1762577294112",
+        "type": "nudge",
+        "shownAt": "2025-11-08T04:48:16.656Z",
+        "action": "accepted",
+        "actionAt": "2025-11-08T04:48:16.656Z"
       }
     ]
   }

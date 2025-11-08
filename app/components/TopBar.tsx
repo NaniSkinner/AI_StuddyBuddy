@@ -13,6 +13,7 @@ interface TopBarProps {
   onSettingsClick?: () => void;
   onLogoutClick?: () => void;
   onAchievementsClick?: () => void;
+  onTestNudge?: () => void;
 }
 
 export default function TopBar({
@@ -22,6 +23,7 @@ export default function TopBar({
   onSettingsClick,
   onLogoutClick,
   onAchievementsClick,
+  onTestNudge,
 }: TopBarProps) {
   const [showStreakModal, setShowStreakModal] = useState(false);
 
@@ -29,7 +31,7 @@ export default function TopBar({
     <>
       <div className="bg-white border-b-2 border-doodle-sketch px-6 py-4 flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <motion.h1 
+          <motion.h1
             className="text-3xl font-hand font-bold text-doodle-sketch"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -37,13 +39,13 @@ export default function TopBar({
           >
             AI Study Companion ✨
           </motion.h1>
-          <motion.div 
+          <motion.div
             className="h-8 w-1 bg-doodle-sketch"
             style={{ transform: "rotate(2deg)" }}
             initial={{ scaleY: 0 }}
             animate={{ scaleY: 1 }}
           />
-          <motion.span 
+          <motion.span
             className="text-xl font-sketch text-doodle-sketch"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -51,6 +53,35 @@ export default function TopBar({
           >
             Hi, {studentName}! 👋
           </motion.span>
+
+          {/* Test Nudge Button (Dev/Demo) - Left side */}
+          {onTestNudge && (
+            <>
+              <motion.div
+                className="h-8 w-1 bg-doodle-sketch"
+                style={{ transform: "rotate(-2deg)" }}
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: 1 }}
+                transition={{ delay: 0.3 }}
+              />
+              <motion.button
+                onClick={onTestNudge}
+                className="px-3 py-2 bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-lg border-2 border-doodle-sketch font-hand text-sm font-bold shadow-doodle"
+                style={{ transform: "rotate(-1deg)" }}
+                whileHover={{
+                  scale: 1.05,
+                  rotate: 2,
+                  boxShadow: "4px 4px 0px var(--doodle-sketch)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                🔔 Test Nudge
+              </motion.button>
+            </>
+          )}
         </div>
 
         <div className="flex items-center space-x-4">
@@ -88,10 +119,10 @@ export default function TopBar({
             onClick={onAchievementsClick}
             className="p-3 bg-white border-2 border-doodle-sketch rounded-full"
             style={{ transform: "rotate(-1deg)" }}
-            whileHover={{ 
+            whileHover={{
               scale: 1.1,
               rotate: 5,
-              boxShadow: "3px 3px 0px var(--doodle-sketch)"
+              boxShadow: "3px 3px 0px var(--doodle-sketch)",
             }}
             whileTap={{ scale: 0.9 }}
             aria-label="View Achievements"
@@ -104,10 +135,10 @@ export default function TopBar({
             onClick={onSettingsClick}
             className="p-3 bg-white border-2 border-doodle-sketch rounded-full"
             style={{ transform: "rotate(1deg)" }}
-            whileHover={{ 
+            whileHover={{
               scale: 1.1,
               rotate: 10,
-              boxShadow: "3px 3px 0px var(--doodle-sketch)"
+              boxShadow: "3px 3px 0px var(--doodle-sketch)",
             }}
             whileTap={{ scale: 0.9, rotate: -10 }}
             aria-label="Settings"
@@ -122,11 +153,7 @@ export default function TopBar({
           </motion.button>
 
           {/* Logout Button - Sketch Button */}
-          <SketchButton
-            variant="ghost"
-            size="medium"
-            onClick={onLogoutClick}
-          >
+          <SketchButton variant="ghost" size="medium" onClick={onLogoutClick}>
             Logout 👋
           </SketchButton>
         </div>

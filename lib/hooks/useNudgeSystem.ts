@@ -13,66 +13,72 @@ export function useNudgeSystem(studentId: string | null) {
   /**
    * Check for nudges from the API
    */
-  const checkForNudge = useCallback(async (force = false) => {
-    if (!studentId) return;
+  const checkForNudge = useCallback(
+    async (force = false) => {
+      if (!studentId) return;
 
-    // Check if already checked this session (unless forced)
-    if (!force && typeof window !== "undefined") {
-      const sessionKey = `nudge_checked_${studentId}`;
-      const lastCheck = sessionStorage.getItem(sessionKey);
-      if (lastCheck) {
-        const hoursSince = (Date.now() - parseInt(lastCheck)) / (1000 * 60 * 60);
-        if (hoursSince < 1) {
-          // Already checked within last hour
-          return;
+      // Check if already checked this session (unless forced)
+      if (!force && typeof window !== "undefined") {
+        const sessionKey = `nudge_checked_${studentId}`;
+        const lastCheck = sessionStorage.getItem(sessionKey);
+        if (lastCheck) {
+          const hoursSince =
+            (Date.now() - parseInt(lastCheck)) / (1000 * 60 * 60);
+          if (hoursSince < 1) {
+            // Already checked within last hour
+            return;
+          }
         }
       }
-    }
 
-    setIsLoading(true);
-    setError(null);
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      const response = await fetch(`/api/nudges?studentId=${studentId}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch nudge");
-      }
-
-      const data = await response.json();
-
-      if (data.nudge) {
-        setCurrentNudge(data.nudge);
-
-        // Mark as shown via API
-        await fetch("/api/nudges", {
-          method: "POST",
+      try {
+        const response = await fetch(`/api/nudges?studentId=${studentId}`, {
+          method: "GET",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            studentId,
-            nudgeId: data.nudge.id,
-            action: "shown",
-          }),
         });
-      }
 
-      // Mark check time
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem(
-          `nudge_checked_${studentId}`,
-          Date.now().toString()
-        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch nudge");
+        }
+
+        const data = await response.json();
+
+        if (data.nudge) {
+          setCurrentNudge(data.nudge);
+
+          // Mark as shown via API (with metrics data)
+          await fetch("/api/nudges", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              studentId,
+              nudgeId: data.nudge.id,
+              action: "shown",
+              trigger: data.nudge.trigger,
+              priority: data.nudge.priority,
+            }),
+          });
+        }
+
+        // Mark check time
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem(
+            `nudge_checked_${studentId}`,
+            Date.now().toString()
+          );
+        }
+      } catch (err) {
+        console.error("Error checking for nudge:", err);
+        setError(err instanceof Error ? err.message : "Unknown error");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error("Error checking for nudge:", err);
-      setError(err instanceof Error ? err.message : "Unknown error");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [studentId]);
+    },
+    [studentId]
+  );
 
   /**
    * Accept the current nudge
@@ -130,47 +136,84 @@ export function useNudgeSystem(studentId: string | null) {
   /**
    * Force check for nudge (for demo button)
    */
-  const forceCheckNudge = useCallback(async (scenario?: string) => {
-    if (!studentId) return;
+  const forceCheckNudge = useCallback(
+    async (scenario?: string) => {
+      if (!studentId) return;
 
-    setIsLoading(true);
-    setError(null);
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      const url = scenario
-        ? `/api/nudges/force?studentId=${studentId}&scenario=${scenario}`
-        : `/api/nudges/force?studentId=${studentId}`;
+      try {
+        const url = scenario
+          ? `/api/nudges/force?studentId=${studentId}&scenario=${scenario}`
+          : `/api/nudges/force?studentId=${studentId}`;
 
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
 
-      if (!response.ok) {
-        throw new Error("Failed to force nudge");
+        if (!response.ok) {
+          throw new Error("Failed to force nudge");
+        }
+
+        const data = await response.json();
+
+        if (data.nudge) {
+          setCurrentNudge(data.nudge);
+        }
+      } catch (err) {
+        console.error("Error forcing nudge:", err);
+        setError(err instanceof Error ? err.message : "Unknown error");
+      } finally {
+        setIsLoading(false);
       }
+    },
+    [studentId]
+  );
 
-      const data = await response.json();
+  /**
+   * Trigger nudge check based on event
+   * Force = true bypasses session check but still respects 24hr limit
+   */
+  const triggerNudgeOnEvent = useCallback(
+    async (eventType: string) => {
+      if (!studentId) return;
 
-      if (data.nudge) {
-        setCurrentNudge(data.nudge);
-      }
-    } catch (err) {
-      console.error("Error forcing nudge:", err);
-      setError(err instanceof Error ? err.message : "Unknown error");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [studentId]);
+      console.log(
+        `🎯 Event-based nudge trigger: ${eventType} for student ${studentId}`
+      );
+
+      // Force check (bypass session cache)
+      await checkForNudge(true);
+    },
+    [studentId, checkForNudge]
+  );
 
   /**
    * Check for nudge on mount and periodically
+   * Also handle event-based triggers from sessionStorage
    */
   useEffect(() => {
     if (!studentId) return;
 
-    // Check on mount
-    checkForNudge();
+    // Check if there's a pending event trigger
+    if (typeof window !== "undefined") {
+      const eventTrigger = sessionStorage.getItem("trigger_nudge_on_load");
+      if (eventTrigger) {
+        console.log(`🎯 Found pending nudge trigger: ${eventTrigger}`);
+        sessionStorage.removeItem("trigger_nudge_on_load");
+        // Delay slightly to let page finish loading
+        setTimeout(() => {
+          triggerNudgeOnEvent(eventTrigger);
+        }, 1000);
+      } else {
+        // Normal check on mount
+        checkForNudge();
+      }
+    } else {
+      checkForNudge();
+    }
 
     // Check every 5 minutes while app is open
     const interval = setInterval(() => {
@@ -178,7 +221,29 @@ export function useNudgeSystem(studentId: string | null) {
     }, 5 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, [studentId, checkForNudge]);
+  }, [studentId, checkForNudge, triggerNudgeOnEvent]);
+
+  /**
+   * Listen for custom nudge trigger events
+   */
+  useEffect(() => {
+    if (!studentId || typeof window === "undefined") return;
+
+    const handleCustomTrigger = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const { eventType } = customEvent.detail || {};
+      if (eventType) {
+        console.log(`🎯 Custom event received: ${eventType}`);
+        triggerNudgeOnEvent(eventType);
+      }
+    };
+
+    window.addEventListener("nudge:trigger", handleCustomTrigger);
+
+    return () => {
+      window.removeEventListener("nudge:trigger", handleCustomTrigger);
+    };
+  }, [studentId, triggerNudgeOnEvent]);
 
   return {
     currentNudge,
@@ -188,6 +253,7 @@ export function useNudgeSystem(studentId: string | null) {
     dismissNudge,
     forceCheckNudge,
     checkForNudge,
+    triggerNudgeOnEvent,
   };
 }
 
@@ -213,4 +279,3 @@ function handleNudgeAction(nudge: NudgeMessage) {
       break;
   }
 }
-

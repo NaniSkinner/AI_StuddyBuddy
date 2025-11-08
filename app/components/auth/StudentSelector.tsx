@@ -95,6 +95,11 @@ export default function StudentSelector() {
         typeof student.preferences.hasCompletedOnboarding
       );
 
+      // Store event for nudge trigger after redirect
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("trigger_nudge_on_load", "login");
+      }
+
       if (!student.preferences.hasCompletedOnboarding) {
         console.log(
           "🔵 STEP 7: ✅ ONBOARDING NEEDED - Redirecting to /onboarding"

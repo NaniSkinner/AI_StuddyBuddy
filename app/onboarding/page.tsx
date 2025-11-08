@@ -125,6 +125,11 @@ function OnboardingPageContent() {
       // Clear saved progress
       onboardingService.clearProgress(studentId);
 
+      // Trigger nudge after onboarding completion
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("trigger_nudge_on_load", "onboarding_complete");
+      }
+
       // Small delay to ensure save completes
       await new Promise((resolve) => setTimeout(resolve, 100));
 

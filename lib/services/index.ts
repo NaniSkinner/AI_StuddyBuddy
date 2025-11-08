@@ -18,3 +18,4 @@ export * from "./safetyService";
 export * from "./taskGenerationService";
 export * from "./taskBatchService";
 export * from "./usageLogService";
+export * from "./metricsService";

@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateNudge, markNudgeShown, recordNudgeInteraction } from "@/lib/services/nudgeService";
+import {
+  generateNudge,
+  markNudgeShown,
+  recordNudgeInteraction,
+} from "@/lib/services/nudgeService";
 
 /**
  * GET /api/nudges
@@ -19,6 +23,11 @@ export async function GET(request: NextRequest) {
 
     // Generate nudge if appropriate
     const nudge = await generateNudge(studentId);
+
+    if (nudge) {
+      // Mark as shown with trigger and priority info (done by frontend now)
+      // Frontend will call POST with action="shown"
+    }
 
     return NextResponse.json({ nudge });
   } catch (error) {
@@ -48,14 +57,19 @@ export async function POST(request: NextRequest) {
 
     if (!["shown", "accepted", "dismissed", "expired"].includes(action)) {
       return NextResponse.json(
-        { error: "Invalid action. Must be: shown, accepted, dismissed, or expired" },
+        {
+          error:
+            "Invalid action. Must be: shown, accepted, dismissed, or expired",
+        },
         { status: 400 }
       );
     }
 
+    const { trigger, priority } = body; // Get additional metrics data
+
     // Handle "shown" action
     if (action === "shown") {
-      await markNudgeShown(studentId, nudgeId);
+      await markNudgeShown(studentId, nudgeId, trigger, priority);
     } else {
       // Handle other actions
       await recordNudgeInteraction(studentId, nudgeId, action);
@@ -70,4 +84,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
