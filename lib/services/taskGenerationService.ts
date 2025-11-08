@@ -10,6 +10,8 @@ import {
   RealWorldTask,
   TaskDifficulty,
   TaskGrading,
+  AnyTask,
+  TaskType,
 } from "@/types";
 import {
   getMultipleChoicePrompt,
@@ -20,6 +22,10 @@ import {
 } from "@/lib/prompts/taskGenerationPrompts";
 import { withRetry, categorizeError } from "@/lib/utils/aiErrorHandler";
 import { calculateUsage, logUsage } from "@/lib/services/usageLogService";
+import {
+  taskResponseCache,
+  getTaskResponseCacheKey,
+} from "@/lib/utils/promptCache";
 
 // Initialize OpenAI client
 const openai = new OpenAI({

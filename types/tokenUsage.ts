@@ -24,6 +24,8 @@ export interface UsageLog {
 
 export type OperationType =
   | 'chat_completion'
+  | 'ai_response_stream'
+  | 'batch_task_generation'
   | 'task_generation_mc'
   | 'task_generation_oe'
   | 'task_generation_rw'

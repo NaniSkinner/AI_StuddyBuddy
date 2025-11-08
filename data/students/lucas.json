@@ -152,17 +152,22 @@
     "longest": 7,
     "lastActiveDate": "2025-11-07T00:00:00Z"
   },
-  "achievements": ["first_steps", "three_day_streak"],
+  "achievements": [
+    "first_steps",
+    "three_day_streak"
+  ],
   "totalPoints": 30,
   "churnRisk": false,
   "preferences": {
     "hasCompletedOnboarding": true,
     "aiColor": "#6FB1FC"
   },
-  "friendConnections": ["student-eva"],
+  "friendConnections": [
+    "student-eva"
+  ],
   "messagesSentToday": 1,
   "questionsAsked": 23,
   "totalConversations": 12,
   "createdAt": "2025-10-24T00:00:00Z",
-  "lastLoginAt": "2025-11-07T22:29:43.103Z"
+  "lastLoginAt": "2025-11-08T02:41:29.377Z"
 }

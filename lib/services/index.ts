@@ -15,3 +15,6 @@ export * from "./recommendationService";
 export * from "./struggleDetectionService";
 export * from "./gamificationService";
 export * from "./safetyService";
+export * from "./taskGenerationService";
+export * from "./taskBatchService";
+export * from "./usageLogService";

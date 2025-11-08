@@ -15,6 +15,10 @@ import {
   analyzeConversation,
   generateSummary,
 } from "@/lib/utils/conversationAnalysis";
+import {
+  systemPromptCache,
+  getSystemPromptCacheKey,
+} from "@/lib/utils/promptCache";
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -25,9 +29,17 @@ const openai = new OpenAI({
 const MAX_CONTEXT_MESSAGES = 15;
 
 /**
- * Age-adapted system prompts
+ * Age-adapted system prompts (cached)
  */
 export function getSystemPrompt(student: Student): string {
+  // Check cache first
+  const cacheKey = getSystemPromptCacheKey(student.id, student.age);
+  const cached = systemPromptCache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
+  // Generate prompt
   const ageGroup = determineAgeGroup(student.age);
 
   const basePrompt = `You are an AI study companion helping ${
@@ -53,9 +65,11 @@ Student's current goals: ${student.goals.map((g) => g.subject).join(", ")}
 `;
 
   // Age-specific adaptations
+  let prompt: string;
+
   if (ageGroup === "child") {
     // Ages 9-11: Simple, encouraging, lots of emojis
-    return (
+    prompt =
       basePrompt +
       `
 Tone for ${student.name}:
@@ -66,11 +80,10 @@ Tone for ${student.name}:
 - Use analogies to things kids understand
 - Keep energy high and positive
 - Examples: "Great job! 🎉", "Let's try this together!", "You're doing awesome!"
-`
-    );
+`;
   } else if (ageGroup === "teen") {
     // Ages 12-14: Balanced, encourage self-reflection
-    return (
+    prompt =
       basePrompt +
       `
 Tone for ${student.name}:
@@ -81,11 +94,10 @@ Tone for ${student.name}:
 - Ask questions that promote critical thinking
 - Use some emojis but not excessively
 - Examples: "That's a good start! What's your next step?", "Let's think about this together."
-`
-    );
+`;
   } else {
     // Ages 15-16: Academic, challenge thinking
-    return (
+    prompt =
       basePrompt +
       `
 Tone for ${student.name}:
@@ -96,9 +108,13 @@ Tone for ${student.name}:
 - Push for deeper understanding
 - Be more mentor-like than teacher-like
 - Examples: "Consider the implications of...", "How does this connect to what you learned before?"
-`
-    );
+`;
   }
+
+  // Cache the prompt
+  systemPromptCache.set(cacheKey, prompt);
+
+  return prompt;
 }
 
 /**
@@ -517,6 +533,144 @@ export async function generateAIResponse(
     );
 
     console.error("Error generating AI response:", error);
+    throw aiError;
+  }
+}
+
+/**
+ * Generate AI response using OpenAI with streaming
+ * Streams tokens as they arrive for better perceived performance
+ *
+ * @param student - Student profile
+ * @param messages - Conversation history
+ * @param onChunk - Callback for each streamed token
+ * @param recentSessions - Optional recent tutoring sessions for context
+ * @returns Complete response text
+ */
+export async function generateAIResponseStream(
+  student: Student,
+  messages: Message[],
+  onChunk: (chunk: string) => void,
+  recentSessions?: Session[]
+): Promise<string> {
+  const startTime = Date.now();
+  let success = false;
+  let errorCode: string | undefined;
+  let fullResponse = "";
+
+  try {
+    // Build context (same as non-streaming)
+    const contextMessages = buildContext(messages, recentSessions);
+
+    // Prepare messages for OpenAI
+    const openAIMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+      {
+        role: "system",
+        content: getSystemPrompt(student),
+      },
+    ];
+
+    // Add older message summary if we have many messages
+    if (messages.length > MAX_CONTEXT_MESSAGES) {
+      const summary = summarizeOlderMessages(
+        messages.slice(0, messages.length - MAX_CONTEXT_MESSAGES)
+      );
+      openAIMessages.push({
+        role: "system",
+        content: summary,
+      });
+    }
+
+    // Add context messages
+    contextMessages.forEach((msg) => {
+      openAIMessages.push({
+        role: msg.speaker === "student" ? "user" : "assistant",
+        content: msg.message,
+      });
+    });
+
+    const model = process.env.OPENAI_MODEL || "gpt-4";
+    const maxTokens = parseInt(process.env.OPENAI_MAX_TOKENS || "500");
+    const temperature = parseFloat(process.env.OPENAI_TEMPERATURE || "0.7");
+
+    // Call OpenAI with streaming enabled
+    const stream = await openai.chat.completions.create({
+      model,
+      messages: openAIMessages,
+      temperature,
+      max_tokens: maxTokens,
+      stream: true, // Enable streaming
+    });
+
+    // Process stream
+    let promptTokensEstimate = 0;
+    let completionTokens = 0;
+
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content || "";
+      if (content) {
+        fullResponse += content;
+        completionTokens++;
+        // Call the callback with each chunk
+        onChunk(content);
+      }
+    }
+
+    // Content safety check on full response
+    const contentCheck = checkContent(fullResponse, student.age);
+    if (!contentCheck.isAllowed) {
+      return "I'm here to help you learn! Let's focus on your studies.";
+    }
+
+    // Log successful usage (estimate prompt tokens)
+    success = true;
+    const responseTime = Date.now() - startTime;
+
+    // Estimate prompt tokens based on message length
+    const totalMessageLength = openAIMessages.reduce(
+      (sum, msg) =>
+        sum + (typeof msg.content === "string" ? msg.content.length : 0),
+      0
+    );
+    promptTokensEstimate = Math.ceil(totalMessageLength / 4); // ~4 chars per token
+
+    const usage = calculateUsage(promptTokensEstimate, completionTokens, model);
+
+    logUsage(student.id, "ai_response_stream", usage, model, {
+      responseTime,
+      success: true,
+    });
+
+    console.log(
+      `✅ AI response streamed: ${completionTokens} tokens in ${responseTime}ms`
+    );
+
+    return fullResponse;
+  } catch (error) {
+    const aiError = categorizeError(error);
+    errorCode = aiError.code;
+
+    console.error(`❌ AI response streaming failed:`, aiError.message);
+
+    // Log failed usage
+    const responseTime = Date.now() - startTime;
+    logUsage(
+      student.id,
+      "ai_response_stream",
+      {
+        promptTokens: 0,
+        completionTokens: 0,
+        totalTokens: 0,
+        estimatedCost: 0,
+      },
+      process.env.OPENAI_MODEL || "gpt-4",
+      {
+        responseTime,
+        success: false,
+        errorCode,
+      }
+    );
+
     throw aiError;
   }
 }

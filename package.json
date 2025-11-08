@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "verify-openai": "bun run scripts/verify-openai.ts"
+    "verify-openai": "bun run scripts/verify-openai.ts",
+    "test:ai": "bun run scripts/test-ai-features.ts",
+    "test:quick": "bun run scripts/quick-test.ts"
   },
   "dependencies": {
     "next": "^14.0.0",
