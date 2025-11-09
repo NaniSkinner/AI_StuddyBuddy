@@ -87,7 +87,7 @@ export default function AISuggestedSwitch({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Let's switch! 🚀
+                Let&apos;s switch! 🚀
               </motion.button>
 
               <button

@@ -210,7 +210,7 @@ export function AISuggestedSwitch({
               onClick={onAccept}
               className="sketch-button bg-doodle-green text-white border-white"
             >
-              Yes, let's switch! 🚀
+              Yes, let&apos;s switch! 🚀
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}

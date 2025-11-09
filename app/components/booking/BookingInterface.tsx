@@ -367,7 +367,7 @@ export default function BookingInterface({
           {/* Struggling Concepts */}
           <div>
             <label className="block font-['Architects_Daughter'] font-bold text-lg text-[#2D3748] mb-2">
-              Why you're booking:
+              Why you&apos;re booking:
             </label>
             <div className="bg-yellow-50 border-3 border-yellow-300 rounded-xl p-4">
               <ul className="list-disc list-inside space-y-1">

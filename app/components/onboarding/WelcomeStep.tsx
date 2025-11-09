@@ -45,7 +45,7 @@ export default function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
           Hi there! 👋
         </h2>
         <p className="font-sketch text-lg text-doodle-sketch">
-          I'm your AI study buddy! Let's make learning fun together! I'll
+          I&apos;m your AI study buddy! Let&apos;s make learning fun together! I&apos;ll
           remember everything you learn and help you practice between your
           tutoring sessions.
         </p>
@@ -61,7 +61,7 @@ export default function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        Let's go! →
+        Let&apos;s go! →
       </motion.button>
 
       {/* Skip Link */}

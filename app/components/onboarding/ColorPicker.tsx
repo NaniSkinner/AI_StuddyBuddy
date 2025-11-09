@@ -52,7 +52,7 @@ export default function ColorPicker({ onNext, onBack }: ColorPickerProps) {
             className="text-5xl font-hand font-bold text-doodle-sketch mb-4"
             style={{ transform: "rotate(-1deg)" }}
           >
-            Choose Your AI's Color! 🎨
+            Choose Your AI&apos;s Color! 🎨
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -60,7 +60,7 @@ export default function ColorPicker({ onNext, onBack }: ColorPickerProps) {
             transition={{ delay: 0.1 }}
             className="text-xl font-sketch text-doodle-sketch opacity-80"
           >
-            Pick a color that makes you happy - this will be your AI companion's
+            Pick a color that makes you happy - this will be your AI companion&apos;s
             signature color
           </motion.p>
         </div>

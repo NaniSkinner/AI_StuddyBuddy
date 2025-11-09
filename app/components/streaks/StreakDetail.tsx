@@ -111,11 +111,11 @@ export default function StreakDetail({
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
               >
-                New record! You're unstoppable! 🚀
+                New record! You&apos;re unstoppable! 🚀
               </motion.p>
             ) : (
               <p className="font-hand text-xl text-doodle-green">
-                You're {Math.abs(daysToRecord)} days ahead of your record! 🎉
+                You&apos;re {Math.abs(daysToRecord)} days ahead of your record! 🎉
               </p>
             )}
           </div>

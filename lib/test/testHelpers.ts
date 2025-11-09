@@ -252,7 +252,7 @@ export function mockDate(date: Date): () => void {
     }
   };
 
-  // @ts-ignore
+  // @ts-expect-error - Mocking global Date for testing
   global.Date = MockDate;
 
   // Return cleanup function
