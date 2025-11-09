@@ -100,7 +100,7 @@ function checkThemeUnlock(theme: ColorTheme, student: Student): boolean {
 
   // "Reach 7-day streak"
   if (condition.includes("7-day streak")) {
-    return student.streaks.longest >= 7;
+    return (student.streaks.longest || 0) >= 7;
   }
 
   // "Earn 5 achievements"
