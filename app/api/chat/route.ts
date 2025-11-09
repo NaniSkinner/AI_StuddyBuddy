@@ -67,15 +67,9 @@ export async function POST(request: Request) {
     console.log("🤖 Chat API: Request received");
 
     // Check if OpenAI API key is configured
-    if (!process.env.OPENAI_API_KEY) {
-      console.error("❌ OPENAI_API_KEY is not configured!");
-      return NextResponse.json(
-        {
-          error:
-            "AI service is not configured. Please add OPENAI_API_KEY to .env.local",
-        },
-        { status: 503 }
-      );
+    const hasOpenAIKey = !!process.env.OPENAI_API_KEY;
+    if (!hasOpenAIKey) {
+      console.warn("⚠️ OPENAI_API_KEY is not configured - using mock responses");
     }
 
     const body = await request.json();
@@ -133,17 +127,30 @@ export async function POST(request: Request) {
     // Get recent sessions for context (optional)
     const recentSessions = await getRecentSessions(studentId, 3);
 
-    // Generate AI response using OpenAI
-    console.log("🧠 Calling OpenAI with", messages.length, "messages...");
-    const aiResponse = await generateAIResponse(
-      student,
-      messages,
-      recentSessions
-    );
-    console.log(
-      "✅ OpenAI response received:",
-      aiResponse.substring(0, 50) + "..."
-    );
+    let aiResponse: string;
+
+    // Generate AI response - use OpenAI if available, otherwise use mock
+    if (hasOpenAIKey) {
+      console.log("🧠 Calling OpenAI with", messages.length, "messages...");
+      aiResponse = await generateAIResponse(
+        student,
+        messages,
+        recentSessions
+      );
+      console.log(
+        "✅ OpenAI response received:",
+        aiResponse.substring(0, 50) + "..."
+      );
+    } else {
+      // Mock response when OpenAI is not configured
+      console.log("🤖 Using mock response (OpenAI not configured)");
+      const mockResponses = [
+        `That's a great question about ${student.goals[0]?.subject || "learning"}! I'm currently in demo mode without AI configured. In production, I would provide detailed, personalized help. For now, keep exploring the app's other features! 🎓`,
+        `I'd love to help you learn more about that! Note: The AI chat is in demo mode. Add your OpenAI API key to enable full AI responses. Meanwhile, try checking out your tasks and achievements! 📚`,
+        `Great thinking! In production mode with AI enabled, I would give you a detailed explanation. For now, the app is running in demo mode. Explore your progress and book a tutor session! 🌟`,
+      ];
+      aiResponse = mockResponses[Math.floor(Math.random() * mockResponses.length)];
+    }
 
     // Detect current topic from conversation
     const detectedGoalId = await detectCurrentGoal(student, messages);
