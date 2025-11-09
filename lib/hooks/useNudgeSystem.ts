@@ -231,20 +231,20 @@ export function useNudgeSystem(studentId: string | null) {
    * Force check for nudge (for demo button)
    */
   const forceCheckNudge = useCallback(
-    async (scenario?: string) => {
+    async (messages?: any[]) => {
       if (!studentId) return;
 
       setIsLoading(true);
       setError(null);
 
       try {
-        const url = scenario
-          ? `/api/nudges/force?studentId=${studentId}&scenario=${scenario}`
-          : `/api/nudges/force?studentId=${studentId}`;
-
-        const response = await fetch(url, {
+        const response = await fetch(`/api/nudges/force`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            studentId,
+            messages: messages || [],
+          }),
         });
 
         if (!response.ok) {

@@ -10,12 +10,11 @@ import ChatInterface from "@/app/components/ChatInterface";
 import ProgressCard from "@/app/components/ProgressCard";
 import TaskSidebar from "@/app/components/TaskSidebar";
 import AnimatedBubble from "@/app/components/AnimatedBubble";
-import AchievementBadges from "@/app/components/AchievementBadges";
 import NudgePopup from "@/app/components/retention/NudgePopup";
 import BookingInterface from "@/app/components/booking/BookingInterface";
 import AISuggestedSwitch from "@/app/components/AISuggestedSwitch";
 import TaskDetailModal from "@/app/components/TaskDetailModal";
-import { Message, ACHIEVEMENT_DEFINITIONS, Tutor, Goal, Task } from "@/types";
+import { Message, Tutor, Goal, Task } from "@/types";
 import {
   getStreakStatus,
   StreakStatus,
@@ -47,7 +46,6 @@ function LearnPageContent() {
   const [loading, setLoading] = useState(true);
   const [showChat, setShowChat] = useState(false);
   const [showTasksSection, setShowTasksSection] = useState(true);
-  const [showAchievementsSection, setShowAchievementsSection] = useState(false);
   const [streakStatus, setStreakStatus] = useState<StreakStatus>({
     login: { current: 0, longest: 0, isActive: false },
     practice: { current: 0, longest: 0, isActive: false },
@@ -77,7 +75,9 @@ function LearnPageContent() {
     currentGoal: Goal;
     reason: string;
   } | null>(null);
-  const [lastSuggestionTime, setLastSuggestionTime] = useState<number | null>(null);
+  const [lastSuggestionTime, setLastSuggestionTime] = useState<number | null>(
+    null
+  );
   const [declinedGoalIds, setDeclinedGoalIds] = useState<string[]>([]);
   const [currentGoalId, setCurrentGoalId] = useState<string | null>(null);
 
@@ -278,7 +278,11 @@ function LearnPageContent() {
         }
 
         // Add welcome message (only once)
-        if (!hasShownWelcome.current && messages.length === 0 && currentStudent) {
+        if (
+          !hasShownWelcome.current &&
+          messages.length === 0 &&
+          currentStudent
+        ) {
           const welcomeMessage: Message = {
             speaker: "ai",
             message: `Hi ${currentStudent.name}! Welcome back! I'm here to help you learn. What would you like to work on today?`,
@@ -344,7 +348,8 @@ function LearnPageContent() {
     // Add confirmation message from AI
     const confirmationMessage: Message = {
       speaker: "ai",
-      message: "Great! I've sent your session request. Your tutor will be in touch soon! 📚",
+      message:
+        "Great! I've sent your session request. Your tutor will be in touch soon! 📚",
       timestamp: new Date().toISOString(),
     };
     addMessage(confirmationMessage);
@@ -362,10 +367,13 @@ function LearnPageContent() {
 
   // Check for topic switch suggestion
   const checkTopicSwitch = () => {
-    if (!currentStudent || currentStudent.goals.length <= 1 || !currentGoalId) return;
+    if (!currentStudent || currentStudent.goals.length <= 1 || !currentGoalId)
+      return;
 
     // Get the actual current goal being discussed
-    const currentGoal = currentStudent.goals.find((g) => g.id === currentGoalId);
+    const currentGoal = currentStudent.goals.find(
+      (g) => g.id === currentGoalId
+    );
     if (!currentGoal) return;
 
     // Calculate conversation duration in minutes
@@ -379,7 +387,11 @@ function LearnPageContent() {
       declinedGoalIds
     );
 
-    if (suggestion.shouldSuggest && suggestion.suggestedGoal && suggestion.currentGoal) {
+    if (
+      suggestion.shouldSuggest &&
+      suggestion.suggestedGoal &&
+      suggestion.currentGoal
+    ) {
       const ageAppropriateReason = getAgeAppropriateReason(
         suggestion.reason,
         currentStudent.age,
@@ -512,7 +524,12 @@ function LearnPageContent() {
 
       // Update current goal based on detected topic from conversation
       if (data.currentGoalId && data.currentGoalId !== currentGoalId) {
-        console.log("🎯 Topic detected, updating from", currentGoalId, "to", data.currentGoalId);
+        console.log(
+          "🎯 Topic detected, updating from",
+          currentGoalId,
+          "to",
+          data.currentGoalId
+        );
         setCurrentGoalId(data.currentGoalId);
       }
 
@@ -581,7 +598,7 @@ function LearnPageContent() {
           onAchievementsClick={() => router.push("/achievements")}
           onFriendsClick={() => router.push("/friends")}
           onParentDashboardClick={() => router.push("/parent")}
-          onTestNudge={forceCheckNudge}
+          onTestNudge={() => forceCheckNudge(messages)}
           onTestBooking={handleTestBooking}
         />
       </header>
@@ -685,12 +702,14 @@ function LearnPageContent() {
               role="complementary"
               aria-label="Tasks and achievements sidebar"
             >
-              {/* Spacer to push content to bottom */}
-              <div className="flex-1"></div>
+              {/* Spacer to push content to bottom when collapsed */}
+              {!showTasksSection && <div className="flex-1"></div>}
 
               {/* Tasks Section - Collapsible */}
               <section
-                className="border-t-2 border-doodle-sketch"
+                className={`flex flex-col border-t-2 border-doodle-sketch ${
+                  showTasksSection ? "flex-1" : ""
+                }`}
                 aria-labelledby="tasks-heading"
               >
                 <button
@@ -727,119 +746,17 @@ function LearnPageContent() {
                   {showTasksSection && (
                     <motion.div
                       id="tasks-content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
+                      initial={{ opacity: 0, scaleY: 0 }}
+                      animate={{ opacity: 1, scaleY: 1 }}
+                      exit={{ opacity: 0, scaleY: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="bg-white overflow-y-auto"
-                      style={{ maxHeight: "50vh" }}
+                      className="flex-1 bg-doodle-cream overflow-hidden flex flex-col origin-top"
                       role="region"
                     >
-                      <div className="p-3 md:p-4 bg-white">
-                        <TaskSidebar
-                          tasks={getMockTasks()}
-                          onTaskClick={handleTaskClick}
-                        />
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </section>
-
-              {/* Achievements Section - Collapsible */}
-              <section
-                className="border-t-2 border-doodle-sketch"
-                aria-labelledby="achievements-heading"
-              >
-                <button
-                  onClick={() =>
-                    setShowAchievementsSection(!showAchievementsSection)
-                  }
-                  className="w-full px-4 md:px-6 py-3 md:py-4 flex items-center justify-between bg-doodle-peach hover:bg-doodle-pink transition-all group"
-                  aria-expanded={showAchievementsSection}
-                  aria-controls="achievements-content"
-                >
-                  <div className="flex items-center space-x-2 md:space-x-3">
-                    <span
-                      className="text-2xl md:text-3xl lg:text-4xl"
-                      aria-hidden="true"
-                    >
-                      ⭐
-                    </span>
-                    <h3
-                      id="achievements-heading"
-                      className="text-xl md:text-2xl lg:text-3xl font-hand font-bold text-doodle-sketch"
-                    >
-                      Achievements
-                    </h3>
-                  </div>
-                  <motion.span
-                    className="text-2xl md:text-3xl text-doodle-sketch"
-                    animate={{ rotate: showAchievementsSection ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    aria-hidden="true"
-                  >
-                    ▼
-                  </motion.span>
-                </button>
-
-                <AnimatePresence>
-                  {showAchievementsSection && (
-                    <motion.div
-                      id="achievements-content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="bg-white overflow-y-auto"
-                      style={{ maxHeight: "50vh" }}
-                      role="region"
-                    >
-                      <div className="p-3 md:p-4 bg-white">
-                        <h4
-                          className="text-lg md:text-xl lg:text-2xl font-hand font-bold text-doodle-sketch mb-3 md:mb-4 text-center"
-                          id="unlocked-badges-heading"
-                        >
-                          Unlocked 🎉
-                        </h4>
-                        <AchievementBadges
-                          achievements={currentStudent.achievements.map(
-                            (achId) => ({
-                              ...ACHIEVEMENT_DEFINITIONS[achId],
-                              unlocked: true,
-                            })
-                          )}
-                          onBadgeClick={(achievement) =>
-                            console.log("Badge clicked:", achievement.id)
-                          }
-                        />
-                        {/* Locked Badges Preview */}
-                        <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t-2 border-doodle-sketch border-dashed">
-                          <h4
-                            className="text-lg md:text-xl lg:text-2xl font-hand font-bold text-doodle-sketch/60 mb-3 md:mb-4 text-center"
-                            id="locked-badges-heading"
-                          >
-                            Locked 🔒
-                          </h4>
-                          <AchievementBadges
-                            achievements={Object.values(ACHIEVEMENT_DEFINITIONS)
-                              .filter(
-                                (def) =>
-                                  !currentStudent.achievements.includes(def.id)
-                              )
-                              .map((def) => ({
-                                ...def,
-                                unlocked: false,
-                              }))}
-                            onBadgeClick={(achievement) =>
-                              console.log(
-                                "Locked badge clicked:",
-                                achievement.id
-                              )
-                            }
-                          />
-                        </div>
-                      </div>
+                      <TaskSidebar
+                        tasks={getMockTasks()}
+                        onTaskClick={handleTaskClick}
+                      />
                     </motion.div>
                   )}
                 </AnimatePresence>

@@ -129,32 +129,7 @@ export default function TaskSidebar({ tasks, onTaskClick }: TaskSidebarProps) {
   };
 
   return (
-    <div className="h-full bg-doodle-cream border-l-2 border-doodle-sketch flex flex-col">
-      <div className="px-4 py-4 border-b-2 border-doodle-sketch bg-white">
-        <motion.h3
-          className="text-2xl font-hand font-bold text-doodle-sketch flex items-center space-x-2"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <motion.span
-            animate={{ rotate: [0, -10, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-          >
-            📚
-          </motion.span>
-          <span>Your Tasks</span>
-        </motion.h3>
-        <motion.p
-          className="text-sm font-sketch text-doodle-sketch opacity-70 mt-1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.7 }}
-          transition={{ delay: 0.2 }}
-        >
-          {incompleteTasks.length} pending{" "}
-          {incompleteTasks.length === 1 ? "task" : "tasks"}
-        </motion.p>
-      </div>
-
+    <div className="h-full bg-doodle-cream flex flex-col">
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {incompleteTasks.length > 0 ? (
           <div className="space-y-3">
@@ -219,7 +194,7 @@ export default function TaskSidebar({ tasks, onTaskClick }: TaskSidebarProps) {
         )}
       </div>
 
-      <div className="px-4 py-4 border-t-2 border-doodle-sketch bg-white">
+      <div className="px-4 py-4 bg-doodle-cream">
         <motion.button
           className="sketch-button w-full"
           whileHover={{ scale: 1.02, rotate: 1 }}

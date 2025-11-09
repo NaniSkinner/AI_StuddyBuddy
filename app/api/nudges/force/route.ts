@@ -4,7 +4,7 @@ import { getStudentById } from "@/lib/services/studentService";
 
 /**
  * POST /api/nudges/force
- * Force generate a nudge for demo purposes (bypasses 24hr limit)
+ * Force generate a contextual nudge based on current conversation
  * Only works in development mode
  */
 export async function POST(request: NextRequest) {
@@ -17,9 +17,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { searchParams } = new URL(request.url);
-    const studentId = searchParams.get("studentId");
-    const scenario = searchParams.get("scenario");
+    const body = await request.json();
+    const { studentId, messages } = body;
 
     if (!studentId) {
       return NextResponse.json(
@@ -28,33 +27,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get student
     const student = await getStudentById(studentId);
     if (!student) {
       return NextResponse.json({ error: "Student not found" }, { status: 404 });
     }
 
-    // If scenario specified, temporarily modify student state
-    // For demo purposes, we just generate normally
-    // In a more advanced implementation, you could mock student state here
-
-    // Temporarily clear last nudge shown to bypass limit
     const originalMetadata = student.metadata ? { ...student.metadata } : {};
     if (!student.metadata) {
       student.metadata = {};
     }
     delete student.metadata.lastNudgeShown;
 
-    // Generate nudge
     let nudge = await generateNudge(studentId);
 
-    // Restore metadata
     student.metadata = originalMetadata;
 
-    // If no nudge generated (risk too low), force a general encouragement
-    if (!nudge) {
+    if (!nudge || messages) {
       const {
-        getAgeGroup,
         selectTemplate,
         findCelebrationPoint,
         replacePlaceholders,
@@ -65,16 +54,47 @@ export async function POST(request: NextRequest) {
       );
 
       const risk = await assessRisk(student);
-      const template = selectTemplate(student, "general_encouragement", risk);
-      const celebrationPoint = findCelebrationPoint(student);
 
-      let celebration = celebrationPoint || template.messages.celebration || "";
-      celebration = replacePlaceholders(celebration, student);
-      const encouragement = replacePlaceholders(
-        template.messages.encouragement,
-        student
-      );
-      const cta = replacePlaceholders(template.messages.cta, student);
+      let celebration = "";
+      let encouragement = "";
+      let cta = "";
+
+      if (messages && messages.length > 0) {
+        const lastMessages = messages.slice(-5);
+        const currentTopic = extractTopicFromMessages(lastMessages);
+
+        celebration = currentTopic
+          ? `Great work on ${currentTopic}! 🎉`
+          : findCelebrationPoint(student) || "You're doing awesome! 🌟";
+
+        if (student.age <= 11) {
+          encouragement = currentTopic
+            ? `Learning about ${currentTopic} is super cool! Keep asking questions! 💪`
+            : "You're such a curious learner! Keep it up! 🚀";
+          cta = "Want to learn more fun stuff?";
+        } else if (student.age <= 14) {
+          encouragement = currentTopic
+            ? `${currentTopic} can be challenging, but you're getting the hang of it!`
+            : "You're making great progress in your learning journey!";
+          cta = "Ready to tackle the next challenge?";
+        } else {
+          encouragement = currentTopic
+            ? `Your understanding of ${currentTopic} is developing well. Keep building on this foundation.`
+            : "You're demonstrating strong engagement with the material.";
+          cta = "Continue exploring this topic?";
+        }
+      } else {
+        const template = selectTemplate(student, "general_encouragement", risk);
+        const celebrationPoint = findCelebrationPoint(student);
+
+        celebration = celebrationPoint || template.messages.celebration || "";
+        celebration = replacePlaceholders(celebration, student);
+        encouragement = replacePlaceholders(
+          template.messages.encouragement,
+          student
+        );
+        cta = replacePlaceholders(template.messages.cta, student);
+      }
 
       nudge = {
         id: `nudge-demo-${Date.now()}`,
@@ -98,4 +118,28 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function extractTopicFromMessages(messages: any[]): string | null {
+  if (!messages || messages.length === 0) return null;
+
+  const lastAIMessage = messages.reverse().find(m => m.speaker === "ai");
+  if (!lastAIMessage) return null;
+
+  const text = lastAIMessage.message.toLowerCase();
+
+  const mathTopics = ["fractions", "algebra", "geometry", "calculus", "math", "equation", "derivative", "integral"];
+  const scienceTopics = ["photosynthesis", "cell", "biology", "chemistry", "physics", "science"];
+  const englishTopics = ["metaphor", "writing", "essay", "reading", "grammar", "literature"];
+  const historyTopics = ["history", "civil war", "world war", "revolution"];
+
+  const allTopics = [...mathTopics, ...scienceTopics, ...englishTopics, ...historyTopics];
+
+  for (const topic of allTopics) {
+    if (text.includes(topic)) {
+      return topic.charAt(0).toUpperCase() + topic.slice(1);
+    }
+  }
+
+  return null;
 }

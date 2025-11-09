@@ -3,109 +3,38 @@
   "name": "Mia",
   "age": 14,
   "grade": 9,
-  "goals": [
-    {
-      "id": "goal-mia-algebra",
-      "subject": "Algebra II",
-      "targetCompletion": "2026-01-15T00:00:00Z",
-      "progress": 28,
-      "topics": [
-        {
-          "name": "Quadratic Equations",
-          "progress": 35,
-          "lastPracticed": "2025-11-02T14:00:00Z"
-        },
-        {
-          "name": "Functions",
-          "progress": 25,
-          "lastPracticed": "2025-11-01T10:30:00Z"
-        },
-        {
-          "name": "Polynomials",
-          "progress": 20,
-          "lastPracticed": "2025-10-31T13:45:00Z"
-        }
-      ]
-    },
-    {
-      "id": "goal-mia-biology",
-      "subject": "Biology",
-      "targetCompletion": "2026-01-20T00:00:00Z",
-      "progress": 22,
-      "topics": [
-        {
-          "name": "Cell Structure",
-          "progress": 30,
-          "lastPracticed": "2025-11-02T15:30:00Z"
-        },
-        {
-          "name": "Photosynthesis",
-          "progress": 18,
-          "lastPracticed": "2025-11-01T11:00:00Z"
-        },
-        {
-          "name": "Cellular Respiration",
-          "progress": 15,
-          "lastPracticed": "2025-10-31T14:15:00Z"
-        }
-      ]
-    }
-  ],
-  "sessions": [
-    "session-mia-1",
-    "session-mia-2"
-  ],
+  "goals": [],
+  "sessions": [],
   "taskHistory": [],
   "streaks": {
     "login": {
       "current": 0,
-      "longest": 2,
-      "lastDate": "2025-11-02T00:00:00Z"
+      "longest": 0,
+      "lastDate": null
     },
     "practice": {
       "current": 0,
-      "longest": 1,
-      "lastDate": "2025-11-02T00:00:00Z"
+      "longest": 0,
+      "lastDate": null
     },
     "current": 0,
-    "longest": 2,
-    "lastActiveDate": "2025-11-02T00:00:00Z"
+    "longest": 0,
+    "lastActiveDate": null
   },
-  "achievements": [
-    "first_steps"
-  ],
-  "totalPoints": 10,
-  "churnRisk": true,
+  "achievements": [],
+  "totalPoints": 0,
+  "churnRisk": false,
   "preferences": {
-    "aiColor": "#CFBAF0",
+    "aiColor": "#A855F7",
     "notificationEnabled": true,
     "reminderTime": "17:00",
-    "hasCompletedOnboarding": true
+    "hasCompletedOnboarding": false
   },
   "friendConnections": [],
   "messagesSentToday": 0,
-  "questionsAsked": 7,
-  "totalConversations": 4,
-  "createdAt": "2025-10-31T00:00:00Z",
-  "lastLoginAt": "2025-11-09T02:11:01.041Z",
-  "metadata": {
-    "lastNudgeShown": "2025-11-09T02:11:58.835Z",
-    "lastNudgeId": "nudge-1762654318810-78qoad4",
-    "nudgeHistory": [
-      {
-        "id": "nudge-1762654318810-78qoad4",
-        "type": "nudge",
-        "shownAt": "2025-11-09T02:12:09.430Z",
-        "action": "accepted",
-        "actionAt": "2025-11-09T02:12:09.430Z"
-      },
-      {
-        "id": "nudge-demo-1762654614261",
-        "type": "nudge",
-        "shownAt": "2025-11-09T02:17:08.098Z",
-        "action": "dismissed",
-        "actionAt": "2025-11-09T02:17:08.098Z"
-      }
-    ]
-  }
+  "questionsAsked": 0,
+  "totalConversations": 0,
+  "createdAt": "2025-11-08T00:00:00Z",
+  "lastLoginAt": null,
+  "metadata": {}
 }
