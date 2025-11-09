@@ -91,3 +91,16 @@ bun run verify-openai # Test OpenAI connection
 ## License
 
 Proprietary - Gauntlet Project
+
+---
+
+## About
+
+Made with 🍵 by **[Nani Skinner](https://www.naniskinner.com)**
+
+**Connect:**
+- Portfolio: [naniskinner.com](https://www.naniskinner.com)
+- X (Twitter): [@naniskinner](https://x.com/naniskinner)
+- LinkedIn: [Nani Skinner](https://www.linkedin.com/in/nani-skinner-7b6b17324/)
+
+This project was created as part of the Gauntlet program.
