@@ -56,9 +56,15 @@ export const authService = {
    * Logout current student
    * Clears session and redirects to login
    */
-  logout: (): void => {
+  logout: (clearMessages?: () => void): void => {
     if (typeof window !== "undefined") {
       localStorage.removeItem(STORAGE_KEY);
+
+      // Clear chat messages from store if provided
+      if (clearMessages) {
+        clearMessages();
+      }
+
       window.location.href = "/login";
     }
   },

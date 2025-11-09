@@ -25,6 +25,7 @@ import {
   shouldSuggestTopicSwitch,
   getAgeAppropriateReason,
 } from "@/lib/services/topicSwitchService";
+import { authService } from "@/lib/services/authService";
 
 export default function LearnPage() {
   return (
@@ -39,6 +40,7 @@ function LearnPageContent() {
   const currentStudent = useAppStore((state) => state.currentStudent);
   const messages = useAppStore((state) => state.messages);
   const addMessage = useAppStore((state) => state.addMessage);
+  const clearMessages = useAppStore((state) => state.clearMessages);
   const isTyping = useAppStore((state) => state.isTyping);
   const setIsTyping = useAppStore((state) => state.setIsTyping);
   const setTasks = useAppStore((state) => state.setTasks);
@@ -594,7 +596,7 @@ function LearnPageContent() {
           studentName={currentStudent.name}
           streakStatus={streakStatus}
           totalPoints={totalPoints}
-          onLogoutClick={() => router.push("/")}
+          onLogoutClick={() => authService.logout(clearMessages)}
           onAchievementsClick={() => router.push("/achievements")}
           onFriendsClick={() => router.push("/friends")}
           onParentDashboardClick={() => router.push("/parent")}
