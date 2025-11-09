@@ -6,6 +6,7 @@ import {
   Indie_Flower,
 } from "next/font/google";
 import "./globals.css";
+import Footer from "./components/Footer";
 
 // Hand-lettered font for headings and playful emphasis
 const caveat = Caveat({
@@ -53,13 +54,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${patrickHand.variable} ${caveat.variable} ${comicNeue.variable} ${indieFlower.variable} font-sketch bg-doodle-cream`}
+        className={`${patrickHand.variable} ${caveat.variable} ${comicNeue.variable} ${indieFlower.variable} font-sketch bg-doodle-cream flex flex-col min-h-screen`}
       >
         {/* Skip to main content link for keyboard navigation */}
         <a href="#main-content" className="skip-to-main">
           Skip to main content
         </a>
-        {children}
+        <div className="flex-1">{children}</div>
+        <Footer />
       </body>
     </html>
   );

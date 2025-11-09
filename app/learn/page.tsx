@@ -628,7 +628,7 @@ function LearnPageContent() {
             aria-label="Learning conversation area"
           >
             {!showChat ? (
-              <div className="text-center px-4">
+              <div className="text-center px-4 w-full flex flex-col items-center">
                 <div className="mb-4 md:mb-8">
                   <div
                     role="button"
