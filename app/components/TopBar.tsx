@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { SketchButton } from "./ui/SketchButton";
 import { StreakCounter, StreakDetail } from "./streaks";
 import { StreakStatus } from "@/lib/services/streakService";
+import { Tooltip } from "./ui/Tooltip";
 
 interface TopBarProps {
   studentName: string;
@@ -14,6 +15,7 @@ interface TopBarProps {
   onLogoutClick?: () => void;
   onAchievementsClick?: () => void;
   onFriendsClick?: () => void;
+  onParentDashboardClick?: () => void;
   onTestNudge?: () => void;
   onTestBooking?: () => void;
 }
@@ -26,6 +28,7 @@ export default function TopBar({
   onLogoutClick,
   onAchievementsClick,
   onFriendsClick,
+  onParentDashboardClick,
   onTestNudge,
   onTestBooking,
 }: TopBarProps) {
@@ -111,88 +114,94 @@ export default function TopBar({
         <div className="flex items-center space-x-4">
           {/* Points Badge */}
           {totalPoints > 0 && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="px-4 py-2 bg-doodle-yellow rounded-full border-2 border-doodle-sketch"
-              style={{ transform: "rotate(1deg)" }}
-            >
-              <span className="font-hand text-lg font-bold text-doodle-sketch">
-                {totalPoints} 🌟
-              </span>
-            </motion.div>
+            <Tooltip label="Total Points">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="px-4 py-2 bg-doodle-yellow rounded-full border-2 border-doodle-sketch"
+                style={{ transform: "rotate(1deg)" }}
+              >
+                <span className="font-hand text-lg font-bold text-doodle-sketch">
+                  {totalPoints} 🌟
+                </span>
+              </motion.div>
+            </Tooltip>
           )}
 
           {/* Streak Counter - New Component */}
           {streakStatus.best.current > 0 && (
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 200, damping: 15 }}
-            >
-              <StreakCounter
-                currentStreak={streakStatus.best.current}
-                streakType={streakStatus.best.type}
-                onClick={() => setShowStreakModal(true)}
-              />
-            </motion.div>
+            <Tooltip label="Learning Streak">
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+              >
+                <StreakCounter
+                  currentStreak={streakStatus.best.current}
+                  streakType={streakStatus.best.type}
+                  onClick={() => setShowStreakModal(true)}
+                />
+              </motion.div>
+            </Tooltip>
+          )}
+
+          {/* Parent Dashboard Button */}
+          {onParentDashboardClick && (
+            <Tooltip label="Parent Hub">
+              <motion.button
+                onClick={onParentDashboardClick}
+                className="p-3 bg-white border-2 border-doodle-sketch rounded-full"
+                style={{ transform: "rotate(1deg)" }}
+                whileHover={{
+                  scale: 1.1,
+                  rotate: -5,
+                  boxShadow: "3px 3px 0px var(--doodle-sketch)",
+                }}
+                whileTap={{ scale: 0.9 }}
+                aria-label="Parent Dashboard"
+              >
+                <span className="text-2xl">📊</span>
+              </motion.button>
+            </Tooltip>
           )}
 
           {/* Friends Button */}
           {onFriendsClick && (
-            <motion.button
-              onClick={onFriendsClick}
-              className="p-3 bg-white border-2 border-doodle-sketch rounded-full"
-              style={{ transform: "rotate(2deg)" }}
-              whileHover={{
-                scale: 1.1,
-                rotate: -5,
-                boxShadow: "3px 3px 0px var(--doodle-sketch)",
-              }}
-              whileTap={{ scale: 0.9 }}
-              aria-label="View Friends"
-            >
-              <span className="text-2xl">👥</span>
-            </motion.button>
+            <Tooltip label="Friends">
+              <motion.button
+                onClick={onFriendsClick}
+                className="p-3 bg-white border-2 border-doodle-sketch rounded-full"
+                style={{ transform: "rotate(2deg)" }}
+                whileHover={{
+                  scale: 1.1,
+                  rotate: -5,
+                  boxShadow: "3px 3px 0px var(--doodle-sketch)",
+                }}
+                whileTap={{ scale: 0.9 }}
+                aria-label="View Friends"
+              >
+                <span className="text-2xl">👥</span>
+              </motion.button>
+            </Tooltip>
           )}
 
           {/* Achievements Button */}
-          <motion.button
-            onClick={onAchievementsClick}
-            className="p-3 bg-white border-2 border-doodle-sketch rounded-full"
-            style={{ transform: "rotate(-1deg)" }}
-            whileHover={{
-              scale: 1.1,
-              rotate: 5,
-              boxShadow: "3px 3px 0px var(--doodle-sketch)",
-            }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="View Achievements"
-          >
-            <span className="text-2xl">🏆</span>
-          </motion.button>
-
-          {/* Settings Button - Doodle Style */}
-          <motion.button
-            onClick={onSettingsClick}
-            className="p-3 bg-white border-2 border-doodle-sketch rounded-full"
-            style={{ transform: "rotate(1deg)" }}
-            whileHover={{
-              scale: 1.1,
-              rotate: 10,
-              boxShadow: "3px 3px 0px var(--doodle-sketch)",
-            }}
-            whileTap={{ scale: 0.9, rotate: -10 }}
-            aria-label="Settings"
-          >
-            <motion.span
-              className="text-2xl"
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 3, repeat: Infinity, repeatDelay: 5 }}
+          <Tooltip label="Achievements">
+            <motion.button
+              onClick={onAchievementsClick}
+              className="p-3 bg-white border-2 border-doodle-sketch rounded-full"
+              style={{ transform: "rotate(-1deg)" }}
+              whileHover={{
+                scale: 1.1,
+                rotate: 5,
+                boxShadow: "3px 3px 0px var(--doodle-sketch)",
+              }}
+              whileTap={{ scale: 0.9 }}
+              aria-label="View Achievements"
             >
-              ⚙️
-            </motion.span>
-          </motion.button>
+              <span className="text-2xl">🏆</span>
+            </motion.button>
+          </Tooltip>
 
           {/* Logout Button - Sketch Button */}
           <SketchButton variant="ghost" size="medium" onClick={onLogoutClick}>

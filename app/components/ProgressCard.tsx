@@ -9,13 +9,11 @@ import { CircularProgress } from "./ui/CircularProgress";
 interface ProgressCardProps {
   goals: Goal[];
   studentAge: number;
-  streakDays?: number;
 }
 
 export default function ProgressCard({
   goals,
   studentAge,
-  streakDays = 0,
 }: ProgressCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -58,37 +56,21 @@ export default function ProgressCard({
           </h3>
         </div>
 
-        <div className="flex items-center space-x-4">
-          {streakDays > 0 && (
-            <motion.div
-              className="flex items-center space-x-2 px-4 py-2 bg-doodle-orange rounded-full border-2 border-doodle-sketch"
-              style={{ transform: "rotate(-2deg)" }}
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <span className="text-2xl">🔥</span>
-              <span className="font-hand font-bold text-white text-lg">
-                {streakDays} day{streakDays > 1 ? "s" : ""}
-              </span>
-            </motion.div>
-          )}
-
-          <motion.svg
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="w-6 h-6 text-doodle-sketch"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            strokeWidth={3}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19 9l-7 7-7-7"
-            />
-          </motion.svg>
-        </div>
+        <motion.svg
+          animate={{ rotate: isExpanded ? 180 : 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="w-6 h-6 text-doodle-sketch"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          strokeWidth={3}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19 9l-7 7-7-7"
+          />
+        </motion.svg>
       </motion.button>
 
       {/* Content - Circular Progress Rings */}

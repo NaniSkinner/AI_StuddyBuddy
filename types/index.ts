@@ -2,6 +2,7 @@
 export * from "./achievement";
 export * from "./booking";
 export * from "./context";
+export * from "./export";
 export * from "./friendConnection";
 export * from "./goal";
 export * from "./message";

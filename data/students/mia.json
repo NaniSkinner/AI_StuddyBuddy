@@ -51,7 +51,10 @@
       ]
     }
   ],
-  "sessions": ["session-mia-1", "session-mia-2"],
+  "sessions": [
+    "session-mia-1",
+    "session-mia-2"
+  ],
   "taskHistory": [],
   "streaks": {
     "login": {
@@ -68,20 +71,41 @@
     "longest": 2,
     "lastActiveDate": "2025-11-02T00:00:00Z"
   },
-  "achievements": ["first_steps"],
+  "achievements": [
+    "first_steps"
+  ],
   "totalPoints": 10,
   "churnRisk": true,
   "preferences": {
-    "aiColor": "#EC4899",
+    "aiColor": "#CFBAF0",
     "notificationEnabled": true,
     "reminderTime": "17:00",
-    "hasCompletedOnboarding": false
+    "hasCompletedOnboarding": true
   },
   "friendConnections": [],
   "messagesSentToday": 0,
   "questionsAsked": 7,
   "totalConversations": 4,
   "createdAt": "2025-10-31T00:00:00Z",
-  "lastLoginAt": "2025-11-07T22:12:44.464Z",
-  "metadata": {}
+  "lastLoginAt": "2025-11-09T02:11:01.041Z",
+  "metadata": {
+    "lastNudgeShown": "2025-11-09T02:11:58.835Z",
+    "lastNudgeId": "nudge-1762654318810-78qoad4",
+    "nudgeHistory": [
+      {
+        "id": "nudge-1762654318810-78qoad4",
+        "type": "nudge",
+        "shownAt": "2025-11-09T02:12:09.430Z",
+        "action": "accepted",
+        "actionAt": "2025-11-09T02:12:09.430Z"
+      },
+      {
+        "id": "nudge-demo-1762654614261",
+        "type": "nudge",
+        "shownAt": "2025-11-09T02:17:08.098Z",
+        "action": "dismissed",
+        "actionAt": "2025-11-09T02:17:08.098Z"
+      }
+    ]
+  }
 }

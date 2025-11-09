@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppStore } from "@/lib/store/appStore";
@@ -14,7 +14,8 @@ import AchievementBadges from "@/app/components/AchievementBadges";
 import NudgePopup from "@/app/components/retention/NudgePopup";
 import BookingInterface from "@/app/components/booking/BookingInterface";
 import AISuggestedSwitch from "@/app/components/AISuggestedSwitch";
-import { Message, ACHIEVEMENT_DEFINITIONS, Tutor, Goal } from "@/types";
+import TaskDetailModal from "@/app/components/TaskDetailModal";
+import { Message, ACHIEVEMENT_DEFINITIONS, Tutor, Goal, Task } from "@/types";
 import {
   getStreakStatus,
   StreakStatus,
@@ -79,6 +80,13 @@ function LearnPageContent() {
   const [lastSuggestionTime, setLastSuggestionTime] = useState<number | null>(null);
   const [declinedGoalIds, setDeclinedGoalIds] = useState<string[]>([]);
   const [currentGoalId, setCurrentGoalId] = useState<string | null>(null);
+
+  // Task modal state
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [showTaskModal, setShowTaskModal] = useState(false);
+
+  // Track if welcome message has been shown
+  const hasShownWelcome = useRef(false);
 
   // Mock tasks based on student
   const getMockTasks = () => {
@@ -269,14 +277,15 @@ function LearnPageContent() {
           setCurrentGoalId(currentStudent!.goals[0].id);
         }
 
-        // Add welcome message
-        if (messages.length === 0 && currentStudent) {
+        // Add welcome message (only once)
+        if (!hasShownWelcome.current && messages.length === 0 && currentStudent) {
           const welcomeMessage: Message = {
             speaker: "ai",
             message: `Hi ${currentStudent.name}! Welcome back! I'm here to help you learn. What would you like to work on today?`,
             timestamp: new Date().toISOString(),
           };
           addMessage(welcomeMessage);
+          hasShownWelcome.current = true;
         }
 
         setLoading(false);
@@ -429,6 +438,43 @@ function LearnPageContent() {
     setTopicSuggestion(null);
   };
 
+  // Task handlers
+  const handleTaskClick = (task: Task) => {
+    setSelectedTask(task);
+    setShowTaskModal(true);
+  };
+
+  const handleTaskSubmit = (task: Task, answer: string) => {
+    console.log("Task submitted:", task.id, "Answer:", answer);
+    // TODO: Send to backend API for grading
+    // For now, just show a success message and close modal
+    setShowTaskModal(false);
+    setSelectedTask(null);
+
+    // Show a success message in chat
+    const successMessage: Message = {
+      speaker: "tutor",
+      message: `Great job submitting your ${task.subject} task! I'll review your answer and get back to you soon. 🎉`,
+      timestamp: new Date().toISOString(),
+    };
+    addMessage(successMessage);
+  };
+
+  const handleTaskComplete = (task: Task) => {
+    console.log("Task marked complete:", task.id);
+    // TODO: Update task status in backend
+    setShowTaskModal(false);
+    setSelectedTask(null);
+
+    // Show a completion message
+    const completeMessage: Message = {
+      speaker: "tutor",
+      message: `Awesome! You've completed the ${task.subject} task. Keep up the excellent work! 🌟`,
+      timestamp: new Date().toISOString(),
+    };
+    addMessage(completeMessage);
+  };
+
   const handleSendMessage = async (messageText: string) => {
     if (!currentStudent || !messageText.trim()) return;
 
@@ -534,6 +580,7 @@ function LearnPageContent() {
           onLogoutClick={() => router.push("/")}
           onAchievementsClick={() => router.push("/achievements")}
           onFriendsClick={() => router.push("/friends")}
+          onParentDashboardClick={() => router.push("/parent")}
           onTestNudge={forceCheckNudge}
           onTestBooking={handleTestBooking}
         />
@@ -551,11 +598,6 @@ function LearnPageContent() {
             <ProgressCard
               goals={currentStudent.goals}
               studentAge={currentStudent.age}
-              streakDays={
-                currentStudent.streaks.login?.current ||
-                currentStudent.streaks.current ||
-                0
-              }
             />
           </div>
         </div>
@@ -639,7 +681,7 @@ function LearnPageContent() {
           {/* Right Side - Task Sidebar & Achievements (Desktop & Tablet) */}
           {showTaskSidebar && (
             <aside
-              className="hidden md:flex w-full md:w-80 lg:w-[450px] bg-doodle-cream flex-col overflow-hidden border-l-2 border-doodle-sketch"
+              className="hidden md:flex w-full md:w-80 lg:w-[450px] bg-doodle-cream flex-col overflow-hidden"
               role="complementary"
               aria-label="Tasks and achievements sidebar"
             >
@@ -689,15 +731,14 @@ function LearnPageContent() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="overflow-hidden bg-white"
+                      className="bg-white overflow-y-auto"
+                      style={{ maxHeight: "50vh" }}
                       role="region"
                     >
-                      <div className="p-3 md:p-4 bg-white max-h-[300px] md:max-h-[400px] overflow-y-auto">
+                      <div className="p-3 md:p-4 bg-white">
                         <TaskSidebar
                           tasks={getMockTasks()}
-                          onTaskClick={(task) =>
-                            console.log("Task clicked:", task.id)
-                          }
+                          onTaskClick={handleTaskClick}
                         />
                       </div>
                     </motion.div>
@@ -750,10 +791,11 @@ function LearnPageContent() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="overflow-hidden bg-white"
+                      className="bg-white overflow-y-auto"
+                      style={{ maxHeight: "50vh" }}
                       role="region"
                     >
-                      <div className="p-3 md:p-4 bg-white max-h-[300px] md:max-h-[400px] overflow-y-auto">
+                      <div className="p-3 md:p-4 bg-white">
                         <h4
                           className="text-lg md:text-xl lg:text-2xl font-hand font-bold text-doodle-sketch mb-3 md:mb-4 text-center"
                           id="unlocked-badges-heading"
@@ -817,11 +859,6 @@ function LearnPageContent() {
           <ProgressCard
             goals={currentStudent.goals}
             studentAge={currentStudent.age}
-            streakDays={
-              currentStudent.streaks.login?.current ||
-              currentStudent.streaks.current ||
-              0
-            }
           />
         </div>
       </footer>
@@ -853,6 +890,19 @@ function LearnPageContent() {
             setBookingData(null);
           }}
           onBookingComplete={handleBookingComplete}
+        />
+      )}
+
+      {/* Task Detail Modal */}
+      {showTaskModal && selectedTask && (
+        <TaskDetailModal
+          task={selectedTask}
+          onClose={() => {
+            setShowTaskModal(false);
+            setSelectedTask(null);
+          }}
+          onSubmit={handleTaskSubmit}
+          onMarkComplete={handleTaskComplete}
         />
       )}
     </div>
