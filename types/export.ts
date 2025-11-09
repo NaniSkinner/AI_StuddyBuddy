@@ -30,7 +30,7 @@ export interface ExportedSession {
 }
 
 export interface TranscriptEntry {
-  speaker: "tutor" | "student";
+  speaker: "tutor" | "student" | "ai";
   message: string;
   timestamp: string;
 }
