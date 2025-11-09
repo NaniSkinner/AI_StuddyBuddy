@@ -143,6 +143,8 @@ function ParentDashboardContent() {
   }
 
   async function loadPreview() {
+    if (!currentStudent) return;
+    
     setLoading(true);
     try {
       const res = await fetch(
@@ -160,6 +162,8 @@ function ParentDashboardContent() {
   }
 
   async function handleExport() {
+    if (!currentStudent) return;
+    
     setLoading(true);
     try {
       const res = await fetch("/api/export/conversations", {
@@ -225,7 +229,7 @@ function ParentDashboardContent() {
                 Parent Dashboard
               </h1>
               <p className="font-['Architects_Daughter'] text-lg text-gray-600">
-                Review {currentStudent.name}&apos;s learning progress
+                Review {currentStudent?.name}&apos;s learning progress
               </p>
             </div>
             <motion.button
