@@ -302,12 +302,12 @@ export async function getFriendActivity(
       }
 
       // Current streaks
-      if (friend.streaks.current >= 3) {
+      if ((friend.streaks.current || 0) >= 3) {
         activities.push({
           friendId,
           friendName: friend.name,
-          activity: `On a ${friend.streaks.current}-day streak!`,
-          timestamp: new Date(friend.streaks.lastActiveDate),
+          activity: `On a ${friend.streaks.current || 0}-day streak!`,
+          timestamp: new Date(friend.streaks.lastActiveDate || new Date()),
           type: "streak",
         });
       }
@@ -409,7 +409,7 @@ export async function getAvailableAnimations(
         isUnlocked = student.sessions.length >= 5;
       }
       if (condition.includes("3-day streak")) {
-        isUnlocked = student.streaks.longest >= 3;
+        isUnlocked = (student.streaks.longest || 0) >= 3;
       }
 
       return { ...preset, isLocked: !isUnlocked };
