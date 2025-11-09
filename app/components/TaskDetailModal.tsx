@@ -216,7 +216,7 @@ export default function TaskDetailModal({
             )}
 
             {/* Hint Section (if available) */}
-            {task.content.hint && !isComplete && (
+            {task.content.hints && task.content.hints.length > 0 && !isComplete && (
               <details className="group">
                 <summary className="cursor-pointer list-none">
                   <div className="bg-doodle-yellow p-4 rounded-xl border-2 border-doodle-sketch flex items-center justify-between hover:shadow-[4px_4px_0px_rgba(0,0,0,0.15)] transition-all">
@@ -240,9 +240,11 @@ export default function TaskDetailModal({
                   animate={{ height: "auto", opacity: 1 }}
                   className="mt-2 p-4 bg-white rounded-xl border-2 border-doodle-sketch"
                 >
-                  <p className="font-sketch text-doodle-sketch text-sm">
-                    {task.content.hint}
-                  </p>
+                  {task.content.hints.map((hint, index) => (
+                    <p key={index} className="font-sketch text-doodle-sketch text-sm mb-2 last:mb-0">
+                      {hint}
+                    </p>
+                  ))}
                 </motion.div>
               </details>
             )}
