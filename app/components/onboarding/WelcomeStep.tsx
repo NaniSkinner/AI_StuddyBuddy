@@ -8,10 +8,6 @@ interface WelcomeStepProps {
   onSkip: () => void;
 }
 
-/**
- * Welcome Step Component
- * First step of onboarding - introduces the AI character and platform
- */
 export default function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
   return (
     <motion.div
@@ -20,7 +16,6 @@ export default function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.8 }}
     >
-      {/* AI Character */}
       <motion.div
         animate={{
           y: [0, -10, 0],
@@ -34,7 +29,6 @@ export default function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
         <AnimatedBubble state="celebrating" size={150} />
       </motion.div>
 
-      {/* Speech Bubble */}
       <motion.div
         className="speech-bubble"
         initial={{ scale: 0, y: 20 }}
@@ -45,13 +39,12 @@ export default function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
           Hi there! 👋
         </h2>
         <p className="font-sketch text-lg text-doodle-sketch">
-          I&apos;m your AI study buddy! Let&apos;s make learning fun together! I&apos;ll
-          remember everything you learn and help you practice between your
-          tutoring sessions.
+          I&apos;m your AI study buddy! Let&apos;s make learning fun together!
+          I&apos;ll remember everything you learn and help you practice between
+          your tutoring sessions.
         </p>
       </motion.div>
 
-      {/* Primary CTA */}
       <motion.button
         className="sketch-button sketch-button--primary px-8 py-4 text-xl"
         onClick={() => onNext()}
@@ -64,7 +57,6 @@ export default function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
         Let&apos;s go! →
       </motion.button>
 
-      {/* Skip Link */}
       <motion.button
         className="text-sm text-doodle-sketch opacity-50 hover:opacity-100 transition-opacity underline"
         onClick={onSkip}

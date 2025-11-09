@@ -17,7 +17,6 @@ export default function ProgressCard({
 }: ProgressCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  // Get emoji for subject
   const getSubjectEmoji = (subject: string): string => {
     const lower = subject.toLowerCase();
     if (lower.includes("reading") || lower.includes("literature")) return "📚";
@@ -36,7 +35,6 @@ export default function ProgressCard({
       transition={{ type: "spring", stiffness: 200 }}
       className="doodle-card mb-6 overflow-visible"
     >
-      {/* Header - Doodle Style */}
       <motion.button
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full px-6 py-4 flex items-center justify-between transition-colors"
@@ -73,7 +71,6 @@ export default function ProgressCard({
         </motion.svg>
       </motion.button>
 
-      {/* Content - Circular Progress Rings */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -95,7 +92,6 @@ export default function ProgressCard({
                   variants={staggerItemVariant}
                   className="flex flex-col items-center space-y-4"
                 >
-                  {/* Circular Progress Ring */}
                   <CircularProgress
                     progress={goal.progress}
                     size={150}
@@ -105,7 +101,6 @@ export default function ProgressCard({
                     animated={true}
                   />
 
-                  {/* Sub-topics as mini badges */}
                   <div className="flex flex-wrap gap-2 justify-center max-w-[200px]">
                     {goal.topics.slice(0, 3).map((topic, topicIndex) => (
                       <motion.div
@@ -132,7 +127,6 @@ export default function ProgressCard({
                     ))}
                   </div>
 
-                  {/* Status Badge */}
                   {goal.progress >= 90 && (
                     <motion.div
                       initial={{ scale: 0, rotate: -180 }}

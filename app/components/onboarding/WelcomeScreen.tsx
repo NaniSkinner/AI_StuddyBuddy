@@ -26,7 +26,6 @@ export default function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
         transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
         className="max-w-2xl w-full doodle-card p-12 text-center"
       >
-        {/* Animated AI Bubble */}
         <div className="flex justify-center mb-8">
           <motion.div
             animate={{
@@ -42,7 +41,6 @@ export default function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
           </motion.div>
         </div>
 
-        {/* Welcome Text - Doodle Style */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -66,7 +64,6 @@ export default function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
           you grow between tutoring sessions.
         </motion.p>
 
-        {/* Features - Doodle Style */}
         <motion.div
           variants={staggerContainerVariant}
           initial="hidden"
@@ -118,7 +115,6 @@ export default function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
           ))}
         </motion.div>
 
-        {/* Get Started Button - Sketch Style */}
         <motion.button
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

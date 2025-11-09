@@ -43,12 +43,11 @@ function ParentDashboardContent() {
 
   function generateSessionSummary(session: any): string {
     const topics = session.topicsCovered.join(", ");
-    const studentMessages = session.transcript?.filter(
-      (t: any) => t.speaker === "student"
-    ).length || 0;
-    const tutorMessages = session.transcript?.filter(
-      (t: any) => t.speaker === "tutor"
-    ).length || 0;
+    const studentMessages =
+      session.transcript?.filter((t: any) => t.speaker === "student").length ||
+      0;
+    const tutorMessages =
+      session.transcript?.filter((t: any) => t.speaker === "tutor").length || 0;
 
     let summary = `This session focused on ${topics}. `;
     summary += `The conversation included ${studentMessages} student responses and ${tutorMessages} tutor prompts. `;
@@ -115,7 +114,9 @@ function ParentDashboardContent() {
           `Continue working on: ${session.strugglingConcepts.join(", ")}`
         );
       } else {
-        nextSteps.push(`Ready to advance to more complex concepts in ${session.topicsCovered[0]}`);
+        nextSteps.push(
+          `Ready to advance to more complex concepts in ${session.topicsCovered[0]}`
+        );
       }
     }
 
@@ -144,7 +145,7 @@ function ParentDashboardContent() {
 
   async function loadPreview() {
     if (!currentStudent) return;
-    
+
     setLoading(true);
     try {
       const res = await fetch(
@@ -163,7 +164,7 @@ function ParentDashboardContent() {
 
   async function handleExport() {
     if (!currentStudent) return;
-    
+
     setLoading(true);
     try {
       const res = await fetch("/api/export/conversations", {
@@ -557,12 +558,15 @@ function ParentDashboardContent() {
                 About Conversation Exports
               </p>
               <ul className="font-['Architects_Daughter'] text-sm text-blue-800 space-y-1">
-                <li>• All conversations include timestamp and topic information</li>
-                <li>• Tutor notes highlight key learning moments</li>
-                <li>• Exports are privacy-safe with no personal data leakage</li>
                 <li>
-                  • Use exports to track progress and identify areas for
-                  support
+                  • All conversations include timestamp and topic information
+                </li>
+                <li>• Tutor notes highlight key learning moments</li>
+                <li>
+                  • Exports are privacy-safe with no personal data leakage
+                </li>
+                <li>
+                  • Use exports to track progress and identify areas for support
                 </li>
               </ul>
             </div>

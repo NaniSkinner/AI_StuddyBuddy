@@ -89,7 +89,6 @@ export default function Tutorial({
           ))}
         </div>
 
-        {/* Animated Content */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={currentStep}
@@ -98,13 +97,11 @@ export default function Tutorial({
             exit={{ opacity: 0, x: -20 }}
             transition={{
               duration: 0.25,
-              ease: [0.4, 0, 0.2, 1], // Smooth ease
+              ease: [0.4, 0, 0.2, 1],
             }}
           >
-            {/* Icon */}
             <div className="text-7xl text-center mb-6">{step.icon}</div>
 
-            {/* Content */}
             <div>
               <h2 className="text-3xl font-hand font-bold text-doodle-sketch mb-4 text-center">
                 {step.title}
@@ -114,7 +111,6 @@ export default function Tutorial({
               </p>
             </div>
 
-            {/* Buttons - Doodle Style */}
             <div className="flex space-x-3">
               <motion.button
                 onClick={handleSkipClick}

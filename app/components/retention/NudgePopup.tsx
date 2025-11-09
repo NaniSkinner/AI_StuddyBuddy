@@ -21,28 +21,24 @@ export default function NudgePopup({
   const acceptButtonRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
-  // Store previous focus for restoration
   useEffect(() => {
     if (typeof window !== "undefined") {
       previousFocusRef.current = document.activeElement as HTMLElement;
     }
   }, []);
 
-  // Focus management - focus popup on mount
   useEffect(() => {
     if (acceptButtonRef.current) {
       acceptButtonRef.current.focus();
     }
 
     return () => {
-      // Restore focus on unmount
       if (previousFocusRef.current && typeof window !== "undefined") {
         previousFocusRef.current.focus();
       }
     };
   }, []);
 
-  // Handle Escape key with proper cleanup
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && !isClosing && !isLoading) {
@@ -55,7 +51,6 @@ export default function NudgePopup({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isClosing, isLoading]);
 
-  // Multi-tab sync - dismiss if dismissed in another tab
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -70,7 +65,7 @@ export default function NudgePopup({
   }, [nudge.id]);
 
   const handleAccept = useCallback(async () => {
-    if (isLoading || isClosing) return; // Prevent race conditions
+    if (isLoading || isClosing) return;
 
     setIsLoading(true);
     setIsClosing(true);
@@ -89,12 +84,11 @@ export default function NudgePopup({
       console.error("Error accepting nudge:", error);
       setIsLoading(false);
       setIsClosing(false);
-      // Show error to user (could add toast here)
     }
   }, [nudge.id, onAccept, isLoading, isClosing]);
 
   const handleDismiss = useCallback(async () => {
-    if (isLoading || isClosing) return; // Prevent race conditions
+    if (isLoading || isClosing) return;
 
     setIsLoading(true);
     setIsClosing(true);
@@ -122,7 +116,6 @@ export default function NudgePopup({
     }
   };
 
-  // Focus trap - keep focus within popup
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Tab" && popupRef.current) {
       const focusableElements = popupRef.current.querySelectorAll(
@@ -144,7 +137,6 @@ export default function NudgePopup({
     }
   };
 
-  // Validate nudge data (edge case: corrupted data)
   if (!nudge || !nudge.encouragement) {
     console.error("Invalid nudge data received:", nudge);
     return null;
@@ -154,7 +146,6 @@ export default function NudgePopup({
     <AnimatePresence>
       {!isClosing && (
         <>
-          {/* Backdrop */}
           <motion.div
             className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[9998]"
             initial={{ opacity: 0 }}
@@ -163,7 +154,6 @@ export default function NudgePopup({
             onClick={handleBackdropClick}
           />
 
-          {/* Popup */}
           <motion.div
             ref={popupRef}
             role="dialog"
@@ -194,7 +184,6 @@ export default function NudgePopup({
               transition: { duration: 0.2 },
             }}
           >
-            {/* AI Character - Floating Animation */}
             <motion.div
               className="flex justify-center mb-6"
               animate={{
@@ -216,9 +205,7 @@ export default function NudgePopup({
               </div>
             </motion.div>
 
-            {/* Messages */}
             <div className="space-y-4 mb-6 text-center">
-              {/* Celebration */}
               {nudge.celebration && (
                 <p
                   id="nudge-title"
@@ -228,7 +215,6 @@ export default function NudgePopup({
                 </p>
               )}
 
-              {/* Encouragement */}
               <p
                 id="nudge-description"
                 className="font-['Architects_Daughter'] text-md text-[#2D3748] leading-relaxed"
@@ -237,7 +223,6 @@ export default function NudgePopup({
               </p>
             </div>
 
-            {/* Actions */}
             <div className="flex flex-col gap-3">
               <motion.button
                 ref={acceptButtonRef}
@@ -274,7 +259,6 @@ export default function NudgePopup({
               </button>
             </div>
 
-            {/* Close Button */}
             <button
               className="absolute top-3 right-3 w-8 h-8
                        rounded-full bg-white border-2 border-[#2D3748]

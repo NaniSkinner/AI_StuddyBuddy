@@ -20,26 +20,19 @@ import {
   getSystemPromptCacheKey,
 } from "@/lib/utils/promptCache";
 
-// Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Maximum messages to keep in rolling window
 const MAX_CONTEXT_MESSAGES = 15;
 
-/**
- * Age-adapted system prompts (cached)
- */
 export function getSystemPrompt(student: Student): string {
-  // Check cache first
   const cacheKey = getSystemPromptCacheKey(student.id, student.age);
   const cached = systemPromptCache.get(cacheKey);
   if (cached) {
     return cached;
   }
 
-  // Generate prompt
   const ageGroup = determineAgeGroup(student.age);
 
   const basePrompt = `You are an AI study companion helping ${
@@ -68,7 +61,6 @@ Student's current goals: ${student.goals.map((g) => g.subject).join(", ")}
   let prompt: string;
 
   if (ageGroup === "child") {
-    // Ages 9-11: Simple, encouraging, lots of emojis
     prompt =
       basePrompt +
       `
@@ -82,7 +74,6 @@ Tone for ${student.name}:
 - Examples: "Great job! 🎉", "Let's try this together!", "You're doing awesome!"
 `;
   } else if (ageGroup === "teen") {
-    // Ages 12-14: Balanced, encourage self-reflection
     prompt =
       basePrompt +
       `
@@ -96,7 +87,6 @@ Tone for ${student.name}:
 - Examples: "That's a good start! What's your next step?", "Let's think about this together."
 `;
   } else {
-    // Ages 15-16: Academic, challenge thinking
     prompt =
       basePrompt +
       `
@@ -111,15 +101,11 @@ Tone for ${student.name}:
 `;
   }
 
-  // Cache the prompt
   systemPromptCache.set(cacheKey, prompt);
 
   return prompt;
 }
 
-/**
- * Enhanced system prompt builder using ConversationContext
- */
 export function buildSystemPromptWithContext(
   context: ConversationContext
 ): string {
@@ -135,7 +121,6 @@ export function buildSystemPromptWithContext(
   } = context;
   const ageGroup = determineAgeGroup(studentProfile.age);
 
-  // Base prompt with context
   const basePrompt = `You are an AI study companion helping ${
     studentProfile.name
   }, a ${studentProfile.age}-year-old student in grade ${studentProfile.grade}.
@@ -186,7 +171,6 @@ ${
 }
 `;
 
-  // Add recent session context if available
   let sessionContext = "";
   if (recentSessions.length > 0) {
     sessionContext = "\nRecent Tutoring Sessions:\n";
@@ -202,10 +186,8 @@ ${
     });
   }
 
-  // Age-specific adaptations
   let ageTone = "";
   if (ageGroup === "child") {
-    // Ages 9-11: Simple, encouraging, lots of emojis
     ageTone = `
 Tone for ${studentProfile.name}:
 - Use SIMPLE words and SHORT sentences
@@ -217,7 +199,6 @@ Tone for ${studentProfile.name}:
 - Examples: "Great job! 🎉", "Let's try this together!", "You're doing awesome!"
 `;
   } else if (ageGroup === "teen") {
-    // Ages 12-14: Balanced, encourage self-reflection
     ageTone = `
 Tone for ${studentProfile.name}:
 - Use clear language, not too childish or too academic
@@ -229,7 +210,6 @@ Tone for ${studentProfile.name}:
 - Examples: "That's a good start! What's your next step?", "Let's think about this together."
 `;
   } else {
-    // Ages 15-16: Academic, challenge thinking
     ageTone = `
 Tone for ${studentProfile.name}:
 - Use academic language appropriate for high school
@@ -245,9 +225,6 @@ Tone for ${studentProfile.name}:
   return basePrompt + sessionContext + ageTone;
 }
 
-/**
- * Summarize recent tutoring sessions concisely
- */
 export function summarizeRecentSessions(
   sessions: Session[],
   maxSessions: number = 3
@@ -268,16 +245,12 @@ export function summarizeRecentSessions(
   return summaries.join("\n");
 }
 
-/**
- * Build conversation context from history
- */
 export function buildContext(
   messages: Message[],
   recentSessions?: Session[]
 ): Message[] {
   const context: Message[] = [];
 
-  // Add session context if available
   if (recentSessions && recentSessions.length > 0) {
     const sessionSummary = summarizeRecentSessions(recentSessions, 2);
 
@@ -288,30 +261,19 @@ export function buildContext(
     });
   }
 
-  // Add recent messages (rolling window)
   const recentMessages = messages.slice(-MAX_CONTEXT_MESSAGES);
   context.push(...recentMessages);
 
   return context;
 }
 
-/**
- * Summarize older messages to save tokens (Enhanced)
- * Uses conversation analysis utilities for comprehensive summarization
- */
 export function summarizeOlderMessages(messages: Message[]): string {
   if (messages.length === 0) return "";
 
-  // Analyze the conversation
   const analysis = analyzeConversation(messages);
-
-  // Generate summary using analysis
   return generateSummary(analysis);
 }
 
-/**
- * Build complete conversation context for AI
- */
 export function buildConversationContext(
   student: Student,
   messages: Message[],
@@ -325,19 +287,15 @@ export function buildConversationContext(
     includeSummary = true,
   } = options;
 
-  // Build student profile
   const studentProfile: StudentProfile = {
     id: student.id,
     name: student.name,
     age: student.age,
     grade: student.grade,
-    // learningStyle is optional and not in current Student type
   };
 
-  // Get recent messages
   const recentMessages = messages.slice(-maxRecentMessages);
 
-  // Generate summary for older messages if needed
   let conversationSummary: string | undefined;
   if (includeSummary && messages.length > maxRecentMessages) {
     const olderMessages = messages.slice(
@@ -347,27 +305,22 @@ export function buildConversationContext(
     conversationSummary = summarizeOlderMessages(olderMessages);
   }
 
-  // Get recent sessions
   const limitedSessions = recentSessions.slice(0, maxRecentSessions);
 
-  // Extract struggling concepts from sessions
   const strugglingConcepts = Array.from(
     new Set(
       limitedSessions.flatMap((session) => session.strugglingConcepts || [])
     )
   );
 
-  // Extract mastered concepts from student goals
   const masteredConcepts = student.goals.flatMap((goal) =>
     goal.topics
       .filter((topic) => topic.progress >= 90)
       .map((topic) => topic.name)
   );
 
-  // Get active goals (not completed)
   const activeGoals = student.goals.filter((goal) => goal.progress < 100);
 
-  // Get current topic (most recently practiced)
   let currentTopic: string | undefined;
   const allTopics = student.goals.flatMap((goal) =>
     goal.topics.map((topic) => ({
@@ -388,7 +341,6 @@ export function buildConversationContext(
     currentTopic = sortedTopics[0]?.name;
   }
 
-  // Build recent progress updates (if includeProgress)
   const recentProgress = includeProgress
     ? student.goals.flatMap((goal) =>
         goal.topics
@@ -404,7 +356,6 @@ export function buildConversationContext(
       )
     : [];
 
-  // Analyze engagement and struggles from conversation
   const analysis = analyzeConversation(recentMessages);
 
   return {
@@ -422,9 +373,6 @@ export function buildConversationContext(
   };
 }
 
-/**
- * Generate AI response using OpenAI
- */
 export async function generateAIResponse(
   student: Student,
   messages: Message[],
@@ -435,10 +383,8 @@ export async function generateAIResponse(
   let errorCode: string | undefined;
 
   try {
-    // Build context
     const contextMessages = buildContext(messages, recentSessions);
 
-    // Prepare messages for OpenAI
     const openAIMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       {
         role: "system",
@@ -446,7 +392,6 @@ export async function generateAIResponse(
       },
     ];
 
-    // Add older message summary if we have many messages
     if (messages.length > MAX_CONTEXT_MESSAGES) {
       const summary = summarizeOlderMessages(
         messages.slice(0, messages.length - MAX_CONTEXT_MESSAGES)
@@ -457,7 +402,6 @@ export async function generateAIResponse(
       });
     }
 
-    // Add context messages
     contextMessages.forEach((msg) => {
       openAIMessages.push({
         role: msg.speaker === "student" ? "user" : "assistant",
@@ -469,7 +413,6 @@ export async function generateAIResponse(
     const maxTokens = parseInt(process.env.OPENAI_MAX_TOKENS || "500");
     const temperature = parseFloat(process.env.OPENAI_TEMPERATURE || "0.7");
 
-    // Call OpenAI with retry logic
     const completion = await withRetry(
       async () => {
         return await openai.chat.completions.create({
@@ -485,13 +428,11 @@ export async function generateAIResponse(
     const response =
       completion.choices[0]?.message?.content || "I'm here to help!";
 
-    // Content safety check
     const contentCheck = checkContent(response, student.age);
     if (!contentCheck.isAllowed) {
       return "I'm here to help you learn! Let's focus on your studies.";
     }
 
-    // Log successful usage
     success = true;
     const responseTime = Date.now() - startTime;
 
@@ -513,7 +454,6 @@ export async function generateAIResponse(
     const aiError = categorizeError(error);
     errorCode = aiError.code;
 
-    // Log failed usage (no tokens consumed if it failed)
     const responseTime = Date.now() - startTime;
     logUsage(
       student.id,
@@ -537,16 +477,6 @@ export async function generateAIResponse(
   }
 }
 
-/**
- * Generate AI response using OpenAI with streaming
- * Streams tokens as they arrive for better perceived performance
- *
- * @param student - Student profile
- * @param messages - Conversation history
- * @param onChunk - Callback for each streamed token
- * @param recentSessions - Optional recent tutoring sessions for context
- * @returns Complete response text
- */
 export async function generateAIResponseStream(
   student: Student,
   messages: Message[],
@@ -559,10 +489,8 @@ export async function generateAIResponseStream(
   let fullResponse = "";
 
   try {
-    // Build context (same as non-streaming)
     const contextMessages = buildContext(messages, recentSessions);
 
-    // Prepare messages for OpenAI
     const openAIMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       {
         role: "system",
@@ -570,7 +498,6 @@ export async function generateAIResponseStream(
       },
     ];
 
-    // Add older message summary if we have many messages
     if (messages.length > MAX_CONTEXT_MESSAGES) {
       const summary = summarizeOlderMessages(
         messages.slice(0, messages.length - MAX_CONTEXT_MESSAGES)
@@ -581,7 +508,6 @@ export async function generateAIResponseStream(
       });
     }
 
-    // Add context messages
     contextMessages.forEach((msg) => {
       openAIMessages.push({
         role: msg.speaker === "student" ? "user" : "assistant",
@@ -593,16 +519,14 @@ export async function generateAIResponseStream(
     const maxTokens = parseInt(process.env.OPENAI_MAX_TOKENS || "500");
     const temperature = parseFloat(process.env.OPENAI_TEMPERATURE || "0.7");
 
-    // Call OpenAI with streaming enabled
     const stream = await openai.chat.completions.create({
       model,
       messages: openAIMessages,
       temperature,
       max_tokens: maxTokens,
-      stream: true, // Enable streaming
+      stream: true,
     });
 
-    // Process stream
     let promptTokensEstimate = 0;
     let completionTokens = 0;
 
@@ -611,28 +535,24 @@ export async function generateAIResponseStream(
       if (content) {
         fullResponse += content;
         completionTokens++;
-        // Call the callback with each chunk
         onChunk(content);
       }
     }
 
-    // Content safety check on full response
     const contentCheck = checkContent(fullResponse, student.age);
     if (!contentCheck.isAllowed) {
       return "I'm here to help you learn! Let's focus on your studies.";
     }
 
-    // Log successful usage (estimate prompt tokens)
     success = true;
     const responseTime = Date.now() - startTime;
 
-    // Estimate prompt tokens based on message length
     const totalMessageLength = openAIMessages.reduce(
       (sum, msg) =>
         sum + (typeof msg.content === "string" ? msg.content.length : 0),
       0
     );
-    promptTokensEstimate = Math.ceil(totalMessageLength / 4); // ~4 chars per token
+    promptTokensEstimate = Math.ceil(totalMessageLength / 4);
 
     const usage = calculateUsage(promptTokensEstimate, completionTokens, model);
 
@@ -652,7 +572,6 @@ export async function generateAIResponseStream(
 
     console.error(`❌ AI response streaming failed:`, aiError.message);
 
-    // Log failed usage
     const responseTime = Date.now() - startTime;
     logUsage(
       student.id,
@@ -675,9 +594,6 @@ export async function generateAIResponseStream(
   }
 }
 
-/**
- * Generate practice task using AI
- */
 export async function generatePracticeTask(
   student: Student,
   subject: string,
@@ -740,7 +656,6 @@ Format your response as JSON:
     const response = completion.choices[0]?.message?.content || "{}";
     const parsed = JSON.parse(response);
 
-    // Log successful usage
     const responseTime = Date.now() - startTime;
     if (completion.usage) {
       const usage = calculateUsage(
@@ -762,7 +677,6 @@ Format your response as JSON:
   } catch (error) {
     const aiError = categorizeError(error);
 
-    // Log failed usage
     const responseTime = Date.now() - startTime;
     logUsage(
       student.id,
@@ -782,7 +696,6 @@ Format your response as JSON:
     );
 
     console.error("Error generating practice task:", error);
-    // Return fallback task
     return {
       question: `Practice ${topic} in ${subject}`,
       hints: ["Think about what you've learned", "Take it step by step"],
@@ -790,9 +703,6 @@ Format your response as JSON:
   }
 }
 
-/**
- * Generate multiple choice options using AI
- */
 export async function generateMultipleChoiceOptions(
   question: string,
   correctAnswer: string
@@ -824,7 +734,6 @@ Format as JSON array: ["option1", "option2", "option3"]`;
     const parsed = JSON.parse(response);
     const wrongOptions = parsed.options || ["Option A", "Option B", "Option C"];
 
-    // Shuffle correct answer with wrong options
     const allOptions = [correctAnswer, ...wrongOptions];
     return allOptions.sort(() => Math.random() - 0.5);
   } catch (error) {
@@ -833,9 +742,6 @@ Format as JSON array: ["option1", "option2", "option3"]`;
   }
 }
 
-/**
- * Check if student needs tutor intervention
- */
 export async function detectStruggle(
   messages: Message[],
   recentAttempts: Array<{ correct: boolean }>
@@ -843,7 +749,6 @@ export async function detectStruggle(
   needsHelp: boolean;
   reason?: string;
 }> {
-  // Check for repeated failures
   const recentFailures = recentAttempts.filter((a) => !a.correct).length;
   if (recentFailures >= 3) {
     return {
@@ -852,7 +757,6 @@ export async function detectStruggle(
     };
   }
 
-  // Check for frustration in messages
   const recentMessages = messages.slice(-5);
   const frustrationKeywords = [
     "don't understand",

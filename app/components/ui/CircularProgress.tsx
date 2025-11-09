@@ -38,7 +38,6 @@ export function CircularProgress({
     }
   }, [progress, animated]);
 
-  // Determine color based on progress if not provided
   const getProgressColor = () => {
     if (progress >= 80) return "var(--doodle-green)";
     if (progress >= 50) return "var(--doodle-blue)";
@@ -58,7 +57,6 @@ export function CircularProgress({
         whileHover={{ scale: 1.05 }}
       >
         <svg width={size} height={size} className="transform -rotate-90">
-          {/* Background ring with doodle effect */}
           <circle
             cx={size / 2}
             cy={size / 2}
@@ -69,7 +67,6 @@ export function CircularProgress({
             strokeLinecap="round"
           />
 
-          {/* Progress ring */}
           <motion.circle
             cx={size / 2}
             cy={size / 2}
@@ -88,7 +85,6 @@ export function CircularProgress({
           />
         </svg>
 
-        {/* Center content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           {icon && (
             <motion.span
@@ -111,7 +107,6 @@ export function CircularProgress({
           )}
         </div>
 
-        {/* Decorative sparkles for high progress */}
         {progress >= 80 && (
           <>
             <motion.span
@@ -138,7 +133,6 @@ export function CircularProgress({
         )}
       </motion.div>
 
-      {/* Label */}
       {label && (
         <motion.div
           className="text-center px-4 py-2 bg-white rounded-xl border-2 border-doodle-sketch"

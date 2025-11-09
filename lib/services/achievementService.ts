@@ -7,15 +7,12 @@ import {
   Student,
 } from "@/types";
 
-// These functions will only work server-side (Node environment)
-// They will throw an error if called client-side with a string ID
 async function getStudentById(id: string) {
   if (typeof window !== "undefined") {
     throw new Error(
       "getStudentById cannot be called client-side. Pass a Student object instead of ID."
     );
   }
-  // Dynamic import to avoid bundling fs module
   const { getStudentById: getStudent } = await import("./studentService");
   return getStudent(id);
 }
@@ -26,14 +23,10 @@ async function saveStudentData(student: Student) {
       "saveStudentData cannot be called client-side. Use API routes instead."
     );
   }
-  // Dynamic import to avoid bundling fs module
   const { saveStudentData: saveStudent } = await import("./studentService");
   return saveStudent(student);
 }
 
-/**
- * Check if student has unlocked an achievement
- */
 export async function hasAchievement(
   studentId: string,
   achievementId: AchievementId
@@ -52,9 +45,6 @@ export async function hasAchievement(
   }
 }
 
-/**
- * Unlock an achievement for a student
- */
 export async function unlockAchievement(
   studentId: string,
   achievementId: AchievementId
@@ -63,24 +53,20 @@ export async function unlockAchievement(
     const student = await getStudentById(studentId);
     if (!student) return false;
 
-    // Check if already unlocked
     if (student.achievements.includes(achievementId)) {
-      return false; // Already has it
+      return false;
     }
 
-    // Get achievement definition for points
     const achievementDef = ACHIEVEMENT_DEFINITIONS[achievementId];
     if (!achievementDef) return false;
 
-    // Add achievement
     student.achievements.push(achievementId);
 
-    // Add points
     student.totalPoints = (student.totalPoints || 0) + achievementDef.points;
 
     await saveStudentData(student);
 
-    return true; // Successfully unlocked
+    return true;
   } catch (error) {
     console.error(
       `Error unlocking achievement ${achievementId} for ${studentId}:`,
@@ -90,9 +76,6 @@ export async function unlockAchievement(
   }
 }
 
-/**
- * Get all achievements for a student with metadata
- */
 export async function getStudentAchievements(
   studentId: string
 ): Promise<Achievement[]> {
@@ -102,7 +85,7 @@ export async function getStudentAchievements(
 
     return student.achievements.map((id) => ({
       ...ACHIEVEMENT_DEFINITIONS[id],
-      unlockedAt: undefined, // We don't track unlock dates in Phase 1
+      unlockedAt: undefined,
     }));
   } catch (error) {
     console.error(`Error getting achievements for ${studentId}:`, error);
@@ -110,9 +93,6 @@ export async function getStudentAchievements(
   }
 }
 
-/**
- * Get all available achievements with locked/unlocked status
- */
 export async function getAllAchievementsWithStatus(
   studentOrId: string | Student
 ): Promise<Array<Achievement & { unlocked: boolean }>> {
@@ -138,9 +118,6 @@ export async function getAllAchievementsWithStatus(
   }
 }
 
-/**
- * Check and unlock "First Steps" achievement
- */
 export async function checkFirstSteps(studentId: string): Promise<boolean> {
   try {
     const hasIt = await hasAchievement(studentId, "first_steps");
@@ -149,7 +126,6 @@ export async function checkFirstSteps(studentId: string): Promise<boolean> {
     const student = await getStudentById(studentId);
     if (!student) return false;
 
-    // Unlock if student has at least 1 conversation
     if (student.totalConversations >= 1) {
       return await unlockAchievement(studentId, "first_steps");
     }
@@ -161,9 +137,6 @@ export async function checkFirstSteps(studentId: string): Promise<boolean> {
   }
 }
 
-/**
- * Check and unlock "Three Day Streak" achievement
- */
 export async function checkThreeDayStreak(studentId: string): Promise<boolean> {
   try {
     const hasIt = await hasAchievement(studentId, "three_day_streak");
@@ -172,7 +145,6 @@ export async function checkThreeDayStreak(studentId: string): Promise<boolean> {
     const student = await getStudentById(studentId);
     if (!student) return false;
 
-    // Unlock if streak is 3 or more (check both login and practice)
     const loginCurrent =
       student.streaks.login?.current || student.streaks.current || 0;
     const practiceCurrent = student.streaks.practice?.current || 0;
@@ -189,9 +161,6 @@ export async function checkThreeDayStreak(studentId: string): Promise<boolean> {
   }
 }
 
-/**
- * Check and unlock "Topic Master" achievement
- */
 export async function checkTopicMaster(studentId: string): Promise<boolean> {
   try {
     const hasIt = await hasAchievement(studentId, "topic_master");
@@ -200,7 +169,6 @@ export async function checkTopicMaster(studentId: string): Promise<boolean> {
     const student = await getStudentById(studentId);
     if (!student) return false;
 
-    // Check if any topic has 90%+ progress
     const hasMasteredTopic = student.goals.some((goal) =>
       goal.topics.some((topic) => topic.progress >= 90)
     );
@@ -216,9 +184,6 @@ export async function checkTopicMaster(studentId: string): Promise<boolean> {
   }
 }
 
-/**
- * Check and unlock "Curious Mind" achievement
- */
 export async function checkCuriousMind(studentId: string): Promise<boolean> {
   try {
     const hasIt = await hasAchievement(studentId, "curious_mind");
@@ -227,7 +192,6 @@ export async function checkCuriousMind(studentId: string): Promise<boolean> {
     const student = await getStudentById(studentId);
     if (!student) return false;
 
-    // Unlock if student has asked 10+ questions
     if (student.questionsAsked >= 10) {
       return await unlockAchievement(studentId, "curious_mind");
     }
@@ -239,9 +203,6 @@ export async function checkCuriousMind(studentId: string): Promise<boolean> {
   }
 }
 
-/**
- * Check and unlock "Social Butterfly" achievement
- */
 export async function checkSocialButterfly(
   studentId: string
 ): Promise<boolean> {
@@ -252,9 +213,6 @@ export async function checkSocialButterfly(
     const student = await getStudentById(studentId);
     if (!student) return false;
 
-    // This would need to track total messages sent across all days
-    // For Phase 1, we'll use a simple check
-    // In Phase 2, we'd track this in a separate message history
     if (
       student.friendConnections.length > 0 &&
       student.messagesSentToday >= 5
@@ -269,9 +227,6 @@ export async function checkSocialButterfly(
   }
 }
 
-/**
- * Check and unlock "Streak Breaker" achievement
- */
 export async function checkStreakBreaker(studentId: string): Promise<boolean> {
   try {
     const hasIt = await hasAchievement(studentId, "streak_breaker");
@@ -280,7 +235,6 @@ export async function checkStreakBreaker(studentId: string): Promise<boolean> {
     const student = await getStudentById(studentId);
     if (!student) return false;
 
-    // Unlock if current streak exceeds previous longest
     const loginCurrent =
       student.streaks.login?.current || student.streaks.current || 0;
     const practiceCurrent = student.streaks.practice?.current || 0;
@@ -302,10 +256,6 @@ export async function checkStreakBreaker(studentId: string): Promise<boolean> {
   }
 }
 
-/**
- * Check all achievements for a student
- * Returns array of newly unlocked achievement IDs
- */
 export async function checkAllAchievements(
   studentId: string
 ): Promise<AchievementId[]> {
@@ -335,9 +285,6 @@ export async function checkAllAchievements(
   }
 }
 
-/**
- * Get achievement progress summary
- */
 export interface AchievementProgress {
   totalAchievements: number;
   unlockedCount: number;
@@ -368,7 +315,6 @@ export async function getAchievementProgress(
     const percentage = Math.round((unlockedCount / totalAchievements) * 100);
     const totalPoints = student.totalPoints || 0;
 
-    // Find next achievement to unlock (simple heuristic)
     let nextToUnlock: Achievement | undefined;
     if (!student.achievements.includes("first_steps")) {
       nextToUnlock = { ...ACHIEVEMENT_DEFINITIONS.first_steps };
@@ -397,9 +343,6 @@ export async function getAchievementProgress(
   }
 }
 
-/**
- * Get total achievement points for a student
- */
 export async function getAchievementPoints(
   studentOrId: string | Student
 ): Promise<number> {
@@ -419,9 +362,6 @@ export async function getAchievementPoints(
   }
 }
 
-/**
- * Get achievements filtered by rarity
- */
 export async function getAchievementsByRarity(
   studentId: string,
   rarity: BadgeRarity
@@ -444,9 +384,6 @@ export async function getAchievementsByRarity(
   }
 }
 
-/**
- * Sort achievements by rarity (common → legendary)
- */
 export function sortAchievementsByRarity(
   achievements: Achievement[]
 ): Achievement[] {
@@ -457,9 +394,6 @@ export function sortAchievementsByRarity(
   });
 }
 
-/**
- * Get achievements grouped by rarity
- */
 export async function getAchievementsGroupedByRarity(
   studentId: string
 ): Promise<Record<BadgeRarity, Achievement[]>> {

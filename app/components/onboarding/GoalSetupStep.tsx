@@ -19,34 +19,21 @@ const SUBJECT_OPTIONS = [
 
 const MAX_SUBJECTS = 3;
 
-/**
- * Goal Setup Step Component
- * Final step of onboarding - allows students to select learning subjects
- */
 export default function GoalSetupStep({ onNext, onSkip }: GoalSetupStepProps) {
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
   const [customSubject, setCustomSubject] = useState("");
 
-  /**
-   * Toggle subject selection
-   */
   const toggleSubject = (subjectId: string) => {
     setSelectedSubjects((prev) => {
       if (prev.includes(subjectId)) {
-        // Deselect
         return prev.filter((id) => id !== subjectId);
       } else if (prev.length < MAX_SUBJECTS) {
-        // Select if under max
         return [...prev, subjectId];
       }
-      // At max, do nothing
       return prev;
     });
   };
 
-  /**
-   * Handle confirmation and move to next
-   */
   const handleConfirm = () => {
     onNext({
       subjects: selectedSubjects,
@@ -66,7 +53,6 @@ export default function GoalSetupStep({ onNext, onSkip }: GoalSetupStepProps) {
         animate={{ scale: 1, y: 0 }}
         className="max-w-3xl w-full doodle-card p-12"
       >
-        {/* Header */}
         <div className="text-center mb-8">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -87,7 +73,6 @@ export default function GoalSetupStep({ onNext, onSkip }: GoalSetupStepProps) {
           </motion.p>
         </div>
 
-        {/* Subject Grid */}
         <motion.div
           variants={staggerContainerVariant}
           initial="hidden"
@@ -136,7 +121,6 @@ export default function GoalSetupStep({ onNext, onSkip }: GoalSetupStepProps) {
             );
           })}
 
-          {/* Custom Subject Input */}
           <div className="relative p-6 rounded-2xl border-3 border-doodle-sketch bg-white shadow-doodle">
             <div className="text-4xl mb-2">✨</div>
             <input
@@ -150,7 +134,6 @@ export default function GoalSetupStep({ onNext, onSkip }: GoalSetupStepProps) {
           </div>
         </motion.div>
 
-        {/* Helper Text */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -160,7 +143,6 @@ export default function GoalSetupStep({ onNext, onSkip }: GoalSetupStepProps) {
           You can always add more subjects later!
         </motion.p>
 
-        {/* Buttons */}
         <div className="flex space-x-4">
           <motion.button
             onClick={onSkip}

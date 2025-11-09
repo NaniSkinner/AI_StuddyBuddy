@@ -26,18 +26,12 @@ import {
   generateRealWorldTask,
 } from "@/lib/services/taskGenerationService";
 
-// Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// For Phase 1, tasks will be stored in memory
-// Phase 2 will persist to database
 const tasksCache = new Map<string, Task[]>();
 
-/**
- * Create a new task
- */
 export async function createTask(task: Task): Promise<Task> {
   try {
     const studentTasks = tasksCache.get(task.studentId) || [];
@@ -50,9 +44,6 @@ export async function createTask(task: Task): Promise<Task> {
   }
 }
 
-/**
- * Get all tasks for a student
- */
 export async function getTasksByStudent(studentId: string): Promise<Task[]> {
   try {
     return tasksCache.get(studentId) || [];
@@ -62,9 +53,6 @@ export async function getTasksByStudent(studentId: string): Promise<Task[]> {
   }
 }
 
-/**
- * Update task status
- */
 export async function updateTaskStatus(
   taskId: string,
   status: TaskStatus
@@ -88,18 +76,12 @@ export async function updateTaskStatus(
   }
 }
 
-/**
- * Generate adaptive tasks based on student progress
- * This is a placeholder - Phase 5 will implement AI-powered generation
- */
 export async function generateAdaptiveTasks(
   studentId: string,
   subject: string,
   count: number = 3
 ): Promise<Task[]> {
   try {
-    // For Phase 1, return empty array
-    // Phase 5 will implement full AI-powered task generation
     const tasks: Task[] = [];
 
     for (let i = 0; i < count; i++) {
@@ -134,9 +116,6 @@ export async function generateAdaptiveTasks(
   }
 }
 
-/**
- * Get incomplete tasks for a student
- */
 export async function getIncompleteTasks(studentId: string): Promise<Task[]> {
   try {
     const tasks = await getTasksByStudent(studentId);
@@ -147,9 +126,6 @@ export async function getIncompleteTasks(studentId: string): Promise<Task[]> {
   }
 }
 
-/**
- * Record a task attempt
- */
 export async function recordTaskAttempt(
   taskId: string,
   correct: boolean
@@ -160,7 +136,6 @@ export async function recordTaskAttempt(
       if (taskIndex !== -1) {
         tasks[taskIndex].attempts += 1;
 
-        // If correct, mark as complete
         if (correct) {
           tasks[taskIndex].status = "complete";
           tasks[taskIndex].completedAt = new Date().toISOString();
@@ -177,10 +152,6 @@ export async function recordTaskAttempt(
   }
 }
 
-/**
- * Calculate task difficulty for adaptive learning
- * Returns difficulty level based on student performance
- */
 export async function calculateTaskDifficulty(
   studentId: string,
   topic: string
@@ -193,7 +164,6 @@ export async function calculateTaskDifficulty(
 
     if (topicTasks.length === 0) return "easy";
 
-    // Calculate success rate
     const totalAttempts = topicTasks.reduce((sum, t) => sum + t.attempts, 0);
     const successfulTasks = topicTasks.length;
     const successRate = totalAttempts > 0 ? successfulTasks / totalAttempts : 0;
@@ -210,9 +180,6 @@ export async function calculateTaskDifficulty(
   }
 }
 
-/**
- * Get task completion rate for a student
- */
 export async function getTaskCompletionRate(studentId: string): Promise<number> {
   try {
     const tasks = await getTasksByStudent(studentId);
@@ -226,9 +193,6 @@ export async function getTaskCompletionRate(studentId: string): Promise<number> 
   }
 }
 
-/**
- * Get task by ID
- */
 export async function getTaskById(taskId: string): Promise<Task | null> {
   try {
     for (const tasks of tasksCache.values()) {
@@ -242,22 +206,17 @@ export async function getTaskById(taskId: string): Promise<Task | null> {
   }
 }
 
-/**
- * Grade a Multiple Choice Task
- */
 export function gradeMultipleChoice(
   task: MultipleChoiceTask,
   studentAnswer: string,
   hintsUsed: number = 0
 ): TaskGrading {
-  // Normalize answers (case-insensitive)
   const normalizedStudentAnswer = studentAnswer.trim().toUpperCase();
   const normalizedCorrectAnswer = task.correctAnswer.toUpperCase();
 
   const isCorrect = normalizedStudentAnswer === normalizedCorrectAnswer;
   const score = isCorrect ? 100 : 0;
 
-  // Generate feedback
   let feedback = "";
   const suggestions: string[] = [];
 
@@ -269,7 +228,6 @@ export function gradeMultipleChoice(
   } else {
     feedback = `Not quite right, but great effort! The correct answer is ${task.correctAnswer}. ${task.explanation}`;
 
-    // Offer first hint if available
     if (task.hints && task.hints.length > 0 && hintsUsed < 3) {
       suggestions.push(
         `Try again with this hint: ${task.hints[Math.min(hintsUsed, task.hints.length - 1)]}`
@@ -288,9 +246,6 @@ export function gradeMultipleChoice(
   };
 }
 
-/**
- * Grade an Open-Ended Task using AI
- */
 export async function gradeOpenEnded(
   task: OpenEndedTask,
   studentAnswer: string,
@@ -301,7 +256,6 @@ export async function gradeOpenEnded(
   let errorCode: string | undefined;
 
   try {
-    // Build grading prompt
     const prompt = getOpenEndedGradingPrompt(
       task.question,
       studentAnswer,
@@ -361,7 +315,6 @@ export async function gradeOpenEnded(
     errorCode = categorizeError(error);
     console.error("Error grading open-ended task:", error);
 
-    // Log failed usage
     logUsage({
       operation: "ai_grading",
       model: process.env.OPENAI_MODEL || "gpt-4",
@@ -386,9 +339,6 @@ export async function gradeOpenEnded(
   }
 }
 
-/**
- * Grade a Real-World Task using AI
- */
 export async function gradeRealWorld(
   task: RealWorldTask,
   verificationResponses: string[],
@@ -400,7 +350,6 @@ export async function gradeRealWorld(
   let errorCode: string | undefined;
 
   try {
-    // Build grading prompt
     const prompt = getRealWorldGradingPrompt(
       task.activity,
       task.verificationQuestions,
@@ -461,7 +410,6 @@ export async function gradeRealWorld(
     errorCode = categorizeError(error);
     console.error("Error grading real-world task:", error);
 
-    // Log failed usage
     logUsage({
       operation: "ai_grading",
       model: process.env.OPENAI_MODEL || "gpt-4",
@@ -486,29 +434,21 @@ export async function gradeRealWorld(
   }
 }
 
-/**
- * Get hint for a task
- */
 export function getHint(
   task: MultipleChoiceTask | OpenEndedTask,
   hintLevel: number
 ): string | null {
   if (!task.hints || task.hints.length === 0) return null;
 
-  // Clamp hint level to valid range
   const level = Math.max(0, Math.min(hintLevel, task.hints.length - 1));
 
   return task.hints[level];
 }
 
-/**
- * Determine appropriate task difficulty based on student progress
- */
 export function determineTaskDifficulty(
   student: Student,
   topic: string
 ): TaskDifficulty {
-  // Find the topic across all goals
   let topicData: Topic | undefined;
   let goalSubject: string | undefined;
 
@@ -521,41 +461,33 @@ export function determineTaskDifficulty(
     }
   }
 
-  // If topic not found, default to easy for new topics
   if (!topicData) {
     console.log(`Topic "${topic}" not found in student goals, defaulting to easy`);
     return "easy";
   }
 
-  // Check number of attempts on this topic
   const topicTasks = (tasksCache.get(student.id) || []).filter(
     (t) => t.topic === topic && t.status === "complete"
   );
 
-  // Safety: If fewer than 3 attempts, stick to easy
   if (topicTasks.length < 3) {
     return "easy";
   }
 
-  // Calculate success rate
   const totalAttempts = topicTasks.reduce((sum, t) => sum + t.attempts, 0);
   const successfulTasks = topicTasks.length;
   const successRate = totalAttempts > 0 ? successfulTasks / totalAttempts : 0;
 
-  // Use progress to determine difficulty
   const progress = topicData.progress;
 
-  // Difficulty thresholds
   if (progress < 40) {
     return "easy";
   } else if (progress < 70) {
-    // If medium progress but low success rate, keep it easy
     if (successRate < 0.5) {
       return "easy";
     }
     return "medium";
   } else {
-    // If high progress but low success rate, use medium
     if (successRate < 0.6) {
       return "medium";
     }
@@ -563,29 +495,22 @@ export function determineTaskDifficulty(
   }
 }
 
-/**
- * Select task type based on age and weighted distribution
- */
 export function selectTaskType(age: number): TaskType {
-  // Age-based task type distribution
   let weights: { [key in TaskType]: number };
 
   if (age <= 11) {
-    // Ages 9-11: Prefer multiple choice, some open-ended, less real-world
     weights = {
       multiple_choice: 50,
       open_ended: 30,
       real_world: 20,
     };
   } else if (age <= 14) {
-    // Ages 12-14: Balance MC and OE, some real-world
     weights = {
       multiple_choice: 40,
       open_ended: 40,
       real_world: 20,
     };
   } else {
-    // Ages 15-16: Prefer open-ended, less MC, some real-world
     weights = {
       multiple_choice: 30,
       open_ended: 50,
@@ -593,7 +518,6 @@ export function selectTaskType(age: number): TaskType {
     };
   }
 
-  // Weighted random selection
   const totalWeight = Object.values(weights).reduce((sum, w) => sum + w, 0);
   const random = Math.random() * totalWeight;
 
@@ -605,13 +529,9 @@ export function selectTaskType(age: number): TaskType {
     }
   }
 
-  // Fallback (should never reach here)
   return "multiple_choice";
 }
 
-/**
- * Assign adaptive tasks to a student based on their goals and progress
- */
 export async function assignAdaptiveTasks(
   student: Student,
   maxTasks: number = 5
@@ -619,7 +539,6 @@ export async function assignAdaptiveTasks(
   try {
     const tasks: AnyTask[] = [];
 
-    // Get active goals (not completed)
     const activeGoals = student.goals.filter((goal) => goal.progress < 100);
 
     if (activeGoals.length === 0) {
@@ -627,7 +546,6 @@ export async function assignAdaptiveTasks(
       return [];
     }
 
-    // Build list of topics that need practice
     type TopicWithContext = {
       topic: Topic;
       subject: string;
@@ -638,7 +556,6 @@ export async function assignAdaptiveTasks(
 
     for (const goal of activeGoals) {
       for (const topic of goal.topics) {
-        // Prioritize topics with lower progress
         if (topic.progress < 90) {
           topicsNeedingPractice.push({
             topic,
@@ -649,21 +566,14 @@ export async function assignAdaptiveTasks(
       }
     }
 
-    // Sort by progress (lowest first) - prioritize struggling topics
     topicsNeedingPractice.sort((a, b) => a.topic.progress - b.topic.progress);
 
-    // Limit to maxTasks topics
     const selectedTopics = topicsNeedingPractice.slice(0, maxTasks);
 
-    // Generate a task for each selected topic
     for (const { topic, subject, goalId } of selectedTopics) {
-      // Determine difficulty
       const difficulty = determineTaskDifficulty(student, topic.name);
-
-      // Select task type based on age
       const taskType = selectTaskType(student.age);
 
-      // Generate the appropriate task
       let task: AnyTask | null = null;
 
       try {
@@ -701,14 +611,12 @@ export async function assignAdaptiveTasks(
 
         if (task) {
           tasks.push(task);
-          // Store in cache
           const studentTasks = tasksCache.get(student.id) || [];
           studentTasks.push(task as Task);
           tasksCache.set(student.id, studentTasks);
         }
       } catch (error) {
         console.error(`Error generating ${taskType} task for ${topic.name}:`, error);
-        // Continue with next topic instead of failing entire assignment
       }
     }
 
@@ -720,11 +628,7 @@ export async function assignAdaptiveTasks(
   }
 }
 
-/**
- * Check if a student needs more practice on a topic
- */
 export function needsMorePractice(student: Student, topic: string): boolean {
-  // Find the topic in student goals
   let topicData: Topic | undefined;
 
   for (const goal of student.goals) {
@@ -735,38 +639,29 @@ export function needsMorePractice(student: Student, topic: string): boolean {
     }
   }
 
-  // If topic not found, assume they need practice
   if (!topicData) {
     return true;
   }
 
-  // Check progress - if < 90%, needs more practice
   if (topicData.progress < 90) {
     return true;
   }
 
-  // Check recent success rate
   const topicTasks = (tasksCache.get(student.id) || []).filter(
     (t) => t.topic === topic && t.status === "complete"
   );
 
   if (topicTasks.length < 5) {
-    // Not enough data, assume needs practice
     return true;
   }
 
-  // Check recent tasks (last 3)
   const recentTasks = topicTasks.slice(-3);
   const recentSuccessRate =
     recentTasks.filter((t) => t.attempts === 1).length / recentTasks.length;
 
-  // If recent success rate < 0.8, needs more practice
   return recentSuccessRate < 0.8;
 }
 
-/**
- * Get task completion statistics for a student
- */
 export interface TaskCompletionStats {
   totalTasks: number;
   completedTasks: number;
@@ -794,9 +689,6 @@ export function getTaskCompletionStats(
   const completionRate =
     totalTasks > 0 ? Math.round((completedTasks.length / totalTasks) * 100) : 0;
 
-  // Calculate average score (for completed tasks)
-  // Note: We don't store scores in Task interface, so this is an approximation
-  // Successful first attempt = 100, otherwise estimate based on attempts
   let totalScore = 0;
   for (const task of completedTasks) {
     if (task.attempts === 1) {
@@ -812,7 +704,6 @@ export function getTaskCompletionStats(
       ? Math.round(totalScore / completedTasks.length)
       : 0;
 
-  // Count by difficulty (check if task has difficulty field)
   const tasksByDifficulty = {
     easy: 0,
     medium: 0,
@@ -826,7 +717,6 @@ export function getTaskCompletionStats(
     }
   }
 
-  // Count by type
   const tasksByType = {
     multiple_choice: tasks.filter((t) => t.type === "multiple_choice").length,
     open_ended: tasks.filter((t) => t.type === "open_ended").length,
@@ -843,35 +733,21 @@ export function getTaskCompletionStats(
   };
 }
 
-/**
- * Update student progress after task completion
- */
 export async function updateProgressAfterTask(
   studentId: string,
   taskId: string,
   success: boolean
 ): Promise<void> {
   try {
-    // Get the task
     const task = await getTaskById(taskId);
     if (!task) {
       console.error(`Task ${taskId} not found`);
       return;
     }
 
-    // Note: In a real implementation, this would update the student's progress in the database
-    // For now, we just log the update
     console.log(
       `Progress update for ${studentId}: Topic "${task.topic}", Success: ${success}`
     );
-
-    // In Phase 2 with a real backend, this would:
-    // 1. Find the topic in student.goals
-    // 2. Update topic.progress based on success
-    // 3. Update topic.lastPracticed
-    // 4. Update subConcept mastery if applicable
-    // 5. Trigger achievement checks
-    // 6. Save to database
   } catch (error) {
     console.error(`Error updating progress for ${studentId}:`, error);
   }

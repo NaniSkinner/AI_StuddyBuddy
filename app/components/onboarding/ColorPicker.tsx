@@ -24,7 +24,7 @@ const COLORS = [
 ];
 
 export default function ColorPicker({ onNext, onBack }: ColorPickerProps) {
-  const [selectedColor, setSelectedColor] = useState<string>(COLORS[1].value); // Default to purple
+  const [selectedColor, setSelectedColor] = useState<string>(COLORS[1].value);
 
   const handleContinue = () => {
     if (selectedColor) {
@@ -44,7 +44,6 @@ export default function ColorPicker({ onNext, onBack }: ColorPickerProps) {
         animate={{ scale: 1, y: 0 }}
         className="max-w-3xl w-full doodle-card p-12"
       >
-        {/* Header - Doodle Style */}
         <div className="text-center mb-8">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -60,12 +59,11 @@ export default function ColorPicker({ onNext, onBack }: ColorPickerProps) {
             transition={{ delay: 0.1 }}
             className="text-xl font-sketch text-doodle-sketch opacity-80"
           >
-            Pick a color that makes you happy - this will be your AI companion&apos;s
-            signature color
+            Pick a color that makes you happy - this will be your AI
+            companion&apos;s signature color
           </motion.p>
         </div>
 
-        {/* Preview - Doodle Style */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -87,7 +85,6 @@ export default function ColorPicker({ onNext, onBack }: ColorPickerProps) {
           </div>
         </motion.div>
 
-        {/* Color Grid - Doodle Style */}
         <motion.div
           variants={staggerContainerVariant}
           initial="hidden"
@@ -132,7 +129,6 @@ export default function ColorPicker({ onNext, onBack }: ColorPickerProps) {
           ))}
         </motion.div>
 
-        {/* Buttons - Doodle Style */}
         <div className="flex space-x-4">
           {onBack && (
             <motion.button

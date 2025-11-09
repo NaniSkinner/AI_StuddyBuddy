@@ -26,7 +26,6 @@ export default function ChatInterface({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isAITyping]);
@@ -52,7 +51,6 @@ export default function ChatInterface({
     { icon: "🔄", label: "Review topic", prompt: "Can we review" },
   ];
 
-  // Determine AI character state based on activity
   const getCharacterState = () => {
     if (isAITyping) return "thinking";
     if (
@@ -66,7 +64,6 @@ export default function ChatInterface({
 
   return (
     <div className="flex flex-col h-full bg-doodle-cream relative">
-      {/* Floating AI Character - Toggleable */}
       <AnimatePresence>
         {showCharacter && (
           <motion.div
@@ -82,7 +79,6 @@ export default function ChatInterface({
               color={aiColor}
               size={80}
             />
-            {/* Tooltip on hover */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileHover={{ opacity: 1, y: 0 }}
@@ -95,7 +91,6 @@ export default function ChatInterface({
         )}
       </AnimatePresence>
 
-      {/* Show Character Button (when hidden) */}
       <AnimatePresence>
         {!showCharacter && (
           <motion.button
@@ -117,7 +112,6 @@ export default function ChatInterface({
         )}
       </AnimatePresence>
 
-      {/* Messages Container */}
       <div className="flex-1 overflow-y-auto px-6 py-4 font-sketch">
         {messages.length === 0 ? (
           <motion.div
@@ -125,7 +119,6 @@ export default function ChatInterface({
             animate={{ opacity: 1, y: 0 }}
             className="h-full flex flex-col items-center justify-center text-center"
           >
-            {/* AI Character */}
             <motion.div
               className="w-24 h-24 rounded-full flex items-center justify-center mb-4 border-3"
               style={{
@@ -186,7 +179,6 @@ export default function ChatInterface({
               />
             ))}
 
-            {/* AI Typing Indicator - Doodle Style */}
             <AnimatePresence>
               {isAITyping && (
                 <motion.div
@@ -237,9 +229,7 @@ export default function ChatInterface({
         )}
       </div>
 
-      {/* Input Area - Doodle Style */}
       <div className="border-t-2 border-doodle-sketch bg-white px-6 py-4">
-        {/* Quick Action Buttons (show when messages exist) */}
         {messages.length > 0 && (
           <div className="flex space-x-2 mb-3">
             {quickActions.map((action) => (
@@ -261,7 +251,6 @@ export default function ChatInterface({
           </div>
         )}
 
-        {/* Input Field - Doodle Style */}
         <div className="flex space-x-3">
           <input
             ref={inputRef}

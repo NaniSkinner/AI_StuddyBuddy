@@ -100,15 +100,14 @@ export default function AnimatedBubble({
     }
   };
 
-  // Facial expression based on state
   const getFacialExpression = () => {
     switch (state) {
       case "idle":
-        return "🤓"; // Reading glasses for learning mode
+        return "🤓";
       case "thinking":
         return "🤔";
       case "speaking":
-        return "🤓"; // Reading glasses when speaking/teaching
+        return "🤓";
       case "celebrating":
         return "🎉";
       case "encouraging":
@@ -116,11 +115,10 @@ export default function AnimatedBubble({
       case "clicked":
         return "😆";
       default:
-        return "🤓"; // Reading glasses default
+        return "🤓";
     }
   };
 
-  // More bouncy animations for younger kids (9-11)
   const animationIntensity =
     studentAge <= 11 ? 1.3 : studentAge <= 14 ? 1.0 : 0.7;
 
@@ -152,12 +150,10 @@ export default function AnimatedBubble({
         animate={getAnimation()}
         transition={getTransition()}
       >
-        {/* Character Face - Large emoji */}
         <span className="text-6xl" style={{ fontSize: size * 0.5 }}>
           {getFacialExpression()}
         </span>
 
-        {/* Decorative elements based on state */}
         {state === "celebrating" && (
           <>
             <motion.span
@@ -207,7 +203,6 @@ export default function AnimatedBubble({
         )}
       </motion.div>
 
-      {/* Thinking indicator - rotating pencil */}
       {state === "thinking" && (
         <motion.div
           className="absolute top-0 right-0 text-2xl"
@@ -226,7 +221,6 @@ export default function AnimatedBubble({
         </motion.div>
       )}
 
-      {/* Thinking dots indicator */}
       {state === "thinking" && (
         <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1">
           {[0, 1, 2].map((i) => (
@@ -251,7 +245,6 @@ export default function AnimatedBubble({
         </div>
       )}
 
-      {/* Glow effect for encouraging state */}
       {state === "encouraging" && (
         <motion.div
           className="absolute inset-0 rounded-full"

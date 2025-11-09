@@ -61,7 +61,6 @@ export default function TopBar({
             Hi, {studentName}! 👋
           </motion.span>
 
-          {/* Test Nudge Button (Dev/Demo) - Left side */}
           {onTestNudge && (
             <>
               <motion.div
@@ -90,7 +89,6 @@ export default function TopBar({
             </>
           )}
 
-          {/* Test Booking Button (Dev/Demo) */}
           {onTestBooking && (
             <motion.button
               onClick={onTestBooking}
@@ -112,7 +110,6 @@ export default function TopBar({
         </div>
 
         <div className="flex items-center space-x-4">
-          {/* Points Badge */}
           {totalPoints > 0 && (
             <Tooltip label="Total Points">
               <motion.div
@@ -128,7 +125,6 @@ export default function TopBar({
             </Tooltip>
           )}
 
-          {/* Streak Counter - New Component */}
           {streakStatus.best.current > 0 && (
             <Tooltip label="Learning Streak">
               <motion.div
@@ -145,7 +141,6 @@ export default function TopBar({
             </Tooltip>
           )}
 
-          {/* Parent Dashboard Button */}
           {onParentDashboardClick && (
             <Tooltip label="Parent Hub">
               <motion.button
@@ -165,7 +160,6 @@ export default function TopBar({
             </Tooltip>
           )}
 
-          {/* Friends Button */}
           {onFriendsClick && (
             <Tooltip label="Friends">
               <motion.button
@@ -185,7 +179,6 @@ export default function TopBar({
             </Tooltip>
           )}
 
-          {/* Achievements Button */}
           <Tooltip label="Achievements">
             <motion.button
               onClick={onAchievementsClick}
@@ -203,14 +196,12 @@ export default function TopBar({
             </motion.button>
           </Tooltip>
 
-          {/* Logout Button - Sketch Button */}
           <SketchButton variant="ghost" size="medium" onClick={onLogoutClick}>
             Logout 👋
           </SketchButton>
         </div>
       </div>
 
-      {/* Streak Detail Modal */}
       {showStreakModal && (
         <StreakDetail
           streakStatus={streakStatus}

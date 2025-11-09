@@ -11,9 +11,6 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-/**
- * Struggle detection result
- */
 export interface StruggleDetection {
   isStruggling: boolean;
   severity: "mild" | "moderate" | "severe";
@@ -23,9 +20,6 @@ export interface StruggleDetection {
   shouldSuggestTutor: boolean;
 }
 
-/**
- * Analyze if student is struggling based on session history
- */
 export async function analyzeStudentStruggle(
   studentId: string,
   subject?: string
@@ -41,24 +35,19 @@ export async function analyzeStudentStruggle(
       return createNoStruggleResult();
     }
 
-    // Note: Session doesn't have subject field in schema, filter by topics if needed
     const sessions = recentSessions;
 
-    // Analyze struggle indicators
     const indicators = analyzeStruggleIndicators(sessions);
     const severity = calculateSeverity(indicators);
     const isStruggling =
       severity !== "mild" || indicators.strugglingTopics.length >= 3;
 
-    // Get struggling topics
     const strugglingTopics = Array.from(
       new Set(sessions.flatMap((s) => s.strugglingConcepts || []))
     );
 
-    // Generate recommendations
     const recommendations = generateRecommendations(indicators, student);
 
-    // Determine if tutor should be suggested
     const shouldSuggestTutor = shouldRecommendTutor(indicators, student);
 
     return {
@@ -75,9 +64,6 @@ export async function analyzeStudentStruggle(
   }
 }
 
-/**
- * Analyze various struggle indicators
- */
 interface StruggleIndicators {
   strugglingTopics: string[];
   repeatedQuestions: number;
@@ -105,31 +91,25 @@ function analyzeStruggleIndicators(sessions: Session[]): StruggleIndicators {
   const topicMap = new Map<string, number>();
 
   for (const session of sessions) {
-    // Track struggling topics
     if (session.strugglingConcepts && session.strugglingConcepts.length > 0) {
       indicators.strugglingTopics.push(...session.strugglingConcepts);
 
-      // Count repeated struggles
       for (const concept of session.strugglingConcepts) {
         topicMap.set(concept, (topicMap.get(concept) || 0) + 1);
       }
     }
 
-    // Analyze messages for patterns
     const analysis = analyzeSessionMessages(session);
     indicators.questionsAsked += analysis.questionsAsked;
     totalConfidence += analysis.averageConfidence;
     indicators.sessionDuration.push(analysis.durationMinutes);
 
-    // Track answer accuracy if available
     indicators.correctAnswers += analysis.correctAnswers;
     indicators.totalAnswers += analysis.totalAnswers;
   }
 
-  // Calculate averages
   indicators.averageConfidence = totalConfidence / sessions.length;
 
-  // Identify repeated struggling topics
   for (const [topic, count] of topicMap.entries()) {
     if (count >= 2) {
       indicators.repeatedQuestions = count;
@@ -137,7 +117,6 @@ function analyzeStruggleIndicators(sessions: Session[]): StruggleIndicators {
     }
   }
 
-  // Detect patterns
   if (indicators.questionsAsked < 5 && sessions.length >= 3) {
     indicators.patterns.push("Low engagement - not asking many questions");
   }
@@ -160,9 +139,6 @@ function analyzeStruggleIndicators(sessions: Session[]): StruggleIndicators {
   return indicators;
 }
 
-/**
- * Analyze individual session messages
- */
 function analyzeSessionMessages(session: Session): {
   questionsAsked: number;
   averageConfidence: number;
@@ -191,7 +167,6 @@ function analyzeSessionMessages(session: Session): {
       m.message.toLowerCase().startsWith("why")
   ).length;
 
-  // Simple confidence scoring based on message content
   let confidenceScore = 0;
   const uncertainPhrases = [
     "i don't know",
@@ -251,23 +226,17 @@ function analyzeSessionMessages(session: Session): {
   };
 }
 
-/**
- * Calculate severity of struggle
- */
 function calculateSeverity(
   indicators: StruggleIndicators
 ): "mild" | "moderate" | "severe" {
   let score = 0;
 
-  // Repeated struggling topics
   if (indicators.repeatedQuestions >= 3) score += 2;
   else if (indicators.repeatedQuestions >= 2) score += 1;
 
-  // Low confidence
   if (indicators.averageConfidence < 0.3) score += 2;
   else if (indicators.averageConfidence < 0.5) score += 1;
 
-  // Low accuracy
   const accuracy =
     indicators.totalAnswers > 0
       ? indicators.correctAnswers / indicators.totalAnswers
@@ -275,45 +244,36 @@ function calculateSeverity(
   if (accuracy < 0.4) score += 2;
   else if (accuracy < 0.6) score += 1;
 
-  // Number of patterns detected
   if (indicators.patterns.length >= 3) score += 1;
 
-  // Determine severity
   if (score >= 5) return "severe";
   if (score >= 3) return "moderate";
   return "mild";
 }
 
-/**
- * Generate recommendations based on struggle indicators
- */
 function generateRecommendations(
   indicators: StruggleIndicators,
   student: Student
 ): string[] {
   const recommendations: string[] = [];
 
-  // Low engagement
   if (indicators.questionsAsked < 5) {
     recommendations.push(
       "Try asking more questions when you're unsure - I'm here to help!"
     );
   }
 
-  // Repeated struggles
   if (indicators.repeatedQuestions >= 2) {
     recommendations.push("Let's review the basics before moving forward");
     recommendations.push("Consider breaking down concepts into smaller steps");
   }
 
-  // Low confidence
   if (indicators.averageConfidence < 0.5) {
     recommendations.push(
       "Practice problems can build confidence - let's try some easier ones first"
     );
   }
 
-  // Short sessions
   const avgDuration =
     indicators.sessionDuration.reduce((a, b) => a + b, 0) /
     indicators.sessionDuration.length;
@@ -323,7 +283,6 @@ function generateRecommendations(
     );
   }
 
-  // Low accuracy
   const accuracy =
     indicators.totalAnswers > 0
       ? indicators.correctAnswers / indicators.totalAnswers
@@ -334,27 +293,21 @@ function generateRecommendations(
     );
   }
 
-  return recommendations.slice(0, 3); // Max 3 recommendations
+  return recommendations.slice(0, 3);
 }
 
-/**
- * Determine if tutor should be recommended
- */
 function shouldRecommendTutor(
   indicators: StruggleIndicators,
   student: Student
 ): boolean {
-  // Severe struggle
   if (calculateSeverity(indicators) === "severe") {
     return true;
   }
 
-  // Repeated struggles over multiple sessions
   if (indicators.repeatedQuestions >= 3) {
     return true;
   }
 
-  // Low accuracy for extended period
   const accuracy =
     indicators.totalAnswers > 0
       ? indicators.correctAnswers / indicators.totalAnswers
@@ -366,9 +319,6 @@ function shouldRecommendTutor(
   return false;
 }
 
-/**
- * Create a default "no struggle" result
- */
 function createNoStruggleResult(): StruggleDetection {
   return {
     isStruggling: false,
@@ -380,9 +330,6 @@ function createNoStruggleResult(): StruggleDetection {
   };
 }
 
-/**
- * Analyze task attempt history for struggle patterns (AI Integration Enhancement)
- */
 export async function analyzeTaskAttempts(studentId: string): Promise<{
   consecutiveFailures: number;
   strugglingTopics: string[];
@@ -390,20 +337,18 @@ export async function analyzeTaskAttempts(studentId: string): Promise<{
 }> {
   try {
     const tasks = await getTasksByStudent(studentId);
-    const recentTasks = tasks.slice(-10); // Last 10 tasks
+    const recentTasks = tasks.slice(-10);
 
-    // Count consecutive failures
     let consecutiveFailures = 0;
     for (let i = recentTasks.length - 1; i >= 0; i--) {
       const task = recentTasks[i];
       if (task.status === "complete" && task.attempts > 2) {
         consecutiveFailures++;
       } else if (task.status === "complete" && task.attempts === 1) {
-        break; // Stop on first success
+        break;
       }
     }
 
-    // Identify struggling topics
     const topicAttempts = new Map<string, { total: number; failed: number }>();
 
     for (const task of recentTasks) {
@@ -424,7 +369,6 @@ export async function analyzeTaskAttempts(studentId: string): Promise<{
       }
     }
 
-    // Determine frustration level
     let frustrationLevel: "low" | "medium" | "high" = "low";
     if (consecutiveFailures >= 3 || strugglingTopics.length >= 3) {
       frustrationLevel = "high";
@@ -447,9 +391,6 @@ export async function analyzeTaskAttempts(studentId: string): Promise<{
   }
 }
 
-/**
- * Check for struggle during an active conversation (Real-Time Monitoring)
- */
 export function checkStruggleDuringConversation(recentMessages: Message[]): {
   isStruggling: boolean;
   indicators: string[];
@@ -461,7 +402,6 @@ export function checkStruggleDuringConversation(recentMessages: Message[]): {
   const studentMessages = recentMessages.filter((m) => m.speaker === "student");
   const indicators: string[] = [];
 
-  // Frustration keywords
   const frustrationKeywords = [
     "confused",
     "don't understand",
@@ -485,14 +425,12 @@ export function checkStruggleDuringConversation(recentMessages: Message[]): {
     indicators.push("Expressing frustration multiple times");
   }
 
-  // Question repetition
   const questions = studentMessages.map((m) => m.message.toLowerCase().trim());
   const uniqueQuestions = new Set(questions);
   if (questions.length > 3 && uniqueQuestions.size < questions.length * 0.7) {
     indicators.push("Repeating similar questions");
   }
 
-  // Very short responses (disengagement)
   const shortResponses = studentMessages.filter(
     (m) => m.message.length < 10
   ).length;
@@ -500,7 +438,6 @@ export function checkStruggleDuringConversation(recentMessages: Message[]): {
     indicators.push("Brief responses may indicate disengagement");
   }
 
-  // Multiple help requests in short time
   const helpRequests = studentMessages.filter((m) =>
     m.message.toLowerCase().includes("help")
   ).length;
@@ -513,9 +450,6 @@ export function checkStruggleDuringConversation(recentMessages: Message[]): {
   return { isStruggling, indicators };
 }
 
-/**
- * Intervention Triggers - Determine what action to take
- */
 export interface InterventionAction {
   type: "hint" | "easier_task" | "tutor_suggestion" | "encouragement" | "none";
   message: string;
@@ -527,13 +461,11 @@ export async function determineIntervention(
   recentMessages: Message[]
 ): Promise<InterventionAction> {
   try {
-    // Get comprehensive struggle analysis
     const sessionStruggle = await analyzeStudentStruggle(studentId);
     const taskStruggle = await analyzeTaskAttempts(studentId);
     const conversationStruggle =
       checkStruggleDuringConversation(recentMessages);
 
-    // Combine indicators
     const isSevere =
       sessionStruggle.severity === "severe" ||
       taskStruggle.frustrationLevel === "high" ||
@@ -544,7 +476,6 @@ export async function determineIntervention(
       taskStruggle.frustrationLevel === "medium" ||
       conversationStruggle.isStruggling;
 
-    // Determine intervention
     if (isSevere) {
       return {
         type: "tutor_suggestion",
@@ -570,7 +501,6 @@ export async function determineIntervention(
       }
     }
 
-    // Mild or no struggle - just encouragement
     if (taskStruggle.consecutiveFailures === 1) {
       return {
         type: "encouragement",
@@ -594,9 +524,6 @@ export async function determineIntervention(
   }
 }
 
-/**
- * Generate AI-powered tutor handoff notes
- */
 export async function generateHandoffNotes(
   studentId: string,
   conversationHistory: Message[],
@@ -612,24 +539,20 @@ export async function generateHandoffNotes(
       return "Unable to generate handoff notes - student not found.";
     }
 
-    // Get struggle analysis
     const struggleAnalysis = await analyzeStudentStruggle(studentId);
     const taskStruggle = await analyzeTaskAttempts(studentId);
 
-    // Recent conversation excerpts (last 5 messages)
     const recentConversation = conversationHistory
       .slice(-5)
       .map((m) => `${m.speaker}: ${m.message}`)
       .join("\n");
 
-    // Recent task failures
     const recentFailures = taskHistory
       .filter((t) => t.attempts > 2 || t.status === "skipped")
       .slice(-3)
       .map((t) => `${t.topic} (${t.type}): ${t.attempts} attempts`)
       .join("\n");
 
-    // Build prompt
     const prompt = `Generate concise tutor handoff notes for ${
       student.name
     }, a ${student.age}-year-old student in grade ${student.grade}.
@@ -659,7 +582,6 @@ Please generate:
 
 Keep it concise and actionable for a human tutor. Format as clear bullet points.`;
 
-    // Call OpenAI
     const completion = await withRetry(async () => {
       return await openai.chat.completions.create({
         model: process.env.OPENAI_MODEL || "gpt-4",
@@ -674,12 +596,11 @@ Keep it concise and actionable for a human tutor. Format as clear bullet points.
             content: prompt,
           },
         ],
-        temperature: 0.3, // Lower for consistent, factual output
+        temperature: 0.3,
         max_tokens: 600,
       });
     });
 
-    // Calculate and log usage
     const model = process.env.OPENAI_MODEL || "gpt-4";
     const usage = calculateUsage(
       completion.usage?.prompt_tokens || 0,
@@ -700,7 +621,6 @@ Keep it concise and actionable for a human tutor. Format as clear bullet points.
     const aiError = categorizeError(error);
     console.error(`Error generating handoff notes for ${studentId}:`, error);
 
-    // Log failed usage
     const model = process.env.OPENAI_MODEL || "gpt-4";
     const failedUsage = calculateUsage(0, 0, model);
 
@@ -710,7 +630,6 @@ Keep it concise and actionable for a human tutor. Format as clear bullet points.
       errorCode: aiError.code,
     });
 
-    // Return fallback notes
     const student = await getStudentById(studentId);
     const struggleAnalysis = await analyzeStudentStruggle(studentId);
 

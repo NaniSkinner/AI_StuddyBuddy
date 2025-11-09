@@ -2,9 +2,6 @@ import { Student, AchievementId } from "@/types";
 import { getStudentById, saveStudentData } from "./studentService";
 import { unlockAchievement } from "./achievementService";
 
-/**
- * Color theme for bubble customization
- */
 export interface ColorTheme {
   id: string;
   name: string;
@@ -17,9 +14,6 @@ export interface ColorTheme {
   isLocked: boolean;
 }
 
-/**
- * Default color themes (PRD spec + extras)
- */
 export const DEFAULT_THEMES: ColorTheme[] = [
   {
     id: "ocean",
@@ -62,9 +56,6 @@ export const DEFAULT_THEMES: ColorTheme[] = [
   },
 ];
 
-/**
- * Get available themes for a student
- */
 export async function getAvailableThemes(
   studentId: string
 ): Promise<ColorTheme[]> {
@@ -77,7 +68,6 @@ export async function getAvailableThemes(
         return { ...theme, isLocked: false };
       }
 
-      // Check unlock conditions
       const isUnlocked = checkThemeUnlock(theme, student);
       return { ...theme, isLocked: !isUnlocked };
     });
@@ -87,23 +77,17 @@ export async function getAvailableThemes(
   }
 }
 
-/**
- * Check if theme should be unlocked
- */
 function checkThemeUnlock(theme: ColorTheme, student: Student): boolean {
   const condition = theme.unlockCondition?.toLowerCase() || "";
 
-  // "Complete 10 sessions"
   if (condition.includes("10 sessions")) {
     return student.sessions.length >= 10;
   }
 
-  // "Reach 7-day streak"
   if (condition.includes("7-day streak")) {
     return (student.streaks.longest || 0) >= 7;
   }
 
-  // "Earn 5 achievements"
   if (condition.includes("5 achievements")) {
     return student.achievements.length >= 5;
   }
@@ -111,9 +95,6 @@ function checkThemeUnlock(theme: ColorTheme, student: Student): boolean {
   return false;
 }
 
-/**
- * Update student's selected color theme
- */
 export async function updateColorTheme(
   studentId: string,
   themeId: string
@@ -138,7 +119,6 @@ export async function updateColorTheme(
       };
     }
 
-    // Update student preferences
     const updatedStudent = {
       ...student,
       preferences: {
@@ -155,9 +135,6 @@ export async function updateColorTheme(
   }
 }
 
-/**
- * Friend connection request
- */
 export interface FriendRequest {
   id: string;
   fromStudentId: string;
@@ -166,14 +143,8 @@ export interface FriendRequest {
   createdAt: Date;
 }
 
-/**
- * Mock friend requests storage (in-memory for now)
- */
 const friendRequests: Map<string, FriendRequest[]> = new Map();
 
-/**
- * Send friend request
- */
 export async function sendFriendRequest(
   fromStudentId: string,
   toStudentId: string
@@ -186,12 +157,10 @@ export async function sendFriendRequest(
       return { success: false, error: "Student not found" };
     }
 
-    // Check if already friends
     if (fromStudent.friendConnections.includes(toStudentId)) {
       return { success: false, error: "Already friends" };
     }
 
-    // Create friend request
     const request: FriendRequest = {
       id: `fr-${Date.now()}`,
       fromStudentId,
@@ -200,7 +169,6 @@ export async function sendFriendRequest(
       createdAt: new Date(),
     };
 
-    // Store request
     const existing = friendRequests.get(toStudentId) || [];
     friendRequests.set(toStudentId, [...existing, request]);
 
@@ -211,9 +179,6 @@ export async function sendFriendRequest(
   }
 }
 
-/**
- * Accept friend request
- */
 export async function acceptFriendRequest(
   requestId: string,
   studentId: string
@@ -226,10 +191,8 @@ export async function acceptFriendRequest(
       return { success: false, error: "Request not found" };
     }
 
-    // Update request status
     request.status = "accepted";
 
-    // Add to each other's friend lists
     const student = await getStudentById(studentId);
     const friend = await getStudentById(request.fromStudentId);
 
@@ -250,7 +213,6 @@ export async function acceptFriendRequest(
     await saveStudentData(updatedStudent);
     await saveStudentData(updatedFriend);
 
-    // Unlock achievement for making a friend connection
     await unlockAchievement(studentId, "social_butterfly");
     await unlockAchievement(request.fromStudentId, "social_butterfly");
 
@@ -261,9 +223,6 @@ export async function acceptFriendRequest(
   }
 }
 
-/**
- * Get friend activity feed
- */
 export interface FriendActivity {
   friendId: string;
   friendName: string;
@@ -287,21 +246,18 @@ export async function getFriendActivity(
       const friend = await getStudentById(friendId);
       if (!friend) continue;
 
-      // Recent achievements (achievements are just IDs, so we'll show them simply)
       if (friend.achievements.length > 0) {
-        // Show last achievement
         const lastAchievementId =
           friend.achievements[friend.achievements.length - 1];
         activities.push({
           friendId,
           friendName: friend.name,
           activity: `Earned a new achievement!`,
-          timestamp: new Date(), // Would need achievement timestamp in real implementation
+          timestamp: new Date(),
           type: "achievement",
         });
       }
 
-      // Current streaks
       if ((friend.streaks.current || 0) >= 3) {
         activities.push({
           friendId,
@@ -312,10 +268,8 @@ export async function getFriendActivity(
         });
       }
 
-      // Recent sessions
       if (friend.sessions.length > 0) {
         const recentSessionId = friend.sessions[friend.sessions.length - 1];
-        // Would need to fetch actual session data for more details
         const daysSinceLastActive =
           (Date.now() - new Date(friend.lastLoginAt).getTime()) /
           (1000 * 60 * 60 * 24);
@@ -331,7 +285,6 @@ export async function getFriendActivity(
       }
     }
 
-    // Sort by timestamp (most recent first)
     return activities
       .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
       .slice(0, 5);
@@ -341,9 +294,6 @@ export async function getFriendActivity(
   }
 }
 
-/**
- * Animation presets for chat bubbles
- */
 export interface AnimationPreset {
   id: string;
   name: string;
@@ -386,9 +336,6 @@ export const ANIMATION_PRESETS: AnimationPreset[] = [
   },
 ];
 
-/**
- * Get available animations for student
- */
 export async function getAvailableAnimations(
   studentId: string
 ): Promise<AnimationPreset[]> {
@@ -401,7 +348,6 @@ export async function getAvailableAnimations(
         return { ...preset, isLocked: false };
       }
 
-      // Check unlock conditions
       const condition = preset.unlockCondition.toLowerCase();
       let isUnlocked = false;
 

@@ -42,7 +42,6 @@ export function Tooltip({
             <div className="px-3 py-1.5 bg-doodle-sketch text-white rounded-lg border-2 border-doodle-sketch shadow-lg whitespace-nowrap">
               <span className="font-sketch text-sm font-medium">{label}</span>
             </div>
-            {/* Arrow */}
             <div
               className={`absolute w-2 h-2 bg-doodle-sketch border-doodle-sketch rotate-45 ${
                 position === "bottom"

@@ -6,13 +6,9 @@ const nextConfig = {
     domains: [],
   },
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Temporarily ignoring TypeScript errors to allow deployment
-    // TODO: Fix TypeScript errors gradually after successful deployment
     ignoreBuildErrors: true,
   },
 };

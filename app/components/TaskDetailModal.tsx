@@ -36,11 +36,10 @@ export default function TaskDetailModal({
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-
-    // Simulate submission delay
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    const submittedAnswer = task.type === "multiple_choice" ? selectedOption || "" : answer;
+    const submittedAnswer =
+      task.type === "multiple_choice" ? selectedOption || "" : answer;
     onSubmit?.(task, submittedAnswer);
     setIsSubmitting(false);
   };
@@ -53,9 +52,10 @@ export default function TaskDetailModal({
   };
 
   const isComplete = task.status === "complete";
-  const canSubmit = task.type === "multiple_choice"
-    ? selectedOption !== null
-    : answer.trim().length > 0;
+  const canSubmit =
+    task.type === "multiple_choice"
+      ? selectedOption !== null
+      : answer.trim().length > 0;
 
   return (
     <AnimatePresence>
@@ -74,7 +74,6 @@ export default function TaskDetailModal({
           className="bg-white rounded-2xl border-3 border-doodle-sketch shadow-[8px_8px_0px_rgba(0,0,0,0.2)] max-w-2xl w-full max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Header */}
           <div className="bg-doodle-cream border-b-2 border-doodle-sketch p-6">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center space-x-3">
@@ -112,7 +111,11 @@ export default function TaskDetailModal({
                     : "bg-doodle-blue text-white"
                 }`}
               >
-                {isComplete ? "Completed" : task.attempts > 0 ? "In Progress" : "New Task"}
+                {isComplete
+                  ? "Completed"
+                  : task.attempts > 0
+                  ? "In Progress"
+                  : "New Task"}
               </span>
               <span className="text-xs px-3 py-1 bg-white rounded-full border-2 border-doodle-sketch font-sketch">
                 {task.type.replace("_", " ")}
@@ -125,9 +128,7 @@ export default function TaskDetailModal({
             </div>
           </div>
 
-          {/* Content */}
           <div className="p-6 space-y-6">
-            {/* Question */}
             <div>
               <h3 className="text-lg font-hand font-bold text-doodle-sketch mb-3">
                 Question:
@@ -139,7 +140,6 @@ export default function TaskDetailModal({
               </div>
             </div>
 
-            {/* Answer Section */}
             {!isComplete && (
               <div>
                 <h3 className="text-lg font-hand font-bold text-doodle-sketch mb-3">
@@ -193,7 +193,6 @@ export default function TaskDetailModal({
               </div>
             )}
 
-            {/* Completed Message */}
             {isComplete && (
               <motion.div
                 initial={{ scale: 0 }}
@@ -208,49 +207,54 @@ export default function TaskDetailModal({
                 >
                   🎉
                 </motion.p>
-                <p className="font-hand font-bold text-xl mb-2">Task Completed!</p>
+                <p className="font-hand font-bold text-xl mb-2">
+                  Task Completed!
+                </p>
                 <p className="font-sketch text-sm opacity-90">
                   Great job! You&apos;ve finished this task.
                 </p>
               </motion.div>
             )}
 
-            {/* Hint Section (if available) */}
-            {task.content.hints && task.content.hints.length > 0 && !isComplete && (
-              <details className="group">
-                <summary className="cursor-pointer list-none">
-                  <div className="bg-doodle-yellow p-4 rounded-xl border-2 border-doodle-sketch flex items-center justify-between hover:shadow-[4px_4px_0px_rgba(0,0,0,0.15)] transition-all">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xl">💡</span>
-                      <span className="font-hand font-bold text-doodle-sketch">
-                        Need a hint?
-                      </span>
+            {task.content.hints &&
+              task.content.hints.length > 0 &&
+              !isComplete && (
+                <details className="group">
+                  <summary className="cursor-pointer list-none">
+                    <div className="bg-doodle-yellow p-4 rounded-xl border-2 border-doodle-sketch flex items-center justify-between hover:shadow-[4px_4px_0px_rgba(0,0,0,0.15)] transition-all">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xl">💡</span>
+                        <span className="font-hand font-bold text-doodle-sketch">
+                          Need a hint?
+                        </span>
+                      </div>
+                      <motion.span
+                        className="text-doodle-sketch"
+                        animate={{ rotate: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        ▼
+                      </motion.span>
                     </div>
-                    <motion.span
-                      className="text-doodle-sketch"
-                      animate={{ rotate: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      ▼
-                    </motion.span>
-                  </div>
-                </summary>
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  className="mt-2 p-4 bg-white rounded-xl border-2 border-doodle-sketch"
-                >
-                  {task.content.hints.map((hint, index) => (
-                    <p key={index} className="font-sketch text-doodle-sketch text-sm mb-2 last:mb-0">
-                      {hint}
-                    </p>
-                  ))}
-                </motion.div>
-              </details>
-            )}
+                  </summary>
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    className="mt-2 p-4 bg-white rounded-xl border-2 border-doodle-sketch"
+                  >
+                    {task.content.hints.map((hint, index) => (
+                      <p
+                        key={index}
+                        className="font-sketch text-doodle-sketch text-sm mb-2 last:mb-0"
+                      >
+                        {hint}
+                      </p>
+                    ))}
+                  </motion.div>
+                </details>
+              )}
           </div>
 
-          {/* Footer Actions */}
           <div className="border-t-2 border-doodle-sketch p-6 bg-doodle-cream">
             <div className="flex items-center justify-end space-x-3">
               <motion.button
@@ -269,7 +273,9 @@ export default function TaskDetailModal({
                       onClick={handleMarkComplete}
                       disabled={isSubmitting}
                       className="px-6 py-3 bg-doodle-green border-2 border-doodle-sketch rounded-xl font-hand font-bold text-white shadow-[3px_3px_0px_rgba(0,0,0,0.1)] disabled:opacity-50"
-                      whileHover={!isSubmitting ? { scale: 1.05, rotate: 1 } : {}}
+                      whileHover={
+                        !isSubmitting ? { scale: 1.05, rotate: 1 } : {}
+                      }
                       whileTap={!isSubmitting ? { scale: 0.95 } : {}}
                     >
                       {isSubmitting ? "Submitting..." : "Mark as Complete ✓"}
@@ -281,8 +287,14 @@ export default function TaskDetailModal({
                       onClick={handleSubmit}
                       disabled={!canSubmit || isSubmitting}
                       className="px-6 py-3 bg-doodle-blue border-2 border-doodle-sketch rounded-xl font-hand font-bold text-white shadow-[3px_3px_0px_rgba(0,0,0,0.1)] disabled:opacity-50 disabled:cursor-not-allowed"
-                      whileHover={canSubmit && !isSubmitting ? { scale: 1.05, rotate: 1 } : {}}
-                      whileTap={canSubmit && !isSubmitting ? { scale: 0.95 } : {}}
+                      whileHover={
+                        canSubmit && !isSubmitting
+                          ? { scale: 1.05, rotate: 1 }
+                          : {}
+                      }
+                      whileTap={
+                        canSubmit && !isSubmitting ? { scale: 0.95 } : {}
+                      }
                     >
                       {isSubmitting ? "Submitting..." : "Submit to Tutor 📤"}
                     </motion.button>

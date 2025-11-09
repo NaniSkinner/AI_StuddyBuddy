@@ -130,7 +130,6 @@ export default function TaskSidebar({ tasks, onTaskClick }: TaskSidebarProps) {
 
   return (
     <div className="h-full bg-doodle-cream border-l-2 border-doodle-sketch flex flex-col">
-      {/* Header - Doodle Style */}
       <div className="px-4 py-4 border-b-2 border-doodle-sketch bg-white">
         <motion.h3
           className="text-2xl font-hand font-bold text-doodle-sketch flex items-center space-x-2"
@@ -156,9 +155,7 @@ export default function TaskSidebar({ tasks, onTaskClick }: TaskSidebarProps) {
         </motion.p>
       </div>
 
-      {/* Task List - Doodle Style */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {/* Incomplete Tasks */}
         {incompleteTasks.length > 0 ? (
           <div className="space-y-3">
             <h4 className="text-sm font-hand font-bold text-doodle-sketch uppercase tracking-wide">
@@ -198,7 +195,6 @@ export default function TaskSidebar({ tasks, onTaskClick }: TaskSidebarProps) {
           </motion.div>
         )}
 
-        {/* Completed Tasks */}
         {completedTasks.length > 0 && (
           <div className="space-y-3 mt-6">
             <h4 className="text-sm font-hand font-bold text-doodle-sketch uppercase tracking-wide">
@@ -223,7 +219,6 @@ export default function TaskSidebar({ tasks, onTaskClick }: TaskSidebarProps) {
         )}
       </div>
 
-      {/* Quick Actions - Doodle Style */}
       <div className="px-4 py-4 border-t-2 border-doodle-sketch bg-white">
         <motion.button
           className="sketch-button w-full"

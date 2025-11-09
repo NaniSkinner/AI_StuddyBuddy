@@ -29,7 +29,6 @@ export function EmptyState({
       transition={{ duration: 0.6 }}
       className="flex flex-col items-center justify-center p-12 text-center"
     >
-      {/* Floating Icon or Illustration */}
       <motion.div
         variants={floatVariant}
         initial="initial"
@@ -49,7 +48,6 @@ export function EmptyState({
         )}
       </motion.div>
 
-      {/* Title */}
       <motion.h3
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -60,7 +58,6 @@ export function EmptyState({
         {title}
       </motion.h3>
 
-      {/* Description */}
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -70,7 +67,6 @@ export function EmptyState({
         {description}
       </motion.p>
 
-      {/* Action Button */}
       {actionLabel && onAction && (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -83,7 +79,6 @@ export function EmptyState({
         </motion.div>
       )}
 
-      {/* Decorative Elements */}
       <motion.div
         className="absolute top-1/4 left-1/4 text-4xl opacity-20"
         animate={{ rotate: [0, 360] }}
@@ -101,8 +96,6 @@ export function EmptyState({
     </motion.div>
   );
 }
-
-// Specific Empty State Components
 
 export function NoTasksEmptyState({ onGetTasks }: { onGetTasks?: () => void }) {
   return (
