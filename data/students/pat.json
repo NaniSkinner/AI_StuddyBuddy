@@ -25,7 +25,7 @@
   "totalPoints": 0,
   "churnRisk": false,
   "preferences": {
-    "aiColor": "#3B82F6",
+    "aiColor": "#06B6D4",
     "notificationEnabled": true,
     "reminderTime": "18:00",
     "hasCompletedOnboarding": false
@@ -35,6 +35,18 @@
   "questionsAsked": 0,
   "totalConversations": 0,
   "createdAt": "2025-11-08T00:00:00Z",
-  "lastLoginAt": null,
-  "metadata": {}
+  "lastLoginAt": "2025-11-10T18:35:01.822Z",
+  "metadata": {
+    "lastNudgeShown": "2025-11-10T18:34:49.899Z",
+    "lastNudgeId": "nudge-1762799689894-sxbtd4y",
+    "nudgeHistory": [
+      {
+        "id": "nudge-1762799689894-sxbtd4y",
+        "type": "nudge",
+        "shownAt": "2025-11-10T18:34:52.127Z",
+        "action": "dismissed",
+        "actionAt": "2025-11-10T18:34:52.127Z"
+      }
+    ]
+  }
 }

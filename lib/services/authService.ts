@@ -55,9 +55,45 @@ export const authService = {
   /**
    * Logout current student
    * Clears session and redirects to login
+   * For Pat (demo user), resets onboarding status to allow re-demonstration
    */
-  logout: (clearMessages?: () => void): void => {
+  logout: async (clearMessages?: () => void): Promise<void> => {
     if (typeof window !== "undefined") {
+      const studentId = localStorage.getItem(STORAGE_KEY);
+
+      // If logging out as Pat, reset onboarding status for demo purposes
+      if (studentId === "student-pat") {
+        try {
+          // First fetch current student data
+          const response = await fetch(`/api/students/${studentId}`);
+          if (response.ok) {
+            const student = await response.json();
+            // Update with merged preferences to preserve other settings
+            await fetch(`/api/students/${studentId}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                preferences: {
+                  ...student.preferences,
+                  hasCompletedOnboarding: false,
+                },
+              }),
+            });
+            // Clear any saved onboarding progress from localStorage
+            const steps = ["welcome", "color", "tutorial", "goals"];
+            steps.forEach((step) => {
+              const key = `onboarding_${studentId}_${step}`;
+              localStorage.removeItem(key);
+            });
+            console.log("Reset Pat's onboarding status for demo");
+          }
+        } catch (error) {
+          console.error("Failed to reset Pat's onboarding status:", error);
+        }
+      }
+
       localStorage.removeItem(STORAGE_KEY);
 
       // Clear chat messages from store if provided

@@ -596,7 +596,9 @@ function LearnPageContent() {
           studentName={currentStudent.name}
           streakStatus={streakStatus}
           totalPoints={totalPoints}
-          onLogoutClick={() => authService.logout(clearMessages)}
+          onLogoutClick={() => {
+            authService.logout(clearMessages);
+          }}
           onAchievementsClick={() => router.push("/achievements")}
           onFriendsClick={() => router.push("/friends")}
           onParentDashboardClick={() => router.push("/parent")}
