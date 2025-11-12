@@ -119,7 +119,7 @@
   "questionsAsked": 18,
   "totalConversations": 15,
   "createdAt": "2025-10-20T00:00:00Z",
-  "lastLoginAt": "2025-11-09T18:35:17.539Z",
+  "lastLoginAt": "2025-11-12T18:54:17.578Z",
   "metadata": {
     "lastNudgeShown": "2025-11-09T05:30:23.035Z",
     "lastNudgeId": "nudge-1762666223027-5w7f0d7",
@@ -179,6 +179,13 @@
         "shownAt": "2025-11-09T05:41:06.177Z",
         "action": "accepted",
         "actionAt": "2025-11-09T05:41:06.177Z"
+      },
+      {
+        "id": "nudge-demo-1762973663327",
+        "type": "nudge",
+        "shownAt": "2025-11-12T18:54:25.158Z",
+        "action": "dismissed",
+        "actionAt": "2025-11-12T18:54:25.158Z"
       }
     ]
   }

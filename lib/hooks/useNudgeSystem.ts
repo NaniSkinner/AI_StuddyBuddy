@@ -330,24 +330,32 @@ export function useNudgeSystem(studentId: string | null) {
 
   /**
    * Listen for custom nudge trigger events
+   *
+   * ⚠️ DISABLED FOR DEVELOPMENT - Only Test Nudge button works
    */
   useEffect(() => {
     if (!studentId || typeof window === "undefined") return;
 
-    const handleCustomTrigger = (event: Event) => {
-      const customEvent = event as CustomEvent;
-      const { eventType } = customEvent.detail || {};
-      if (eventType) {
-        console.log(`🎯 Custom event received: ${eventType}`);
-        triggerNudgeOnEvent(eventType);
-      }
-    };
+    // DISABLED: Clear any pending triggers from login/onboarding
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("trigger_nudge_on_load");
+    }
 
-    window.addEventListener("nudge:trigger", handleCustomTrigger);
+    // DISABLED: Custom event listener
+    // const handleCustomTrigger = (event: Event) => {
+    //   const customEvent = event as CustomEvent;
+    //   const { eventType } = customEvent.detail || {};
+    //   if (eventType) {
+    //     console.log(`🎯 Custom event received: ${eventType}`);
+    //     triggerNudgeOnEvent(eventType);
+    //   }
+    // };
 
-    return () => {
-      window.removeEventListener("nudge:trigger", handleCustomTrigger);
-    };
+    // window.addEventListener("nudge:trigger", handleCustomTrigger);
+
+    // return () => {
+    //   window.removeEventListener("nudge:trigger", handleCustomTrigger);
+    // };
   }, [studentId, triggerNudgeOnEvent]);
 
   return {

@@ -56,10 +56,11 @@ export default function LoginPage() {
 
       await new Promise((resolve) => setTimeout(resolve, 300));
 
+      // ⚠️ DISABLED: Automatic nudge trigger on login
       // Store event for nudge trigger after redirect
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("trigger_nudge_on_load", "login");
-      }
+      // if (typeof window !== "undefined") {
+      //   sessionStorage.setItem("trigger_nudge_on_load", "login");
+      // }
 
       // Redirect based on onboarding status
       if (!student.preferences.hasCompletedOnboarding) {
