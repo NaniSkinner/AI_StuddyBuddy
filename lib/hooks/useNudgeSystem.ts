@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { NudgeMessage } from "@/types";
 
 // Retry configuration
@@ -287,35 +287,40 @@ export function useNudgeSystem(studentId: string | null) {
   /**
    * Check for nudge on mount and periodically
    * Also handle event-based triggers from sessionStorage
+   *
+   * ⚠️ AUTOMATIC NUDGES DISABLED FOR DEVELOPMENT
+   * Nudges only appear when "Test Nudge" button is clicked
    */
   useEffect(() => {
     if (!studentId) return;
 
+    // DISABLED: Automatic nudge checking
     // Check if there's a pending event trigger
-    if (typeof window !== "undefined") {
-      const eventTrigger = sessionStorage.getItem("trigger_nudge_on_load");
-      if (eventTrigger) {
-        console.log(`🎯 Found pending nudge trigger: ${eventTrigger}`);
-        sessionStorage.removeItem("trigger_nudge_on_load");
-        // Delay slightly to let page finish loading
-        setTimeout(() => {
-          triggerNudgeOnEvent(eventTrigger);
-        }, 1000);
-      } else {
-        // Normal check on mount
-        checkForNudge();
-      }
-    } else {
-      checkForNudge();
-    }
+    // if (typeof window !== "undefined") {
+    //   const eventTrigger = sessionStorage.getItem("trigger_nudge_on_load");
+    //   if (eventTrigger) {
+    //     console.log(`🎯 Found pending nudge trigger: ${eventTrigger}`);
+    //     sessionStorage.removeItem("trigger_nudge_on_load");
+    //     // Delay slightly to let page finish loading
+    //     setTimeout(() => {
+    //       triggerNudgeOnEvent(eventTrigger);
+    //     }, 1000);
+    //   } else {
+    //     // Normal check on mount
+    //     checkForNudge();
+    //   }
+    // } else {
+    //   checkForNudge();
+    // }
 
+    // DISABLED: Periodic checking
     // Check every 5 minutes while app is open
-    const interval = setInterval(() => {
-      checkForNudge();
-    }, 5 * 60 * 1000);
+    // const interval = setInterval(() => {
+    //   checkForNudge();
+    // }, 5 * 60 * 1000);
 
     return () => {
-      clearInterval(interval);
+      // clearInterval(interval);
       // Cancel any pending requests on unmount
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
